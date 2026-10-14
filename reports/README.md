@@ -1,38 +1,38 @@
-# 服务器执行报告约定
+# Server execution report convention
 
-这里定义服务器执行报告的保存方式。当前尚无真实 report bundle。发布内容遵循 [仓库规范](../docs/REPOSITORY_POLICY.md)。
+This document defines how server execution evidence is saved. No actual report bundle is currently present. Published content follows [REPOSITORY_POLICY.md](../docs/REPOSITORY_POLICY.md). All repository reports and reusable agent prompts must be in English.
 
-## 保存位置
+## Location
 
 ```text
 reports/
   README.md
   server/
     YYYY-MM-DD_<run_id>/
-      REPORT.md                 命令、范围、结果、失败和下一步
-      environment.json         筛选后的版本/环境信息（可选）
-      summary.json             汇总计数、形状、测试/资源结果（可选）
-      sanitized_job_log.txt     已清理且可同步的日志（可选）
+      REPORT.md                 Commands, scope, results, failures and next action
+      environment.json         Selected environment/version fields (optional)
+      summary.json             Aggregate counts, shapes, tests and resources (optional)
+      sanitized_job_log.txt     Reviewed log safe to synchronize (optional)
 ```
 
-先用一个 `REPORT.md` 就能工作，无需先建设复杂报告系统。文件名和格式是工程建议，不是 NOAH 论文要求。代码/schema/config 与报告在同一分支对齐；报告注明**执行时的** source commit，而非提交报告之后的新 commit。
+One `REPORT.md` is enough to start. These names/formats are engineering conventions, not paper requirements. Keep code/schema/configuration and reports aligned on the same branch. Record the source commit at execution time, not the later commit containing the report.
 
-## 每份报告填写这些信息
+## Required information
 
-1. 检查日期和时区、run ID、stage（只读检查/测试/ETL/编码/训练/推理）、执行者。
-2. 实际 repo 绝对路径、branch、source commit、执行时是否有未提交更改；如有，附经过检查的代码 diff 或对应版本说明。
-3. 实际解释器/环境和所需包版本；CPU/GPU 节点类型、Slurm job ID、状态、退出码、申请和实际资源（若适用）。
-4. 数据根目录及解析后的实际位置、源版本、文件格式（如 `.csv` 或 `.csv.gz`）、所检查的表/媒体范围。目录存在与读样本成功分开写。
-5. 原始命令或调用入口、配置路径/哈希、随机种子、样本量/抽样方式。不要只写“执行成功”。
-6. 结果汇总：候选/保留患者、split、事件/模态、成功/失败数、embedding shape、窗口/scored token、测试数/失败原因等，仅填实际测量的部分。
-7. 输出产物保存在服务器的哪个位置；小型可同步汇总的相对链接；数据/缓存/配置版本。
-8. 实际耗时、显存/内存、吞吐（若测量）；排队时间、编码时间和训练时间分别写。
-9. 问题及影响到哪一里程碑；下一步及对应 `PROJECT_STATUS.md` 的 N-ID。
-10. 未运行的检查标记 `NOT_RUN`，不可用的测量标记 `NOT_MEASURED`，未确认的事实标记 `UNKNOWN`。不得补造数字或把申请的资源当成已获得资源。
+1. Actual date/timezone, run ID, stage (inspection/tests/ETL/encoding/training/rollout) and executor.
+2. Actual absolute repository path, branch, source commit and dirty state. For uncommitted code, attach a reviewed diff or equivalent version record.
+3. Actual interpreter/environment/package versions; node type, Slurm job ID, state, exit code and requested versus obtained resources when relevant.
+4. Data root/resolved location, versions, formats such as `.csv`/`.csv.gz`, and table/media scope. Distinguish path existence from successful reading.
+5. Exact sanitized command/entry point, configuration path/hash, seed, sample size and sampling method.
+6. Measured aggregate results: candidate/retained patients, splits, events/modalities, successes/failures, embedding shapes, windows/scored tokens and test outcomes.
+7. Server artifact locations, relative links to safe summaries and data/cache/configuration versions.
+8. Measured wall time, memory and throughput where available. Separate queue, encoding and training durations.
+9. Issues and affected milestones; next action and corresponding N-ID in `PROJECT_STATUS.md`.
+10. Use `NOT_RUN` for unexecuted checks, `NOT_MEASURED` for unavailable measurements and `UNKNOWN` for unconfirmed facts. Requested resources are not obtained resources.
 
-报告应同步代码和汇总，不上传临床原文、原始媒体、embedding 缓存或新增患者级细表。日志先清理患者内容和凭据；环境信息用选定版本字段，不把完整 `env` 输出提交到仓库。
+Synchronize reviewed code and aggregate summaries, not clinical text, raw media, embedding caches or new patient-level tables. Remove patient content and credentials from logs. Record selected environment fields rather than publishing a complete `env` dump.
 
-## 最小 REPORT.md 模板
+## Minimal REPORT.md template
 
 ```markdown
 # Server report: <run_id>
@@ -59,6 +59,4 @@ reports/
 <Action, dependency and PROJECT_STATUS N-ID.>
 ```
 
-更新流程：[REMOTE_WORKFLOW.md](../docs/REMOTE_WORKFLOW.md)。当前进度：[PROJECT_STATUS.md](../docs/PROJECT_STATUS.md)。
-
-Repository contents, ignored outputs and publishing checks follow [REPOSITORY_POLICY.md](../docs/REPOSITORY_POLICY.md). Documentation describes the current state; Git retains version history.
+See [REMOTE_WORKFLOW.md](../docs/REMOTE_WORKFLOW.md) for synchronization and [PROJECT_STATUS.md](../docs/PROJECT_STATUS.md) for current progress. Documentation describes the current state; Git retains version history.

@@ -37,4 +37,6 @@ The outgoing checks require a configured upstream and refreshed remote refs. Do 
 
 ## Documentation style
 
+English is the repository language for collaborators. Write documentation, reports, reusable agent prompts, comments/docstrings, test descriptions, user-facing messages and commit/PR descriptions in English; use English filenames. Private conversation may be in Chinese. Preserve technical identifiers, source titles and original data values. Clinical data is not translated or uploaded to satisfy this policy. Keep private Chinese explanations outside versioned repository content.
+
 Documentation describes current behavior, current progress, unresolved technical choices, acceptance criteria and next actions. Update it in place. Keep historical comparisons, superseded reports and narrative responses to earlier versions in Git history. Keep source provenance and dated execution evidence where they support scientific reproducibility. Preserve distinctions between paper requirements, implementation assumptions and measured results without repeating historical corrections.

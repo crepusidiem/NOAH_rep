@@ -55,6 +55,8 @@ O2 GPU access is available. Record actual GPU allocation, memory, throughput and
 
 ## Repository and documentation hygiene
 
+All versioned repository content intended for collaborators must be in English: documentation, reports, reusable agent prompts, code comments/docstrings, test descriptions, user-facing messages and commit/PR descriptions. Use English filenames. Conversation with the researcher may be in Chinese. Preserve technical identifiers, source citations and original data values; do not translate clinical data to satisfy a repository language check. Keep private Chinese explanations outside versioned content.
+
 Follow [REPOSITORY_POLICY.md](docs/REPOSITORY_POLICY.md) before committing or pushing. Keep presentation tooling, renders, intermediate outputs, clinical data, embeddings and checkpoints in ignored locations. Stage explicit reviewed paths and inspect staged content and outgoing commits. Do not force-add ignored artifacts. Ignore rules do not untrack existing files.
 
 Write documentation about the current state, technical requirements and next actions. Update it in place; Git retains history. Omit reactions to previous reports, historical correction sections and conversational task narration. Retain source provenance, scientific assumptions and dated execution evidence.

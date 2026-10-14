@@ -1,107 +1,107 @@
-# NOAH 数据接口与准备方案
+# NOAH data interface and preparation plan
 
-更新日期：2026-10-14。进度见 [PROJECT_STATUS.md](PROJECT_STATUS.md)，编码步骤见 [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md)。现有 1,000 人候选清单已划分为 700/150/150；事件读取代码部分完成。近期目标是五模态小规模训练路径，完整六模态目标还需要 ECHO。服务器库存依据研究者提供的报告，读取与编码结果按数据源记录。
+Updated: 2026-10-14. See [PROJECT_STATUS.md](PROJECT_STATUS.md) for progress and [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) for encoding steps. The 1,000-candidate manifest has 700/150/150 assignments; event readers are partially implemented. The near-term target is a five-modality small-scale training path. The full six-modality target also requires ECHO. Inventory statements below come from the researcher-provided server report; record actual reading and encoding results by source.
 
-## 1. 论文中的“数据接口”指什么
+## 1. The paper's data interface
 
-这里主要指 NOAH 所消费的统一数据表示，而不是一个必须采用某种网络协议的 API。论文没有提供完整的数据文件 schema 或表到事件的转换代码。
+The interface is NOAH's unified input representation, rather than a required network API. The paper does not supply a complete data-file schema or table-to-event implementation.
 
-原始数据先按患者串成有时间戳的事件序列，再将各事件变成统一宽度的模型 token：
+Organize raw records into timestamped patient event sequences, then project each event into a shared-width model token:
 
-1. **来源层**：住院/ICU/急诊的关系表，临床文本，胸片，ECG 波形，ECHO 视频。
-2. **事件层**：同一个 subject_id 下的终生可用记录，包含多次就诊和院外记录；每次检查、给药、转科等有独立的时间及类型。
-3. **表示层**：事件大类的可训练表示，类型细节的冻结文本表示，以及内容/数值的表示，投影到 768 维。
-4. **训练层**：时间特征、六项人口学前缀、序列窗口、attention mask 和 loss mask。
+1. Source layer: hospital/ICU/ED relational tables, clinical text, chest radiographs, ECG waveforms and ECHO videos.
+2. Event layer: available lifetime records linked by `subject_id`, including multiple encounters and outpatient records; tests, administrations and transfers retain distinct times/types.
+3. Representation layer: trainable event-category embeddings, frozen text specifics and content/numeric representations, projected to width 768.
+4. Training layer: time features, six demographic prefixes, windows, attention masks and loss masks.
 
-| 事件所需信息 | 用途 | 整理时保留什么 |
+| Event information | Purpose | Information to retain during preparation |
 |---|---|---|
-| subject_id | 连接不同数据源与划分训练/验证/测试 | 原始患者 ID、来源表及行标识 |
-| hadm_id / stay_id / study_id 等 | 关联就诊或检查；不是所有事件都有这些字段 | 允许缺失，不因缺少住院 ID 就删掉院外记录 |
-| 事件时间 | 决定排序、患者年龄及前后时间间隔 | 原始时间字段；另记可获得/存储时间以检查未来信息 |
-| 高层事件类别 | 31 类，包括入院、检查、药物开始/结束等 | 明确的源表/项目到类别映射 |
-| 类型细节 | 说明药名、检查项目、诊断名称等 | 原始项目字典和文本细节 |
-| 内容模态及值 | 区分分类、数值、文本、CXR、ECG、ECHO | 数值与单位，文本，媒体路径或冻结 embedding |
-| 缺失/结束/来源信息 | 保证事件语义与可追溯性 | 缺失值与真实零分开；持续过程在真实结束时生成结束事件 |
+| subject_id | Cross-source joins and patient-disjoint splits | Source patient ID, table and row identifier |
+| hadm_id / stay_id / study_id | Encounter/study linkage; not present for every event | Allow missing associations; preserve outpatient events without admission IDs |
+| Event time | Ordering, age and directional gaps | Original timestamp and separate availability/storage time for information-boundary checks |
+| High-level category | 31 categories, including admission, tests and process starts/ends | Explicit source-table/item mappings |
+| Type specifics | Drug, test or diagnosis names | Original item dictionaries and descriptive text |
+| Content modality/value | Categorical, numeric, text, CXR, ECG or ECHO | Values/units, text, media paths or frozen embeddings |
+| Missing/end/source metadata | Semantics and provenance | Distinguish missing from zero; emit process-end events at actual termination |
 
-这张表是建议的数据工程接口，不是声称论文逐字给出了该 schema。模型 token 为 768 维，不意味着所有冻结 embedding 均为 768 维：ECG 为 192，ECHO 为 512，CXR/文本为 768。数值的 44 维是“22 个尺度各使用 sine/cosine”的候选实现推导，论文未直接给出完整公式。
+This table proposes an engineering interface, not a verbatim paper schema. Shared model width 768 does not imply uniform external dimensions: ECG=192, ECHO=512, text/CXR=768. Numeric 44-D follows a candidate sin/cos pair for each of 22 scales; the complete formula/convention is not explicitly published.
 
-## 2. 服务器现状：哪些已经知道，哪些仍待确认
+## 2. Reported server inventory and remaining checks
 
-报告给出的统一根目录为：
+Reported dataset root:
 
-    /home/wey371/rajpurkarlab/datasets
+```text
+/home/wey371/rajpurkarlab/datasets
+```
 
-| 数据源 | 论文版本 | 报告转述 | 当前可使用的结论 | 仍缺的证据 |
+| Source | Paper version | Supplied report | Current evidence level | Required checks |
 |---|---|---|---|---|
-| MIMIC-IV | 2.2 | hosp/icu，约 30 GB，称完整 | 报告称已存储 | 子目录/表名、版本文件、压缩/解压口径、行数、权限与读表结果 |
-| MIMIC-IV-ED | 2.2 | 约 704 MB，称完整 | 报告称已存储 | 表清单、版本、患者关联、实际可读性 |
-| MIMIC-IV-Note | 2.2 | 约 6.3 GB，称完整 | 报告称已存储 | 具体 note 表、时间字段、正文读取、版本与授权 |
-| MIMIC-IV-ECG | 1.0 | 800,035 个 WFDB 记录，称完整 | 报告称波形已存储 | 清单与 .hea/.dat 配对、文件存在、解码抽样、损坏/失败统计 |
-| MIMIC-CXR-JPG | 2.0.0，论文写 2.0 | 图像和 metadata，称完整 | 报告称图像已存储 | JPG 文件与 metadata 对应、患者/检查 ID、解码抽样、版本 |
-| MIMIC-IV-ECHO | 1.0 | 未发现 | 报告范围内缺失，需补齐 | 未扫描其他挂载点/共享目录；需核对授权及完整视频文件 |
+| MIMIC-IV | 2.2 | hosp/icu, about 30 GB, reported complete | Reported stored | Tables/subdirectories, version files, compression basis, rows, permissions and sample reads |
+| MIMIC-IV-ED | 2.2 | About 704 MB, reported complete | Reported stored | Tables, version, patient joins and readability |
+| MIMIC-IV-Note | 2.2 | About 6.3 GB, reported complete | Reported stored | Note tables, timestamps, actual text reads, version and authorization |
+| MIMIC-IV-ECG | 1.0 | 800,035 WFDB records, reported complete | Waveforms reported stored | Index-to-.hea/.dat pairing, file existence, sampled decoding and failures |
+| MIMIC-CXR-JPG | 2.0.0; paper calls it 2.0 | Images/metadata, reported complete | Images reported stored | Image/metadata correspondence, patient/study IDs, decoding and version |
+| MIMIC-IV-ECHO | 1.0 | Not found | Missing within reported scope | Other mounts/shared locations, authorization and actual video files |
 
-存储容量或目录名不能单独证明完整。CSV 索引存在、媒体文件存在、媒体能解码、使用者有授权、数据已变成训练输入，是不同的检查项。报告没有给出独立的挂载/剩余空间、软链接、ACL/组权限、校验和和读取成功率，所以这些仍待核对。
+Capacity and directory names alone do not establish completeness. Index existence, media presence, decoding, user authorization and usable training inputs are separate checks. Mounts/free space, symlinks, ACL/group permissions, checksums and read-success rates remain to be recorded.
 
-**建议对每个数据源记录六个状态**：路径存在；版本匹配；文件/表完整；当前用户可读；使用授权已确认；整理后的事件/embedding 可用。不要用一个“Complete”覆盖全部状态。
+Record six source states independently: path exists, version matches, files/tables complete, current user can read, authorization confirmed, and prepared events/embeddings usable.
 
-## 3. 数据语义与范围
+## 3. Data semantics and scope
 
-时间单位、出生年代理、聚合窗口与数值 Fourier 布局需单独配置，见 [ASSUMPTIONS.md](ASSUMPTIONS.md)。ECHO 事件占比与患者覆盖率是不同统计口径；完整六模态目标需要实际视频及编码路径。
+Configure time units, birth-year proxies, aggregation windows and numeric Fourier layouts separately; see [ASSUMPTIONS.md](ASSUMPTIONS.md). ECHO event share and patient coverage are different statistics. The full six-modality target requires actual videos and their encoder path.
 
-六个数据源和六个模态不是一一对应：MIMIC-IV 等关系表同时产生分类和数值模态。现有五个来源可以覆盖分类、数值、文本、CXR、ECG 五种模态，但这不构成六模态实验的完整数据。
+Sources and modalities are not one-to-one. Relational tables produce both categorical and numeric content. The five reported sources can cover categorical, numeric, text, CXR and ECG; this is not a complete six-modality dataset.
 
-MIMIC-IV 官方说明 anchor_age 对超过 89 岁患者使用 91，且各患者使用不同日期偏移。不能把代理出生年当作真实 DOB，也不能按去识别后的绝对年份直接比较不同患者的实际日历时间。[MIMIC-IV 2.2 官方说明](https://physionet.org/content/mimiciv/2.2/)
+MIMIC-IV sets `anchor_age=91` for patients older than 89 and uses patient-specific date shifts. A proxy birth year is not a true DOB; shifted calendar years cannot directly compare patients' true calendar time. See [MIMIC-IV 2.2](https://physionet.org/content/mimiciv/2.2/).
 
-## 4. 现有数据需要怎样整理
+## 4. Preparation work packages
 
-下面区分“论文明确要求”和“建议验收/实现选择”。具体实现选择记录在配置中；保留原始文件。
+Distinguish paper requirements from engineering acceptance choices. Record configurations and preserve original files.
 
-| 工作包 | 具体处理 | 产物与验收 | 论文依据/待决项 |
+| Package | Processing | Output and acceptance | Paper evidence / unresolved choice |
 |---|---|---|---|
-| A. 库存、版本与读取 | 整理各源表/文件清单，版本与校验信息；核对缺失、损坏、不可读和未授权分别是哪种情况 | 一份 inventory；每源读取抽样与失败清单；表/文件统计可复查 | 工程验收；报告的 GB 不作为完整性判据 |
-| B. 患者与事件映射 | 按 subject_id 连接；保留就诊与检查关联；建立 31 类事件映射；核对一对多连接造成的重复 | 事件字典、源表映射、来源行 ID、连接前后计数 | 论文 pp.15,17；具体 SQL/字典未公开 |
-| C. 数值与时间语义 | 识别数值/文本状态、单位、缺失；排序与同刻顺序；保持给药/操作的开始和结束；核对记录时间与获得时间 | 可追溯时间线、单位转换表、重复/异常处理规则 | 时间单位、tie-break、出生年代理需登记假设；不统一填补缺失或全量裁剪 |
-| D. 生命体征聚合 | 对过密记录提取滑窗 min/max，按论文的窗口均值时间标记；记录所有原始贡献事件 | 聚合前后计数和分布、可获得时间测试 | p.15；窗长/步长/min-max 表达未指定，不能套用 NEWS2 的 1 h 窗口 |
-| E. 文本与胸片内容 | 文本保留临床语义与时间；胸片核对图像与 metadata；用冻结 BioLORD/RAD-DINO 提取内容 | 文本/CXR embedding、模型与处理哈希、失败样本清单 | pp.15-17；长文本策略、图像细节及精确 checkpoint 待明确 |
-| F. ECG 波形 | 验证 .hea/.dat 与 record_list；检查导联、采样率、长度、非有限值、解码；冻结 OTIS 提取最后层 patch 均值 | 每条波形的 192 维表示；波形/患者/时间/embedding 可追溯 | p.15；12 导联、500 Hz、10 s、2496 个 patch token；尾部处理未说明 |
-| G. 窗口与掩码 | 患者层面固定 70/15/15 划分；核对至少 64 个 scored tokens；2048 窗口/256 overlap；六项人口学前缀 | train/val/test 患者清单、窗口索引、每个临床目标恰好计一次的检查 | p.15；prefix 是否占 2048、尾窗、元数据快照需明确 |
-| H. 冻结特征缓存与可训练输入 | 内容 embedding 投影接口、模态/存在性掩码、时间字段、loss ownership 统一 | 一批可加载样本；维度、目标移位、未来信息检查通过 | p.20-21；原始文件已存储不代表已形成训练数据 |
+| A. Inventory/version/reading | List source tables/files, versions and checksums; distinguish missing, corrupt, unreadable and unauthorized | Inventory, sample-read results/failures and reproducible counts | Engineering acceptance; reported GB is not a completeness criterion |
+| B. Patient/event mapping | Join by subject_id; retain encounter/study links; map 31 categories; check one-to-many duplication | Event dictionary, source mappings/row IDs and pre/post-join counts | pp.15,17; exact SQL/dictionaries not published |
+| C. Numeric/time semantics | Parse numeric/text states, units and missingness; sort/tie-break; preserve starts/ends; inspect event versus availability time | Traceable timelines, unit rules, duplicate/anomaly policies | Units, ties and birth-year proxies are assumptions; no blanket filling/clipping |
+| D. Vital aggregation | Sliding-window min/max for dense measurements; mean-time stamps; retain contributing events | Pre/post counts/distributions and availability tests | p.15; span/stride/min-max representation unspecified, distinct from NEWS2's 1h window |
+| E. Text/CXR content | Retain clinical text/time; associate image metadata; frozen BioLORD/RAD-DINO extraction | Embeddings, model/processor hashes and failures | pp.15-17; long-text policy, image details and exact checkpoints remain |
+| F. ECG | Validate .hea/.dat and record_list; leads, rate, length, nonfinite values and decoding; frozen OTIS final-patch means | Traceable 192-D record embeddings | p.15; 12 leads, 500Hz, 10s, 2,496 patches; tail unspecified |
+| G. Windows/masks | Freeze 70/15/15 patient split; check at least 64 scored tokens; 2048 windows/256 overlap and six prefixes | Patient/window manifests and exactly-once clinical target scoring | p.15; prefix budget, tails and metadata snapshot require choices |
+| H. Cache/trainable inputs | Align content projection interfaces, modality/presence masks, time and loss ownership | Loadable batch passing dimensions, target-shift and future-information checks | pp.20-21; raw storage alone is not training readiness |
 
-文本、胸片和 ECG 要保留真实内容。分类诊断标签或 ECG 自动测量 CSV 不能替代论文所用的图像/波形内容路径。
+Retain real text, images and waveforms. Diagnosis labels or automated ECG measurements do not replace the specified content path. WFDB records contain .hea/.dat pairs; device timestamps may differ from other records. Check cross-source consistency rather than deleting every ECG outside an admission interval. See [ECG 1.0](https://physionet.org/content/mimic-iv-ecg/1.0/).
 
-ECG 官方数据由 .hea/.dat 构成 WFDB 记录，清单连接患者及检查；其设备时间可能与其他记录存在偏差。因此需要检查跨源时间一致性，不能把“未落入住院时间段”一概视作错误并删除院外记录。[ECG 1.0 官方说明](https://physionet.org/content/mimic-iv-ecg/1.0/)
+### Scientific choices for PI guidance
 
-### 需要教授确认的科学选择
+- Time units, age/birth-time proxies and simultaneous-event ordering.
+- Dense-vital aggregation span/stride and min/max representation.
+- Literal window-end metadata versus a separate strict as-of causal audit.
+- Future-gap handling at representation cutoffs and in free rollout.
+- Five-modality pilot scope and timing of complete six-modality work.
 
-- 时间单位、年龄/出生时间代理、同刻事件排序。
-- 高频 vitals 聚合窗长、步长和 min/max 表达。
-- 是否先按论文保留窗口末端的元数据快照，另做严格 as-of 因果审计。
-- free rollout / 表征提取截止点的未来 gap 如何处理。
-- 缺 ECHO 时先做五模态阶段，何时进入完整六模态复现。
+These choices change time features, samples and information boundaries; record them beyond a generic cleaning label.
 
-这些不能用“标准清洗”一笔带过，因为它们会改变时间特征、训练样本及信息边界。
+## 5. Acquisition versus preparation
 
-## 5. 哪些要申请，哪些只是要整理/下载
+Public access-policy check date: 2026-10-13. These describe source policies, not verified personal account permissions.
 
-官方访问政策核对日期：2026-10-13。下面说明项目的公开规则，不代表已经核验本人的账号权限。
-
-| 数据/资源 | 官方或论文情况 | 本项目动作 |
+| Data/resource | Source situation | Project action |
 |---|---|---|
-| MIMIC-IV / ED / Note / CXR-JPG | 受限访问，需认证、相应培训、项目 DUA | 如果本人已满足项目条件且可读，整理现有副本；否则补权限或授权手续 |
-| MIMIC-IV-ECG 1.0 波形 | 官方为开放访问，遵守许可证；文本报告/其他平台访问不能从波形开放性直接推出 | 报告称已有，优先核对文件配对与解码；缺文件可按该版本补下载 |
-| MIMIC-IV-ECHO 1.0 | 受限访问，且报告称缺失 | 先查其他共享位置；若确无副本，核对认证/培训/DUA，安排该版本 DICOM 视频及配套清单 |
-| BioLORD / RAD-DINO / OTIS / EchoPrime checkpoint | 论文指定冻结编码器，但摘录未提供服务器模型资产状态 | 单独查权重、版本、使用条件、推理环境；这是模型资产准备，不是新增患者数据 |
-| 整理后事件及 embedding cache | 报告描述的是原始数据，未证明已产出 NOAH 输入 | 需要预处理、离线编码和验收，不能列成“再申请一个新数据集” |
+| MIMIC-IV / ED / Note / CXR-JPG | Restricted access; credentialing, required training and project DUA | Prepare an authorized readable copy; otherwise resolve access |
+| MIMIC-IV-ECG 1.0 waveforms | Open access under its license; not a blanket statement about text reports/other platforms | Verify pairing/decoding of reported files; obtain missing files for that version if needed |
+| MIMIC-IV-ECHO 1.0 | Restricted; reported missing | Check shared locations, then credentials/training/DUA and DICOM video/index acquisition |
+| BioLORD / RAD-DINO / OTIS / EchoPrime assets | Frozen encoders specified; server asset status not established | Inventory weights, versions, conditions and inference environment; these are model assets, not new patients |
+| Prepared events and embedding caches | Raw data reported; complete NOAH inputs not established | Preprocess, encode offline and validate |
 
-ECHO 在原型阶段可以暂后，但完整六模态复现中不能永久省略。应取得实际视频内容，只有超声数值测量表不满足论文 EchoPrime 视频路径。论文指定 1.0；若使用其他版本，需记录版本差异，不能自动以最新版替换。
+ECHO may follow the prototype under an agreed scope; the full target still requires video content, not only ultrasound measurements. The paper uses 1.0; record any version substitution explicitly.
 
-官方依据：[MIMIC-IV](https://physionet.org/content/mimiciv/2.2/)、[ED](https://physionet.org/content/mimic-iv-ed/2.2/)、[Note](https://physionet.org/content/mimic-iv-note/2.2/)、[CXR-JPG](https://physionet.org/content/mimic-cxr-jpg/2.0.0/)、[ECG](https://physionet.org/content/mimic-iv-ecg/1.0/)、[ECHO](https://physionet.org/content/mimic-iv-echo/1.0/)。
+Sources: [MIMIC-IV](https://physionet.org/content/mimiciv/2.2/), [ED](https://physionet.org/content/mimic-iv-ed/2.2/), [Note](https://physionet.org/content/mimic-iv-note/2.2/), [CXR-JPG](https://physionet.org/content/mimic-cxr-jpg/2.0.0/), [ECG](https://physionet.org/content/mimic-iv-ecg/1.0/), [ECHO](https://physionet.org/content/mimic-iv-echo/1.0/).
 
-## 6. 当前推进顺序与教授讨论点
+## 6. Execution order and PI discussion
 
-1. 核对数据读取和编码器资产，完成两名患者的事件、真实内容编码与窗口路径。
-2. 完成合成数据上的时间对齐、双重建损失、mask 和 prior-only rollout 测试。
-3. 扩展到固定 1,000 人候选清单，记录筛选后人数，完成小规模训练、验证和重启。
-4. 按一名主要开发者、数据/权重/GPU 可用的工作假设，预计 4–6 周完成首个完整运行。
+1. Verify source reads/assets and complete two patients' events, real encoding and windows.
+2. Verify synthetic temporal alignment, dual reconstruction, masks and prior-only rollout.
+3. Expand to the fixed 1,000 candidates, report retained counts and complete small-scale training, validation and recovery.
+4. Plan 4-6 weeks for the first complete run under the accepted one-engineer, usable-data/weights/GPU assumption.
 
-请教授指导五模态 pilot 范围、ECHO 获取时点和影响时间语义的关键配置。完整规模算力申请以 pilot 实测吞吐、显存和缓存成本为依据。依赖与验收条件见 [REPRODUCTION_PLAN.md](REPRODUCTION_PLAN.md)。
+Seek PI guidance on pilot modalities, ECHO timing and key temporal semantics. Base full-scale compute requests on measured pilot throughput, memory and cache costs. See [REPRODUCTION_PLAN.md](REPRODUCTION_PLAN.md) for dependencies and gates.
