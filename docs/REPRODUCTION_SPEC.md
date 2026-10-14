@@ -1,14 +1,14 @@
 # NOAH reproduction specification
 
-Phase 0 audit, 2026-10-13. No model, preprocessing pipeline, executable tests, or training code is implemented by this document.
+Updated 2026-10-14. Architecture, data, training and evaluation requirements.
+
+For the operational steps, 2026-10-14 code snapshot and verified upstream feature-extraction interfaces, see [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md). Current implementation progress is recorded in [PROJECT_STATUS.md](PROJECT_STATUS.md).
 
 ## 1. Source, completeness, and fidelity contract
 
 Primary evidence is the supplied [NOAH.pdf](../paper/NOAH.pdf), arXiv:2609.09140v1, dated 8 September 2026, 50 pages. SHA-256: 0f3a7bb049d6f7eb6cdf61c2aa9692d0695037851f95b73711a26ed803576730. PDF page numbers and printed page numbers coincide. The [arXiv record](https://arxiv.org/abs/2609.09140) was checked on the audit date; the local PDF metadata identifies v1.
 
 Read coverage: abstract/introduction pp. 1-3; Results and Figs. 1-6 pp. 4-13; Discussion p. 14; Online Methods pp. 15-26; references pp. 27-29; Extended Data Figs. 1-5 pp. 30-34; Extended Data Tables 1-4 pp. 35-37; Supplementary Tables 1-16 and Supplementary Fig. 1 pp. 38-50. Formula pages, Fig. 1, the remaining research figures, and the numeric/configuration tables were also visually checked.
-
-The repository initially contains a README, license, gitignore, and the supplied paper; it has no existing model or tests to audit. No applicable AGENTS.md was found in the repository or its ancestor directories checked.
 
 Classification used throughout:
 
@@ -457,4 +457,4 @@ Table 14 search: optimizer Adam/SGD; weight decay [1e-6,1e-2]; momentum [0,.9]; 
 
 Critical implementation blockers: event/temporal units and mappings; temporal input encoding and last-gap handling; time-head alignment; numeric basis; backbone/MLP definitions and count reconciliation; continuous reconstruction likelihood/reduction; window length/chunk policy; effective batch/total epochs/optimizer internals. Their consequences, alternatives, tests, and resolution gates are in the other four documents.
 
-Phase 0 ends with documentation and document-consistency checks. Only explicit user approval can start implementation. Scientific claims require separate architecture, data, information-boundary, and paper-scale evidence; “runs without errors” satisfies none of those alone.
+Acceptance follows [TEST_PLAN.md](TEST_PLAN.md); current implementation and execution status is recorded in [PROJECT_STATUS.md](PROJECT_STATUS.md).

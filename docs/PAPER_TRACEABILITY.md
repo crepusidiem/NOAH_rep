@@ -1,6 +1,6 @@
 # NOAH paper-to-requirement traceability
 
-Phase 0, 2026-10-13. Authority: [supplied PDF](../paper/NOAH.pdf), arXiv:2609.09140v1, SHA-256 0f3a7bb049d6f7eb6cdf61c2aa9692d0695037851f95b73711a26ed803576730. Every page below is both the PDF page and the printed page. Specification: [REPRODUCTION_SPEC.md](REPRODUCTION_SPEC.md); decision register: [ASSUMPTIONS.md](ASSUMPTIONS.md); tests: [TEST_PLAN.md](TEST_PLAN.md).
+Updated 2026-10-14. Authority: [supplied PDF](../paper/NOAH.pdf), arXiv:2609.09140v1, SHA-256 0f3a7bb049d6f7eb6cdf61c2aa9692d0695037851f95b73711a26ed803576730. Every page below is both the PDF page and the printed page. Specification: [REPRODUCTION_SPEC.md](REPRODUCTION_SPEC.md); decision register: [ASSUMPTIONS.md](ASSUMPTIONS.md); tests: [TEST_PLAN.md](TEST_PLAN.md).
 
 E=EXPLICIT, D=DERIVED, A=ASSUMED, V=DEVIATION. Where a row combines these, only the expressly stated part is E. Evidence for an absent detail is the nearest relevant passage, not proof that a candidate choice appears in the paper.
 
@@ -89,7 +89,7 @@ The displayed equations in this PDF are **unnumbered**. E01-E16 below are audit 
 | LOSS-04 | All scored-event losses obey prefix/overlap/padding and conditional component masks | p.15 mask/single-event statements; p.20 conditional gate regression | E14 plus ownership derivation | E prefix/overlap, D combined branch masking; denominator/tails A-29,61 |
 | OPT-01 | Muon hidden 2D matrices; AdamW embeddings, heads, non-2D | p.21, optimization sentence; p.50 optimizer row | S Table16 | E assignment, no optimizer internals A-31 |
 | OPT-02 | LR6e-4,cosine,linear6epochwarmup,decay.01,clip10 | p.50, Optimization block | S Table16 | E, total duration/batch/floor A-32,33 |
-| OPT-03 | Python 3.12/PyTorch 2.10/CUDA 12.8, up to eight A100 80 GB GPUs | p.26, Computing environment; p.50 Table16 caption | S Table16 caption | E historical environment; actual installation/precision A-34 |
+| OPT-03 | Python 3.12/PyTorch 2.10/CUDA 12.8, up to eight A100 80 GB GPUs | p.26, Computing environment; p.50 Table16 caption | S Table16 caption | E reported environment; actual installation/precision A-34 |
 | HP-01 | Entire reported pretraining hyperparameter table | p.50, Table16, all rows; p.17 temporal base; p.15 data-window constants | S Table16/E03 | E full reported inventory; unreported values intentionally OPEN |
 
 ## Rollout and scientific evaluation

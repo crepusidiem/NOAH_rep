@@ -1,8 +1,24 @@
 # NOAH dependency-aware reproduction plan
 
-Phase 0 audit, 2026-10-13. [Specification](REPRODUCTION_SPEC.md), [traceability](PAPER_TRACEABILITY.md), [decision register](ASSUMPTIONS.md), and [test plan](TEST_PLAN.md) are the deliverables of this phase.
+Updated 2026-10-14. This is the action plan for the current pilot and the later paper-scale reproduction. See [current progress](PROJECT_STATUS.md), [operational implementation guide](IMPLEMENTATION_GUIDE.md), [specification](REPRODUCTION_SPEC.md), [traceability](PAPER_TRACEABILITY.md), [decision register](ASSUMPTIONS.md), and [test plan](TEST_PLAN.md).
 
-**Stop condition:** this phase writes documentation only. It does not implement the model, data pipeline, tests, training, or evaluation. The next phase requires explicit user approval.
+Pilot entry: N-01 server inventory, N-02 minimal configuration and N-03 encoder compatibility. Implementation and execution follow the researcher’s active task; paper-scale training is a separate scope and resource decision.
+
+## 0. Current milestone
+
+The first milestone is one complete real-data workflow on the **existing 1,000-patient candidate manifest**, with a named reduced model/context and proposed five modalities (categorical, numeric, text, CXR, ECG). The patient file is already present with 700/150/150 subject assignments. ECHO timing and the final pilot event/model scope remain decisions, not completed work.
+
+Current artifacts and helpers should be reused and completed, not recreated from scratch. There is no complete encoder/cache/window/model/training/rollout path yet. O2 GPU access has been confirmed by the researcher; exact asset paths, interpreter, allocation and throughput need runtime records. Start with N-01/N-02/N-03 in [PROJECT_STATUS.md](PROJECT_STATUS.md).
+
+Pilot priorities:
+
+- Use the existing 1,000-person candidate list. Measure retained/scorable counts after complete selected-event extraction; do not assume all 1,000 qualify from partial readers.
+- Make ECHO acquisition a separate dependency for full six-modality reproduction. It need not hold up an agreed five-modality pilot or synthetic mathematics work.
+- Use verified upstream encoder interfaces from the implementation guide; prioritize the OTIS 1x24/checkpoint match and CXR derivative provenance, with separately configured unresolved preprocessing settings.
+- Freeze only the settings needed by the next stage. Do not require every later evaluation A-ID to be solved before the first synthetic model or real batch.
+- Bring progress and execution evidence into dated status/report files. A code-only commit, an SLURM request and a finished training run are distinct.
+- Retain full scientific evaluation scope, but defer clinical probes, NEWS2, survival HPO, counterfactual endpoints, large bootstrap/rollout budgets and comprehensive sensitivities until after the functional pilot.
+- Keep independent correctness tests, prior/posterior loss diagnostics, information-boundary checks and checkpoint recovery on the pilot's critical path. These are not optional simplifications.
 
 ## 1. Reproduction levels and dependency graph
 
@@ -13,40 +29,51 @@ Maintain distinct labels:
 - **Paper-scale reproduction candidate:** full reported architecture/corpus/evaluation, with exact evidence for missing settings or prominently declared unresolved choices. The word “exact” is withheld if core settings remain assumed.
 - **Strict causal audit experiment:** an independently named alternative for as-of metadata, aggregation availability, and future-gap handling. Never merge these results with literal paper-profile numbers.
 
-The schedule follows dependencies, not calendar deadlines:
+Dependencies determine readiness. The accepted 4-6 week planning window in section 2 is conditional, not a fixed completion date:
 
 ~~~mermaid
 flowchart TD
-    P0["Phase 0: audit documents"] --> G0["Explicit implementation approval"]
-    G0 --> D["Freeze decision and evidence manifests"]
+    P0["Audit docs + existing cohort/helpers"] --> G0["Agreement on pilot scope and implementation"]
+    G0 --> D["Freeze settings needed for the next stage"]
     D --> M["Math, tensor, temporal and loss oracles"]
     D --> A["Data access, source mapping, frozen assets"]
     M --> P["Synthetic model and rollout prototype"]
-    A --> Q["Event/encoder/window data QA"]
+    A --> Q["Selected-event/encoder/window QA"]
+    Q --> Q2["Two-patient real path, then fixed candidate cohort"]
     P --> G1["Synthetic correctness gate"]
     G1 --> S["Real small-scale training"]
-    Q --> S
+    Q2 --> S
     S --> X["Assumption sensitivity and inference audit"]
     X --> G2["Freeze paper-scale protocol and resource estimate"]
-    G2 --> F["Full corpus preprocessing and pretraining"]
+    ECHO["ECHO + full event/corpus scope"] --> F["Full corpus preprocessing and pretraining"]
+    G2 --> F
     F --> E["Frozen-model scientific evaluations"]
     E --> R["Table/figure comparison and discrepancy report"]
 ~~~
 
-Data-access/encoder work and mathematical specification can proceed independently after approval; no sub-agent work is assumed or dispatched. Full pretraining depends on both.
+Data-access/encoder work and mathematical specification can proceed independently within the authorized phase. Full pretraining depends on both.
 
 ## 2. Schedule and completion gates
 
-Effort ranges below are planning estimates for one engineer, not paper training durations or guaranteed delivery dates. Data approval, checkpoint access, author's clarification, storage, and available GPUs can dominate elapsed time. Missing total epochs/batch size prevent a defensible paper-scale training ETA.
+The researcher accepted **4-6 weeks** as a working estimate for one primary engineer with substantial availability and usable data, required assets and GPU time. Count from agreement on scope/start of implementation, not from the first planning conversation. Aim for a first complete run in week 4; weeks 5-6 cover integration/correctness repairs and resource profiling. Access, checkpoint incompatibility, part-time availability or queue delays can extend the calendar. This includes implementation and data integration, not just GPU time. The scripts' 4h/8h wall-time requests are not measured durations.
+
+| Working window | Focus | Milestone evidence |
+|---|---|---|
+| Week 1 | N-01 server snapshot, N-02 minimal run choices, N-03 encoder compatibility and source mapping | Versioned report, scope/config decisions, readable sample sources/assets |
+| Weeks 2-3 | N-04 oracles and N-06 core model; N-05 event/encoding/window work where independent | Synthetic correctness plus two-patient real path, then candidate-cohort samples |
+| Week 4 target | N-07 integration and short real-data run | Train/validate/save/resume/prior-only rollout with component logs |
+| Weeks 5-6 buffer | Repair observed failures, complete missing acceptance checks and profile resources | Reproducible first run and measured expansion plan |
+
+Detailed effort ranges below remain estimates, not numbers to sum into an unconditional promise. Independent work can overlap. Missing total paper epochs/batch size prevents a defensible paper-scale training ETA.
 
 | Stage | Dependencies | Work after approval | Planning estimate | Completion evidence |
 |---|---|---|---|---|
-| 0: audit | Supplied paper | Read all 50 pages, inventory evidence/unknowns, write five documents | Completed in this audit | Five coherent documents, source hash, full appendix ledger; no model implementation |
-| 1: decision freeze | Approval | Resolve/select critical A-IDs; archive evidence; define literal/causal/tiny configs and evaluation estimands | 2-5 engineer-days, plus external waiting | Every core knob has classification, rationale, manifest and sensitivity plan |
-| 2A: independent oracles | Stage1 | Write temporal/numeric/Gaussian/KL/masking/metric reference tests before modules | 2-4 days | Analytical and adversarial oracles pass against hand calculations |
-| 2B: data/asset inventory | Stage1 | Verify access to versioned MIMIC sources and frozen assets; source-row maps, preprocessing hashes, staged count ledger | 3-7 days for inventory/sample QA; full preprocessing unestimated | Real sample transforms/dimensions/provenance audited |
+| 0: specification | Supplied paper | Architecture, traceability, assumptions, tests and schedule | Documents available | Coherent requirements, source hash and full appendix coverage |
+| 1: pilot decision freeze | Scope agreement | Select the next-stage critical A-IDs; record active modalities/event set and literal/causal/tiny profiles | 2-5 engineer-days, plus external waiting | Required knobs have classification and rationale; future evaluation choices stay open |
+| 2A: independent oracles | Required Stage1 choices | Review/reuse existing tests; add temporal/numeric/Gaussian/KL/masking reference tests before affected modules | 2-4 days | Analytical and adversarial results tied to actual code/config |
+| 2B: data/asset inventory | Required Stage1 choices | Produce N-01 report, verify source reads and encoder compatibility; source-row maps and staged counts | 3-7 days for inventory/sample QA; full preprocessing unestimated | Real transforms/dimensions/provenance, including OTIS 1x24 and CXR source |
 | 3: synthetic prototype | 2A | Implement paper-specific tensor graph and losses; scripted outgoing-gap rollout; known-rule synthetic generator | 4-8 days | Unit/integration gates, known temporal/joint behavior, prior-only replay, no hidden future input |
-| 4: small real-data training | Stage3 gate +2B QA | Actual encoder caches, fixed patient subset, patient split, optimizer/schedule, diagnostic training, frozen-state evaluation | 5-10 days + measured compute | Stable prior/posterior training, real-data provenance, information-boundary tests and sensitivity report |
+| 4: small real-data run | Stage3 gate + sample QA | Complete two-patient path, then fixed 1,000-candidate samples; tiny-batch checks and short diagnostic training | 5-10 days + measured compute | Train/validate/save/resume/prior-rollout evidence, component losses and resource profile |
 | 5: scale decision | Stage4 | Freeze unrevised scientific protocol, full-architecture count ledger, corpus QA, benchmark throughput/storage, estimate compute | 2-4 days | Approved engineering config; documented remaining fidelity gaps; measured resource plan |
 | 6: paper-scale run | Stage5 +full data QA | Full data processing/caches and full-size dual-path pretraining with resumable checkpoints | Derive from actual throughput and chosen/confirmed duration | Reproducible manifests, completed objective/schedule logs, validation-selected frozen checkpoint |
 | 7: scientific evaluations | Frozen checkpoint; endpoint/metric oracles | Forecasting, zero-shot, interventions, probes, NEWS2, survival, surprise/explainability; all figures/tables covered | 5-10 engineer-days + rollout/HPO compute | Protocol-matched estimates/CIs, coverage/calibration, comparison ledger and unresolved discrepancies |
@@ -56,14 +83,14 @@ Stages2A/2B may overlap. Stage3 cannot wait for licensed clinical data because s
 
 ## 3. Stage 1: turn audit uncertainty into reviewable configurations
 
-Critical decisions before any model prototype:
+Resolve or select explicit, configurable candidates for the components currently being implemented. Different modules do not have to wait for unrelated choices. The initial model/data choices include:
 
 1. A-10 numeric basis, A-12 temporal units, A-13 input-time fusion, A-14 outgoing/incoming gap alignment and seed policies.
 2. A-11 event shift/h0/posterior input stage; A-15/16 attention scaling/layers; A-17..20 backbone/MLPs/log-sigma squash.
 3. A-23 value routing and continuous feature cascade; A-25/26 gates/gap transform; A-27..30 objective likelihood/scaling/masks/anneal clock.
-4. A-06 context/prefix accounting; A-35 representation cutoff gap; A-37 cache policy; A-61 boundary time labels.
+4. A-06 context/prefix accounting and A-61 boundary time labels for window/rollout tests. Resolve A-35 before frozen-state analysis. Start A-37 with bounded recomputation as the reference; optimized cache behavior can follow correctness.
 
-Proposed reviewable artifacts after approval: a decision manifest; symbol-to-tensor diagram; event/target index examples; module parameter budget; independently configurable run profiles. Configurations must fail fast on unresolved critical values rather than instantiate library defaults.
+Proposed reviewable artifacts after implementation authorization: a decision manifest; symbol-to-tensor diagram; event/target index examples; module parameter budget; independently configurable run profiles. A runnable profile must supply the critical values for its stage explicitly. Do not hide library defaults, but do not make missing future clinical endpoint/HPO settings prevent data readers or synthetic tests.
 
 A coherent provisional implementation can follow the outgoing-gap scheduling candidate, but must preserve its ASSUMED status until corroborated. Choose full bounded recomputation as a test reference before attempting caching. Do not add raw image/text generators.
 
@@ -78,7 +105,7 @@ Order of implementation after test oracles:
 5. Cascading category/specifics/modality/value heads, hard presence/time gates, compatibility mask.
 6. Dual reconstruction objective, component masks, KL schedule, optimizer partition/scheduler.
 7. Prior-only decode/re-encode/append with an explicit clock and generation validity states.
-8. Toy forecasting/endpoint/probe metrics.
+8. Minimal forecasting/validity diagnostics. Clinical endpoint/probe tooling belongs to the later evaluation stage and need not delay the first functional run.
 
 The synthetic generator must expose:
 
@@ -86,15 +113,19 @@ The synthetic generator must expose:
 - Predictable patterns plus independent innovations with a known distribution.
 - Correlated categories/modalities/specifics/values, including illegal pairings.
 - Missing versus zero values, procedure ends, metadata changes, overlap/tails, and long records.
-- Known clinical target clocks, unscorable rollouts, and competing events.
+- Known event/rollout clocks and unscorable/stopping states. Detailed clinical competing-endpoint fixtures can be added when their evaluation is implemented.
 
 Reduced dimensions must still satisfy \(2F\mid d_h\). A proposed tiny profile is d=128, H=4 (head width 32), two layers, k=64, nominal FFN ratio 8, shorter explicit context: **DEVIATION for prototype scope**, not paper settings. All module formulas, gates, and dual loss paths remain exercised. A full-size model-construction test separately verifies the reported dimensions; parameter count remains an evidence gate.
 
-Exit: U/I suites relevant to prototype plus S-01..04/06/09 pass; literal versus strict information tests demonstrate the expected distinction. Report posterior reconstruction, prior reconstruction, unweighted and weighted KL, sigma quantiles/bounds, zero-gap rates, class compatibility, elapsed forecast horizon, and invalid ratios. Low posterior loss alone is insufficient.
+Exit: relevant mathematical/unit/integration tests and synthetic temporal/generative correctness experiments pass with a named configuration. Where a scientific test requires clinical labels or a trained real model, defer it and record that dependency rather than treating it as a synthetic-model prerequisite. Literal versus strict information tests demonstrate their expected difference. Report posterior/prior reconstruction, KL, sigma bounds, zero gaps, compatibility and rollout validity. Low posterior loss alone is insufficient.
 
 ## 5. Real-data preparation and small-scale training
 
-Choose and freeze a subject-disjoint subset before outcomes are inspected. Suggested engineering range is 1,000-5,000 patients as an **ASSUMED planning choice**; ensure nonempty CXR/ECG/ECHO cases, or disclose enriched sampling and separately evaluate naturally distributed patients. Patient metadata and label derivation remain grounded in source rows.
+Use the **existing fixed 1,000-patient candidate manifest** with its 700/150/150 assignments. It is an enriched adult admission+ECG+CXR engineering cohort, not the paper's naturally distributed cohort. Target the proposed five modalities after scope agreement; obtain ECHO in parallel for the later full target, without dummy ECHO vectors. Declare the event categories actually included and any incomplete source coverage.
+
+Apply the 64 scored-event rule only after complete extraction of the selected pilot event scope and correct masks. Report eligible/scorable counts and split counts without implying the candidate count is the retained count. Keep surviving patients in their original split. Do not silently replace exclusions or reshape the test cohort using results; a replacement cohort protocol must be declared before outcomes are inspected. Later scientific evaluation needs a natural-cohort design.
+
+Before processing all candidates, finish an actual two-patient path with real media/text decoding, frozen embeddings, windows and ownership tests. The existing print-only extraction entry is a useful starting reader check, not that completed path. Encoder recipes and cache hashes follow [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md).
 
 Required preprocessing outputs:
 
@@ -108,6 +139,8 @@ Run a one-batch gradient audit before an extended job. Then a tiny real-batch ov
 
 Sensitivity priority:
 
+These comparisons follow the first complete run. They do not require finishing all clinical evaluations during the 4-6 week functional pilot. The pilot already includes core mathematical and information-boundary correctness checks; select the most consequential matched-budget sensitivities next, and defer endpoint-dependent comparisons until their labels/metrics exist.
+
 1. Literal window-end metadata versus as-of alternative.
 2. Actual event-time aggregation versus available-at cutoff handling.
 3. Temporal units/input forward-feature choices and probe last-gap sanitization.
@@ -119,7 +152,7 @@ Holding cohort, random seed, token budget, and metric implementation fixed is es
 
 ## 6. Paper-scale readiness and compute planning
 
-Readiness is conditional on legitimate data access, exact asset availability, and resolving or declaring missing training settings. The paper says code will be provided upon publication; this audit did not inspect author code and makes no claim about its current availability.
+Readiness is conditional on data access, usable pinned encoder assets, and resolving or declaring missing training settings. Exact author checkpoint identity is required for an exact-assets claim, not for starting a clearly labeled assumption-based run. Use author code tied to this paper version when available; record asset identity in the run manifest.
 
 Target corpus: ~559M events, ~391M training, ~84M validation, ~83M test; 299,712 patients. Author hardware: eight A100 80 GB GPUs. Paper-scale configuration target: 150,322,970 parameters, 12 layers, hidden width 768, 12 heads, latent width 384, context 2048, 22 numeric dyadic scales, reported regularizers/optimizers/schedules.
 
@@ -145,7 +178,7 @@ A cache-size estimate can sum \(\sum_m n_mD_m\cdot\text{bytes per scalar}\), plu
 
 Total epochs/global batch/accumulation/cosine floor/Muon internals are not stated. Obtain corroboration or preregister explicit assumptions and compute ceilings. The audit cannot honestly supply author GPU-hours, wall time, or training cost.
 
-Exit gate before a paper-scale fidelity claim: no silent critical defaults; exact configuration and dataset manifests; parameter-count discrepancies explained by modules; full-size numerical/causal tests; recorded information-profile differences. A count mismatch is not repaired by adding unused parameters.
+Exit gate before a paper-scale fidelity claim: no silent critical defaults; full modalities/event coverage; configuration and dataset manifests; parameter-count discrepancies explained by modules; full-size numerical/information-boundary tests; recorded assumptions/profile differences. Exact author assets may remain unavailable; using a declared public candidate is permissible for an assumption-based reproduction, but cannot be described as exact checkpoint fidelity. A count mismatch is not repaired by adding unused parameters.
 
 ## 7. Frozen-model evaluation schedule
 
@@ -178,6 +211,4 @@ Archive final code/configs/tests only in later approved phases, with environment
 
 The final report must state: what was reproduced exactly; what was reconstructed with assumptions; what was intentionally changed; what remains unresolved/unexecuted; and how much evidence supports each numerical or scientific claim.
 
-Phase 0 document checks completed: the source SHA-256 was reconfirmed; all 61 requirement IDs have traceability rows; all 65 A-IDs have decision records; the test plan contains 103 unit, 10 integration, and 16 scientific experiment IDs without duplicates; local document links and Markdown table column counts were checked. These checks validate document consistency, not the model or any scientific result. Temporary PDF extraction/rendering artifacts were removed, and the supplied paper was preserved.
-
-**Wait for explicit approval before beginning any implementation stage.**
+For every subsequent run, store its safe execution report under [reports/](../reports/README.md) and update [PROJECT_STATUS.md](PROJECT_STATUS.md) to the attained evidence level. Remote sync and optional SSH setup are in [REMOTE_WORKFLOW.md](REMOTE_WORKFLOW.md).

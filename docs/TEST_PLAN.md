@@ -1,6 +1,6 @@
 # NOAH test and scientific validation plan
 
-Phase 0, 2026-10-13. This document specifies tests; **none of the model, data, training, or scientific tests below has been implemented or run**. Documentation consistency checks are separate from experimental validation.
+Updated 2026-10-14. This document specifies required tests. Temporal/numeric test definitions exist; execution results and coverage are recorded in project status and server reports. See [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) for the current snapshot and encoder-specific acceptance checks. Documentation consistency checks are separate from experimental validation.
 
 Requirements/evidence: [REPRODUCTION_SPEC.md](REPRODUCTION_SPEC.md), [PAPER_TRACEABILITY.md](PAPER_TRACEABILITY.md). Pending configurations: [ASSUMPTIONS.md](ASSUMPTIONS.md). Proposed test IDs are audit artifacts, not tests supplied by the authors.
 
