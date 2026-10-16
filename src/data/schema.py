@@ -168,6 +168,7 @@ class EventRecord:
     
     # 6. Loss Ownership Flags
     score_owner: bool = True     # Evaluated by loss function (False for prefix/overlap)
+    has_next_gap: bool = True    # True if next gap is known; False for patient's terminal event
 
 
 @dataclass
@@ -184,3 +185,33 @@ class PatientJourney:
     def is_eligible(self, min_events: int = 64) -> bool:
         """Paper rule: patient must have at least min_events scored events."""
         return self.total_events >= min_events
+
+
+@dataclass
+class ModelWindow:
+    """
+    Fixed-length model input window (L <= 2048) with demographic prefix,
+    causal masks, and loss ownership flags.
+    """
+    subject_id: int
+    window_idx: int
+    total_tokens: int            # Actual number of non-pad tokens in this window
+    
+    # Core token coordinates [L]
+    category_ids: np.ndarray     # [L] int64
+    modality_ids: np.ndarray     # [L] int64
+    positions: np.ndarray        # [L] float32 (ordinal within patient)
+    ages: np.ndarray             # [L] float32 (patient age in years)
+    delta_prev: np.ndarray       # [L] float32 (hours)
+    delta_next: np.ndarray       # [L] float32 (hours)
+    has_next_gap: np.ndarray     # [L] bool (False if terminal event)
+    
+    # Payloads
+    has_specifics: np.ndarray    # [L] bool
+    specifics_vec: np.ndarray    # [L, 768] float32
+    has_value: np.ndarray        # [L] bool
+    value_vec: np.ndarray        # [L, 768] float32 (padded to max modality dim)
+    
+    # Attention and Loss Masks [L]
+    attention_mask: np.ndarray   # [L] bool (True = attend, False = pad)
+    loss_mask: np.ndarray        # [L] bool (True = score clinical loss, False = prefix/overlap/pad)

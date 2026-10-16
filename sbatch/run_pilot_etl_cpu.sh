@@ -8,7 +8,7 @@
 
 #SBATCH -p short                       # Partition: short (up to 12 hrs)
 #SBATCH -c 8                           # 8 CPU cores for fast table scanning
-#SBATCH --mem=32G                      # 32 GB RAM for large table chunks
+#SBATCH --mem=64G                      # 64 GB RAM for large table chunks
 #SBATCH -t 04:00:00                    # 4 hours max wall time
 #SBATCH -J noah_pilot_etl              # Job name
 #SBATCH -o logs/%x_%j.out              # Standard output
@@ -29,11 +29,17 @@ echo "========================================================================"
 export UV_CACHE_DIR="$HOME/scratch/cache/uv"
 export TMPDIR="$HOME/scratch/tmp"
 export PYTHONPATH="."
+export PYTHONUNBUFFERED="1"
 
 # Run ETL with persistent virtual environment
 VENV_PYTHON="/home/wey371/rajpurkarlab/home/wey371/.venvs/noah/bin/python"
 
-echo "Executing Pilot Event Extraction..."
-${VENV_PYTHON} scripts/test_pilot_extraction.py
+echo "Executing Complete NOAH Data Curation Pipeline (N-05)..."
+${VENV_PYTHON} scripts/run_curation_pipeline.py \
+    --manifest data/pilot_cohort_manifest.csv \
+    --output_dir data/processed \
+    --max_seq_len 1024 \
+    --overlap_len 256 \
+    --min_events 64
 
 echo "ETL Finished at: $(date)"

@@ -10,7 +10,7 @@
 #SBATCH -p gpu                         # Partition: gpu
 #SBATCH --gres=gpu:1                   # Request 1 GPU (optionally: gpu:a100:1 or gpu:rtx8000:1)
 #SBATCH -c 4                           # 4 CPU cores
-#SBATCH --mem=32G                      # 32 GB RAM
+#SBATCH --mem=64G                      # 64 GB RAM for in-memory dataset cache
 #SBATCH -t 08:00:00                    # 8 hours wall time
 #SBATCH -J noah_gpu                    # Job name
 #SBATCH -o logs/%x_%j.out              # Standard output
@@ -37,6 +37,7 @@ export TORCH_HOME="$HOME/scratch/cache/torch"
 export UV_CACHE_DIR="$HOME/scratch/cache/uv"
 export TMPDIR="$HOME/scratch/tmp"
 export PYTHONPATH="."
+export PYTHONUNBUFFERED="1"
 
 # Check GPU status
 nvidia-smi
@@ -44,7 +45,17 @@ nvidia-smi
 # 3. Execute with persistent environment
 VENV_PYTHON="/home/wey371/rajpurkarlab/home/wey371/.venvs/noah/bin/python"
 
-# Placeholder for prototype training entrypoint
-echo "Ready for GPU execution with: ${VENV_PYTHON}"
+echo "Launching NOAH Pilot GPU Training (N-07) with W&B Logging..."
+${VENV_PYTHON} scripts/train_pilot.py \
+    --train_data data/processed/train \
+    --val_data data/processed/val \
+    --output_dir checkpoints/pilot \
+    --batch_size 8 \
+    --epochs 10 \
+    --lr 6e-4 \
+    --device cuda \
+    --use_wandb \
+    --wandb_project noah-pilot \
+    --wandb_mode ${WANDB_MODE:-online}
 
 echo "Finished at: $(date)"
