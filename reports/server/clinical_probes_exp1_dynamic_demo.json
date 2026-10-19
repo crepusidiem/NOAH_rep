@@ -1,0 +1,36 @@
+{
+  "mortality": {
+    "auroc": 0.8152173913043478,
+    "auprc": 0.3882274759983738,
+    "balanced_acc": 0.7065217391304348,
+    "brier_score": 0.07773787368615344,
+    "n_samples": 146,
+    "n_positive": 8,
+    "positive_rate": 0.0547945205479452
+  },
+  "readmission_30d": {
+    "auroc": 0.7097826086956521,
+    "auprc": 0.4746887457912356,
+    "balanced_acc": 0.678695652173913,
+    "brier_score": 0.2235683717974025,
+    "n_samples": 146,
+    "n_positive": 46,
+    "positive_rate": 0.3150684931506849
+  },
+  "los_gt_7d": {
+    "auroc": 0.894122383252818,
+    "auprc": 0.7912150311954853,
+    "balanced_acc": 0.8280998389694042,
+    "brier_score": 0.12964028241733586,
+    "n_samples": 146,
+    "n_positive": 54,
+    "positive_rate": 0.3698630136986301
+  },
+  "news2_regression": {
+    "mae": 1.264528461923338,
+    "rmse": 1.6551725293365604,
+    "r2": -0.4251221540734842,
+    "pearson_r": -0.032517445118534855,
+    "n_samples": 146
+  }
+}

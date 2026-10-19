@@ -38,12 +38,14 @@ class WindowBuilder:
         prefix_len: int = 6,
         min_events_per_patient: int = 64,
         max_val_dim: int = 768,
+        demo_embeddings_dict: Optional[Dict[str, np.ndarray]] = None,
     ):
         self.max_seq_len = max_seq_len
         self.overlap_len = overlap_len
         self.prefix_len = prefix_len
         self.min_events_per_patient = min_events_per_patient
         self.max_val_dim = max_val_dim
+        self.demo_embeddings_dict = demo_embeddings_dict
 
         # Number of clinical tokens allowed in a window
         self.max_clinical_tokens = self.max_seq_len - self.prefix_len
@@ -64,10 +66,6 @@ class WindowBuilder:
         n_events = len(events)
         windows: List[ModelWindow] = []
 
-        # Slice clinical event indices
-        # Window 0: events[0 : max_clinical_tokens]
-        # Window 1: events[clinical_stride : clinical_stride + max_clinical_tokens]
-        # etc.
         start_idx = 0
         window_idx = 0
 
@@ -83,9 +81,15 @@ class WindowBuilder:
             else:
                 scored_start_offset = self.overlap_len
 
+            # Paper requirement (p. 15):
+            # The latter four demographic variables reflect the most recent value
+            # available at the window end and fall back to 'Unknown' where missing.
+            window_end_time = chunk_events[-1].charttime if chunk_events else 0.0
+            window_demo = journey.get_demographics_at(window_end_time)
+
             window = self._assemble_single_window(
                 subject_id=journey.subject_id,
-                demographics=journey.demographics,
+                demographics=window_demo,
                 chunk_events=chunk_events,
                 window_idx=window_idx,
                 scored_start_offset=scored_start_offset,
@@ -133,16 +137,32 @@ class WindowBuilder:
 
         # 1. Populate Demographic Prefix (indices 0..5)
         # Prefix tokens are NOT scored: loss_mask remains False
+        demo_strings = [
+            f"Date of birth: {demographics.birth_year}",
+            f"Race: {demographics.race}",
+            f"Gender: {demographics.gender}",
+            f"Insurance: {demographics.insurance}",
+            f"Language: {demographics.language}",
+            f"Marital status: {demographics.marital_status}",
+        ]
+        window_start_age = chunk_events[0].age if chunk_events else 0.0
+
         for p_idx in range(self.prefix_len):
             category_ids[p_idx] = EventCategory.OTHER_EVENT
-            modality_ids[p_idx] = Modality.CATEGORICAL
+            modality_ids[p_idx] = Modality.TEXT if self.demo_embeddings_dict is not None else Modality.CATEGORICAL
             positions[p_idx] = p_idx
-            ages[p_idx] = 0.0
+            ages[p_idx] = window_start_age
             delta_prev[p_idx] = 0.0
             delta_next[p_idx] = 0.0
             has_next_gap[p_idx] = True
             attention_mask[p_idx] = True
             loss_mask[p_idx] = False  # NEVER score prefix
+
+            if self.demo_embeddings_dict is not None:
+                d_str = demo_strings[p_idx]
+                if d_str in self.demo_embeddings_dict:
+                    has_specifics[p_idx] = True
+                    specifics_vec[p_idx] = self.demo_embeddings_dict[d_str]
 
         # 2. Populate Clinical Events (indices 6 .. total_tokens-1)
         for c_i, ev in enumerate(chunk_events):

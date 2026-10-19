@@ -15,7 +15,7 @@ Features:
 
 import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Set, Tuple, Union
 import duckdb
 import numpy as np
 
@@ -123,9 +123,10 @@ class DuckDBEventExtractor:
 
         all_events_by_sub: Dict[int, List[EventRecord]] = {sid: [] for sid in target_sids}
         prefixes_by_sub: Dict[int, DemographicPrefix] = {}
+        demo_history_by_sub: Dict[int, List[Tuple[float, DemographicPrefix]]] = {}
 
         # 1. Admissions & Demographics
-        self._extract_admissions_and_demographics(target_clause, all_events_by_sub, prefixes_by_sub)
+        self._extract_admissions_and_demographics(target_clause, all_events_by_sub, prefixes_by_sub, demo_history_by_sub)
 
         # 2. ICU Stays
         self._extract_icu_stays(target_clause, all_events_by_sub)
@@ -193,11 +194,18 @@ class DuckDBEventExtractor:
                     ev.delta_next = 0.0
                     ev.has_next_gap = False  # Terminal event has no observed successor
 
-            journeys[sid] = PatientJourney(subject_id=sid, demographics=prefix, events=evs)
+            hist = demo_history_by_sub.get(sid, [])
+            hist.sort(key=lambda item: item[0])
+            journeys[sid] = PatientJourney(
+                subject_id=sid,
+                demographics=prefix,
+                events=evs,
+                demographic_history=hist,
+            )
 
         return journeys
 
-    def _extract_admissions_and_demographics(self, target_clause, events_by_sub, prefixes_by_sub):
+    def _extract_admissions_and_demographics(self, target_clause, events_by_sub, prefixes_by_sub, demo_history_by_sub):
         adm_path = self.hosp_dir / "admissions.csv"
         if not adm_path.exists():
             return
@@ -213,16 +221,22 @@ class DuckDBEventExtractor:
         for r in rows:
             sid, hadm_id, adm_dt, disch_dt, death_dt, adm_type, disch_loc, race, ins, lang, marital = r
             
-            # Store demographics prefix if not yet set
+            demo = DemographicPrefix(
+                birth_year=self.patients[sid]["birth_year"],
+                race=race or "Unknown",
+                gender=self.patients[sid]["gender"],
+                insurance=ins or "Unknown",
+                language=lang or "Unknown",
+                marital_status=marital or "Unknown",
+            )
+            # Store initial demographics prefix if not yet set
             if sid not in prefixes_by_sub:
-                prefixes_by_sub[sid] = DemographicPrefix(
-                    birth_year=self.patients[sid]["birth_year"],
-                    race=race or "Unknown",
-                    gender=self.patients[sid]["gender"],
-                    insurance=ins or "Unknown",
-                    language=lang or "Unknown",
-                    marital_status=marital or "Unknown",
-                )
+                prefixes_by_sub[sid] = demo
+
+            # Record demographic snapshot at admission time for time-varying window updating
+            if adm_dt:
+                hr = self.dt_to_hours(sid, adm_dt)
+                demo_history_by_sub.setdefault(sid, []).append((hr, demo))
 
             # Admission
             if adm_dt:

@@ -7,7 +7,7 @@ and the structured EventRecord representation according to the NOAH specificatio
 
 from dataclasses import dataclass, field
 from enum import IntEnum
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 
 
@@ -177,6 +177,7 @@ class PatientJourney:
     subject_id: int
     demographics: DemographicPrefix
     events: List[EventRecord] = field(default_factory=list)
+    demographic_history: List[Tuple[float, DemographicPrefix]] = field(default_factory=list)
 
     @property
     def total_events(self) -> int:
@@ -185,6 +186,32 @@ class PatientJourney:
     def is_eligible(self, min_events: int = 64) -> bool:
         """Paper rule: patient must have at least min_events scored events."""
         return self.total_events >= min_events
+
+    def get_demographics_at(self, t: float) -> DemographicPrefix:
+        """
+        Paper requirement (p. 15):
+        The latter four variables reflect the most recent value available at the window end
+        and fall back to 'Unknown' where missing.
+        """
+        latest_demo: Optional[DemographicPrefix] = None
+        for hr, demo in self.demographic_history:
+            if hr <= t:
+                latest_demo = demo
+            else:
+                break
+
+        if latest_demo is not None:
+            return latest_demo
+
+        # If no admission has occurred before t, time-varying variables are 'Unknown'
+        return DemographicPrefix(
+            birth_year=self.demographics.birth_year,
+            race="Unknown",
+            gender=self.demographics.gender,
+            insurance="Unknown",
+            language="Unknown",
+            marital_status="Unknown",
+        )
 
 
 @dataclass

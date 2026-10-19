@@ -1,0 +1,154 @@
+{
+  "test_metrics": {
+    "test_total_loss": 1.3888401256667242,
+    "test_rec_post": 3.350942622290717,
+    "test_rec_prior": 3.59368732770284,
+    "test_kl": 0.024188552527791923,
+    "category_accuracy": 0.7773207441338693,
+    "modality_accuracy": 0.8824989164336645,
+    "time_gate_accuracy": 0.8188598057724034,
+    "time_gate_roc_auc": 0.8140928695273117,
+    "time_gate_precision": 0.5157454663915735,
+    "time_gate_recall": 0.21997591589088045,
+    "time_positive_mae_hours": 124.04426813366337,
+    "text_mean_cos_sim": 0.42822096631588574,
+    "cxr_mean_cos_sim": 0.0,
+    "ecg_mean_cos_sim": 0.9821337967995525,
+    "numeric_mean_cos_sim": 0.32185525718326125,
+    "total_test_tokens_evaluated": 235334
+  },
+  "rollout_dynamics": [
+    {
+      "patient_idx": 0,
+      "entropy": -0.0,
+      "unique_categories": 1,
+      "zero_gap_percentage": 100.0,
+      "total_cumulative_hours": 0.0,
+      "trajectory_sample": [
+        {
+          "step": 1,
+          "category": "LAB_TEST",
+          "modality": "CATEGORICAL",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 2,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 3,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 4,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 5,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        }
+      ]
+    },
+    {
+      "patient_idx": 1,
+      "entropy": 1.022,
+      "unique_categories": 4,
+      "zero_gap_percentage": 100.0,
+      "total_cumulative_hours": 0.0,
+      "trajectory_sample": [
+        {
+          "step": 1,
+          "category": "LAB_TEST",
+          "modality": "CATEGORICAL",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 2,
+          "category": "MICROBIOLOGY_TEST",
+          "modality": "CATEGORICAL",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 3,
+          "category": "MICROBIOLOGY_TEST",
+          "modality": "CATEGORICAL",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 4,
+          "category": "TRANSFER",
+          "modality": "CATEGORICAL",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 5,
+          "category": "DRUG_PRESCRIPTION",
+          "modality": "CATEGORICAL",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        }
+      ]
+    },
+    {
+      "patient_idx": 2,
+      "entropy": -0.0,
+      "unique_categories": 1,
+      "zero_gap_percentage": 100.0,
+      "total_cumulative_hours": 0.0,
+      "trajectory_sample": [
+        {
+          "step": 1,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 2,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 3,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 4,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 5,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        }
+      ]
+    }
+  ]
+}

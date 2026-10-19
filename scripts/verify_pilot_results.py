@@ -8,6 +8,8 @@ Executes rigorous scientific evaluations:
 4. Multi-step Autoregressive Free Rollout Dynamics (Trajectory entropy, zero-gap stall analysis, simulated time span).
 """
 
+import argparse
+import json
 import sys
 import time
 from pathlib import Path
@@ -303,16 +305,29 @@ def run_free_rollout_analysis(model: NOAH, test_windows: list, device: str, n_pa
     return rollout_results
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="NOAH Comprehensive Result Verification & Scientific Audit Suite")
+    parser.add_argument("--checkpoint", type=str, default="checkpoints/pilot/pilot_checkpoint_epoch_10.pt")
+    parser.add_argument("--data_dir", type=str, default="data/processed/test")
+    parser.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu")
+    parser.add_argument("--config", type=str, default=None, help="Optional YAML config path")
+    parser.add_argument("--output_report", type=str, default="reports/server/audit_report.json")
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
     print("=" * 75)
     print("NOAH COMPREHENSIVE RESULT VERIFICATION & SCIENTIFIC AUDIT SUITE")
+    print(f"Checkpoint: {args.checkpoint}")
+    print(f"Data Dir:   {args.data_dir}")
+    print(f"Device:     {args.device}")
     print("=" * 75)
 
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"Device: {device}")
+    device = args.device
 
     # Load Model Checkpoint
-    ckpt_path = Path("checkpoints/pilot/pilot_checkpoint_epoch_10.pt")
+    ckpt_path = Path(args.checkpoint)
     if not ckpt_path.exists():
         print(f"Error: {ckpt_path} not found.")
         sys.exit(1)
@@ -320,23 +335,41 @@ def main():
     print(f"Loading checkpoint: {ckpt_path}...")
     ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
 
+    ckpt_cfg = ckpt.get("config", {})
+    if args.config:
+        import yaml
+        with open(args.config) as f:
+            yaml_cfg = yaml.safe_load(f).get("model", {})
+            ckpt_cfg.update(yaml_cfg)
+
+    d_model = ckpt_cfg.get("d_model", 256)
+    d_latent = ckpt_cfg.get("d_latent", 128)
+    n_layers = ckpt_cfg.get("n_layers", 4)
+    n_heads = ckpt_cfg.get("n_heads", 4)
+    head_dim = ckpt_cfg.get("head_dim", d_model // n_heads)
+    ffn_ratio = ckpt_cfg.get("ffn_ratio", ckpt_cfg.get("ffn_expansion", 4))
+    layer_scale_init = float(ckpt_cfg.get("layer_scale_init", 1e-4))
+
+    print(f"Instantiating NOAH: d_model={d_model}, d_latent={d_latent}, n_layers={n_layers}, n_heads={n_heads}, ffn_ratio={ffn_ratio}")
     model = NOAH(
-        d_model=256,
-        d_latent=128,
-        n_layers=4,
-        n_heads=4,
-        head_dim=64,
-        ffn_ratio=4,
+        d_model=d_model,
+        d_latent=d_latent,
+        n_layers=n_layers,
+        n_heads=n_heads,
+        head_dim=head_dim,
+        ffn_ratio=ffn_ratio,
         dropout=0.1,
+        temporal_layers=4,
+        layer_scale_init=layer_scale_init,
     ).to(device)
 
-    model.load_state_dict(ckpt["model_state_dict"])
+    model.load_state_dict(ckpt["model_state_dict"], strict=False)
     model.eval()
     print("NOAH Model weights loaded successfully.")
 
     # 1. Held-out Test Set Evaluation
-    print("\n[Audit 1/3] Loading held-out Test Shards (data/processed/test)...")
-    test_windows = load_windows("data/processed/test")
+    print(f"\n[Audit 1/3] Loading held-out Test Shards ({args.data_dir})...")
+    test_windows = load_windows(args.data_dir)
     print(f"Loaded {len(test_windows)} test windows across {len(test_windows)//100 + 1} shards.")
 
     test_loader = DataLoader(
@@ -372,6 +405,18 @@ def main():
         print(f"Patient {r['patient_idx']}: Entropy={r['entropy']} bits | Unique Categories={r['unique_categories']} | Zero-Gap%={r['zero_gap_percentage']}% | Total Hours={r['total_cumulative_hours']}h")
         for s in r['trajectory_sample']:
             print(f"   Step {s['step']}: {s['category']} [{s['modality']}] -> +{s['gap_hours']}h (Cum: {s['cum_hours']}h)")
+
+    # Save output report
+    if args.output_report:
+        out_p = Path(args.output_report)
+        out_p.parent.mkdir(parents=True, exist_ok=True)
+        report_data = {
+            "test_metrics": test_metrics,
+            "rollout_dynamics": rollouts,
+        }
+        with open(out_p, "w") as f:
+            json.dump(report_data, f, indent=2)
+        print(f"\nAudit report saved to {out_p}")
 
     print("\n" + "=" * 75)
     print("AUDIT EXECUTION COMPLETE")

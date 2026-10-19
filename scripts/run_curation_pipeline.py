@@ -18,7 +18,7 @@ import json
 import sys
 import time
 from pathlib import Path
-from typing import Dict, List, Set
+from typing import Dict, List, Optional, Set, Tuple
 
 # Ensure project root is in sys.path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -51,6 +51,8 @@ def parse_args():
     parser.add_argument("--max_patients", type=int, default=None, help="Limit number of patients for quick tests")
     parser.add_argument("--device", type=str, default="cpu")
     parser.add_argument("--skip_media_encoding", action="store_true", help="Skip heavy media encoding during test runs")
+    parser.add_argument("--encode_demographics", action="store_true", default=True, help="Encode demographic prefix with text embeddings")
+    parser.add_argument("--no_encode_demographics", dest="encode_demographics", action="store_false", help="Disable demographic text embeddings")
     return parser.parse_args()
 
 
@@ -142,10 +144,35 @@ def main():
             if ev.has_specifics and ev.specifics_text:
                 all_texts.add(ev.specifics_text.strip())
 
-    print(f"-> Found {len(all_texts):,} unique clinical text specifics. Embedding with BioLORD-2023...")
+    demo_texts: Set[str] = set()
+    if args.encode_demographics:
+        for j in eligible_journeys.values():
+            for _, demo in j.demographic_history:
+                demo_texts.add(f"Date of birth: {demo.birth_year}")
+                demo_texts.add(f"Race: {demo.race}")
+                demo_texts.add(f"Gender: {demo.gender}")
+                demo_texts.add(f"Insurance: {demo.insurance}")
+                demo_texts.add(f"Language: {demo.language}")
+                demo_texts.add(f"Marital status: {demo.marital_status}")
+            demo = j.demographics
+            demo_texts.add(f"Date of birth: {demo.birth_year}")
+            demo_texts.add(f"Race: {demo.race}")
+            demo_texts.add(f"Gender: {demo.gender}")
+            demo_texts.add(f"Insurance: {demo.insurance}")
+            demo_texts.add(f"Language: {demo.language}")
+            demo_texts.add(f"Marital status: {demo.marital_status}")
+        for cat in ["Race", "Insurance", "Language", "Marital status"]:
+            demo_texts.add(f"{cat}: Unknown")
+        all_texts.update(demo_texts)
+
+    print(f"-> Found {len(all_texts):,} unique clinical and demographic text strings. Embedding with BioLORD-2023...")
     t_text = time.time()
     text_vectors = text_cache.get_embeddings(all_texts)
-    print(f"-> Text specifics embedded in {time.time() - t_text:.2f} s")
+    print(f"-> Text strings embedded in {time.time() - t_text:.2f} s")
+
+    demo_embeddings_dict = {t: text_vectors[t] for t in demo_texts if t in text_vectors} if args.encode_demographics else None
+    if demo_embeddings_dict:
+        print(f"-> Resolved {len(demo_embeddings_dict):,} demographic prefix text embeddings.")
 
     # Release BioLORD model from memory if loaded
     if hasattr(text_cache, "_model") and text_cache._model is not None:
@@ -214,6 +241,7 @@ def main():
         prefix_len=6,
         min_events_per_patient=args.min_events,
         max_val_dim=768,
+        demo_embeddings_dict=demo_embeddings_dict,
     )
 
     num_eligible_patients = len(eligible_journeys)

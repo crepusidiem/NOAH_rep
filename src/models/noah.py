@@ -66,12 +66,14 @@ class NOAH(nn.Module):
         layer_scale_init: float = 1e-4,
         alpha_post: float = 0.3,
         gamma_prior: float = 0.1,
+        category_class_weights: Optional[torch.Tensor] = None,
     ):
         super().__init__()
         self.d_model = d_model
         self.d_latent = d_latent
         self.alpha_post = alpha_post
         self.gamma_prior = gamma_prior
+        self.register_buffer("category_class_weights", category_class_weights, persistent=False)
 
         # 1. Modality Input Projector
         self.projector = ModalityInputProjector(
@@ -292,7 +294,8 @@ class NOAH(nn.Module):
         # 1. Category NLL
         c_logits = dec_out.category_logits[valid_mask]  # [N, num_cats]
         c_tgt = category_targets[valid_mask]            # [N]
-        loss_cat = F.cross_entropy(c_logits, c_tgt) if valid_mask.any() else torch.tensor(0.0, device=loss_mask.device)
+        cat_weight = self.category_class_weights.to(dtype=c_logits.dtype, device=c_logits.device) if self.category_class_weights is not None else None
+        loss_cat = F.cross_entropy(c_logits, c_tgt, weight=cat_weight) if valid_mask.any() else torch.tensor(0.0, device=loss_mask.device)
 
         # 2. Modality NLL
         m_logits = dec_out.modality_logits[valid_mask]  # [N, num_mods]

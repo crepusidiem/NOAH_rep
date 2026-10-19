@@ -42,33 +42,48 @@ def parse_args():
 
 
 def load_model(checkpoint_path: Path, config: dict, device: str) -> NOAH:
+    print(f"Loading checkpoint weights from {checkpoint_path}...")
+    ckpt = torch.load(checkpoint_path, map_location=device, weights_only=False)
+
+    ckpt_cfg = ckpt.get("config", {})
+    model_cfg = config.get("model", {}) if config else {}
+
+    # Priority: explicit config > checkpoint saved config > default
+    d_model = model_cfg.get("d_model", ckpt_cfg.get("d_model", 256))
+    d_latent = model_cfg.get("d_latent", ckpt_cfg.get("d_latent", 128))
+    n_layers = model_cfg.get("n_layers", ckpt_cfg.get("n_layers", 4))
+    n_heads = model_cfg.get("n_heads", ckpt_cfg.get("n_heads", 4))
+    head_dim = model_cfg.get("head_dim", model_cfg.get("d_head", ckpt_cfg.get("head_dim", d_model // n_heads)))
+    ffn_ratio = model_cfg.get("ffn_expansion", ckpt_cfg.get("ffn_ratio", 4))
+    layer_scale_init = float(model_cfg.get("layer_scale_init", ckpt_cfg.get("layer_scale_init", 1e-4)))
+
+    print(f"Instantiating NOAH: d_model={d_model}, d_latent={d_latent}, n_layers={n_layers}, n_heads={n_heads}, ffn_ratio={ffn_ratio}")
     model = NOAH(
-        d_model=config["model"]["d_model"],
-        d_latent=config["model"]["d_latent"],
-        n_layers=config["model"]["n_layers"],
-        n_heads=config["model"]["n_heads"],
-        head_dim=config["model"].get("head_dim", config["model"].get("d_head", 64)),
-        ffn_ratio=config["model"].get("ffn_expansion", 4),
-        dropout=config["model"].get("dropout", 0.1),
-        attn_dropout=config["model"].get("attention_dropout", 0.1),
-        num_categories=config["feature_dimensions"]["category_vocab_size"],
+        d_model=d_model,
+        d_latent=d_latent,
+        n_layers=n_layers,
+        n_heads=n_heads,
+        head_dim=head_dim,
+        ffn_ratio=ffn_ratio,
+        dropout=model_cfg.get("dropout", 0.1),
+        attn_dropout=model_cfg.get("attention_dropout", 0.1),
+        num_categories=config.get("feature_dimensions", {}).get("category_vocab_size", 31) if config else 31,
         num_modalities=6,
-        text_dim=config["feature_dimensions"]["content_dims"]["text"] or 768,
-        cxr_dim=config["feature_dimensions"]["content_dims"]["cxr"] or 768,
-        ecg_dim=config["feature_dimensions"]["content_dims"]["ecg"] or 192,
-        echo_dim=config["feature_dimensions"]["content_dims"]["echo"] or 512,
-        numeric_dim=config["feature_dimensions"]["content_dims"]["numeric"] or 44,
+        text_dim=768,
+        cxr_dim=768,
+        ecg_dim=192,
+        echo_dim=512,
+        numeric_dim=44,
         temporal_layers=4,
+        layer_scale_init=layer_scale_init,
         alpha_post=0.3,
         gamma_prior=0.1,
     ).to(device)
 
-    print(f"Loading checkpoint weights from {checkpoint_path}...")
-    ckpt = torch.load(checkpoint_path, map_location=device, weights_only=False)
     if "model_state_dict" in ckpt:
-        model.load_state_dict(ckpt["model_state_dict"])
+        model.load_state_dict(ckpt["model_state_dict"], strict=False)
     else:
-        model.load_state_dict(ckpt)
+        model.load_state_dict(ckpt, strict=False)
 
     model.eval()
     return model
@@ -259,11 +274,13 @@ def main():
     print(f"Extracted representations for {len(patient_reps)} patients in {time.time() - t0:.2f} s.")
 
     # 3. Extract ground truth clinical labels
-    mimic_hosp = Path(config["data_paths"]["mimic_root"]) / config["data_paths"]["hosp_dir"]
-    mimic_ed = Path(config["data_paths"]["mimic_root"]) / config["data_paths"]["ed_dir"]
+    data_paths = config.get("data_paths", {})
+    mimic_root = data_paths.get("mimic_root", "/home/wey371/rajpurkarlab/datasets")
+    mimic_hosp = Path(mimic_root) / data_paths.get("hosp_dir", "mimic-iv/physionet.org/files/mimiciv/2.2/hosp")
+    mimic_ed = Path(mimic_root) / data_paths.get("ed_dir", "mimic-iv-ed/physionet.org/files/mimic-iv-ed/2.2/ed")
     sids = list(patient_reps.keys())
     labels = extract_patient_labels(
-        manifest_path=config["cohort"]["manifest_path"],
+        manifest_path=config.get("cohort", {}).get("manifest_path", "data/pilot_cohort_manifest.csv"),
         mimic_hosp_dir=str(mimic_hosp),
         mimic_ed_dir=str(mimic_ed),
         target_sids=sids,

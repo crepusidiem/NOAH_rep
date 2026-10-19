@@ -1,0 +1,113 @@
+# NOAH Paper-Scale Architecture Configuration (Phase 1)
+# Exact specifications conforming to NOAH paper (arXiv:2609.09140v1, Section 3.1 & Extended Data Table 1)
+# Total Trainable Parameters: ~152.65M (Paper reports 150,322,970)
+
+experiment:
+  name: "noah_phase1_paper_scale_150m"
+  stage: "phase1_architecture_scaling"
+  seed: 42
+  active_modalities:
+    - categorical
+    - numeric
+    - cxr
+    - text
+    - ecg
+  disabled_modalities:
+    - echo  # Deferred to full-scale reproduction
+
+cohort:
+  manifest_path: "data/pilot_cohort_manifest.csv"
+  total_candidates: 1000
+  splits:
+    train: 700
+    val: 150
+    test: 150
+  min_events_per_patient: 64 # EXPLICIT (p. 15)
+  max_window_length: 1024    # 1024 for pilot cohort windows; scales to 2048 in Phase 2
+  overlap_length: 256        # EXPLICIT (p. 15)
+  prefix_length: 6           # 6 demographic tokens (birth year, race, gender, insurance, language, marital status)
+
+data_paths:
+  mimic_root: "/home/wey371/rajpurkarlab/datasets"
+  hosp_dir: "mimic-iv/physionet.org/files/mimiciv/2.2/hosp"
+  icu_dir: "mimic-iv/physionet.org/files/mimiciv/2.2/icu"
+  ed_dir: "mimic-iv-ed/physionet.org/files/mimic-iv-ed/2.2/ed"
+  note_dir: "mimic-iv-note/physionet.org/files/mimic-iv-note/2.2/note"
+  ecg_dir: "mimic-iv-ecg/1.0"
+  cxr_dir: "cxr/MIMIC-CXR/raw_jpg"
+  cache_dir: "data/pilot_cache"
+
+feature_dimensions:
+  content_dims:
+    categorical: null        # Learned category lookup mapped to d_model (768)
+    numeric: 44              # 22 dyadic Fourier scales x 2 (sin, cos)
+    cxr: 768                 # EXPLICIT (Table 15): RAD-DINO CLS
+    text: 768                # EXPLICIT (Table 15): BioLORD
+    ecg: 192                 # EXPLICIT (Table 15): OTIS final patch mean
+    echo: null               # Disabled
+  category_vocab_size: 31    # EXPLICIT (Supplementary Table 1)
+
+encoders:
+  text:
+    model_id: "FremyCompany/BioLORD-2023"
+    max_length: 128
+    pooling: "mean"
+    l2_normalize: true
+  cxr:
+    model_id: "microsoft/rad-dino"
+    input_size: 518
+    crop_size: 518
+    output_feature: "cls"
+  ecg:
+    model_id: "otis"
+    patch_size: [1, 24]
+    n_patches: 2496
+    output_pooling: "patch_mean"
+
+model:
+  profile: "paper_full"
+  d_model: 768               # EXPLICIT (Section 3.1 & Table 1): 768-D backbone
+  n_layers: 12               # EXPLICIT (Section 3.1): 12 causal decoder layers
+  n_heads: 12                # EXPLICIT (Section 3.1): 12 attention heads
+  d_head: 64                 # DERIVED: 768 / 12 = 64
+  d_latent: 384              # EXPLICIT (Section 3.1 & LAT-01): 384-D bottleneck latent space
+  ffn_expansion: 8           # EXPLICIT (Section 3.1): FFN expansion ratio 8 (d_ffn = 6144)
+  dropout: 0.1               # EXPLICIT (p. 50)
+  drop_path: 0.1             # EXPLICIT (p. 50)
+  attention_dropout: 0.1     # EXPLICIT (p. 50)
+  layer_scale_init: 1.0e-4   # EXPLICIT (ARCH-03, p. 50): 10^-4 initialization for deep stability
+
+temporal:
+  base_frequency: 10000.0    # EXPLICIT (p. 18)
+  temporal_layers: [0, 1, 2, 3] # EXPLICIT (Table 16): layers 0-3
+  gap_time_unit: "hours"
+  age_time_unit: "years"
+  gap_transform: "log1p"     # EXPLICIT: log(1 + delta)
+
+variational:
+  latent_dim: 384            # EXPLICIT: 384-D latent space
+  prior_sigma_min: 0.05      # EXPLICIT (p. 19): smooth squash min
+  prior_sigma_max: 2.0       # EXPLICIT (p. 19): smooth squash max
+  prior_temperature: 1.0
+
+decoder:
+  cascade_order:
+    - "category"
+    - "specifics"
+    - "modality_value"
+    - "delta_gate"
+  time_gate_threshold: 0.5
+  specifics_gate_threshold: 0.5
+
+training:
+  batch_size: 4              # Per-GPU batch size
+  gradient_accumulation_steps: 2 # Effective batch size = 8
+  learning_rate: 3.0e-4      # Scaled for 150M parameter transformer
+  weight_decay: 0.01         # EXPLICIT (p. 50)
+  lr_warmup_epochs: 2        # Linear LR warmup
+  kl_warmup_epochs: 5        # Linear beta annealing for KL divergence
+  grad_clip: 1.0             # Gradient clipping norm
+  loss_weights:
+    rec_posterior: 0.3       # EXPLICIT (p. 20)
+    rec_prior: 0.1           # EXPLICIT (p. 20)
+    kl_max: 1.0              # EXPLICIT (p. 20)

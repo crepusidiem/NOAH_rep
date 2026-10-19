@@ -128,6 +128,14 @@ def parse_args():
     parser.add_argument("--grad_clip", type=float, default=1.0)
     parser.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu")
     
+    parser.add_argument("--config", type=str, default=None, help="Path to YAML configuration file")
+    parser.add_argument("--d_model", type=int, default=None, help="Model hidden dimension (default 256 for pilot, 768 for paper)")
+    parser.add_argument("--d_latent", type=int, default=None, help="Latent space dimension (default 128 for pilot, 384 for paper)")
+    parser.add_argument("--n_layers", type=int, default=None, help="Number of transformer layers (default 4 for pilot, 12 for paper)")
+    parser.add_argument("--n_heads", type=int, default=None, help="Number of attention heads (default 4 for pilot, 12 for paper)")
+    parser.add_argument("--ffn_ratio", type=int, default=None, help="FFN expansion ratio (default 4 for pilot, 8 for paper)")
+    parser.add_argument("--grad_accum_steps", type=int, default=1, help="Gradient accumulation steps")
+    
     # Weights & Biases Options
     parser.add_argument("--use_wandb", action="store_true", help="Enable Weights & Biases logging")
     parser.add_argument("--wandb_project", type=str, default="noah-pilot", help="W&B project name")
@@ -136,6 +144,7 @@ def parse_args():
     parser.add_argument("--wandb_mode", type=str, default="online", choices=["online", "offline", "disabled"],
                         help="W&B operation mode. Use 'offline' if compute node has no internet access.")
     parser.add_argument("--log_interval", type=int, default=5, help="Step interval for W&B metric logging")
+    parser.add_argument("--use_class_weights", action="store_true", help="Apply inverse frequency class weights to category cross-entropy loss")
     
     return parser.parse_args()
 
@@ -344,6 +353,30 @@ def main():
     print(f"W&B Enabled:  {args.use_wandb} (Mode: {args.wandb_mode})")
     print("=" * 70)
 
+    # 1. Initialize Configuration
+    cfg_dict = {}
+    if args.config:
+        import yaml
+        with open(args.config) as f:
+            cfg_dict = yaml.safe_load(f)
+
+    model_cfg = cfg_dict.get("model", {})
+    train_cfg = cfg_dict.get("training", {})
+
+    d_model = args.d_model if args.d_model is not None else model_cfg.get("d_model", 256)
+    d_latent = args.d_latent if args.d_latent is not None else model_cfg.get("d_latent", 128)
+    n_layers = args.n_layers if args.n_layers is not None else model_cfg.get("n_layers", 4)
+    n_heads = args.n_heads if args.n_heads is not None else model_cfg.get("n_heads", 4)
+    d_head = model_cfg.get("d_head", d_model // n_heads)
+    ffn_ratio = args.ffn_ratio if args.ffn_ratio is not None else model_cfg.get("ffn_expansion", 4)
+    dropout = model_cfg.get("dropout", 0.1)
+    attn_dropout = model_cfg.get("attention_dropout", 0.1)
+    layer_scale_init = float(model_cfg.get("layer_scale_init", 1e-4))
+    grad_accum_steps = max(1, args.grad_accum_steps if args.grad_accum_steps > 1 else train_cfg.get("gradient_accumulation_steps", 1))
+
+    print(f"Model Architecture: d_model={d_model}, d_latent={d_latent}, n_layers={n_layers}, n_heads={n_heads}, ffn_ratio={ffn_ratio}")
+    print(f"Grad Accumulation:  {grad_accum_steps} (Effective Batch Size: {args.batch_size * grad_accum_steps})")
+
     # 1. Initialize W&B if enabled
     wandb_run = None
     if args.use_wandb:
@@ -353,18 +386,19 @@ def main():
             wandb.init(
                 project=args.wandb_project,
                 entity=args.wandb_entity,
-                name=args.wandb_name or f"noah_pilot_e{args.epochs}_lr{args.lr}",
+                name=args.wandb_name or f"noah_m{d_model}_l{d_latent}_e{args.epochs}_lr{args.lr}",
                 mode=args.wandb_mode,
                 config={
-                    "d_model": 256,
-                    "d_latent": 128,
-                    "n_layers": 4,
-                    "n_heads": 4,
-                    "head_dim": 64,
-                    "ffn_ratio": 4,
-                    "dropout": 0.1,
-                    "attn_dropout": 0.1,
+                    "d_model": d_model,
+                    "d_latent": d_latent,
+                    "n_layers": n_layers,
+                    "n_heads": n_heads,
+                    "head_dim": d_head,
+                    "ffn_ratio": ffn_ratio,
+                    "dropout": dropout,
+                    "attn_dropout": attn_dropout,
                     "batch_size": args.batch_size,
+                    "grad_accum_steps": grad_accum_steps,
                     "epochs": args.epochs,
                     "base_lr": args.lr,
                     "weight_decay": args.weight_decay,
@@ -417,15 +451,31 @@ def main():
         )
 
     # 3. Instantiate Model
+    category_class_weights = None
+    if args.use_class_weights:
+        print("Computing smoothed normalized inverse frequency class weights for category loss...")
+        counts = torch.zeros(31, dtype=torch.float64)
+        for w in train_windows:
+            valid_cats = w.category_ids[w.loss_mask]
+            for c in valid_cats:
+                if 0 <= c < 31:
+                    counts[c] += 1
+        
+        # Smoothed inverse square-root frequency: w_c = 1 / sqrt(N_c + 1)
+        inv_freq = 1.0 / torch.sqrt(counts + 1.0)
+        # Normalize so that weights sum to C (mean weight = 1.0)
+        category_class_weights = (31.0 * (inv_freq / inv_freq.sum())).float()
+        print(f"Computed weights for 31 categories. Min: {category_class_weights.min():.4f}, Max: {category_class_weights.max():.4f}")
+
     model = NOAH(
-        d_model=256,
-        d_latent=128,
-        n_layers=4,
-        n_heads=4,
-        head_dim=64,
-        ffn_ratio=4,
-        dropout=0.1,
-        attn_dropout=0.1,
+        d_model=d_model,
+        d_latent=d_latent,
+        n_layers=n_layers,
+        n_heads=n_heads,
+        head_dim=d_head,
+        ffn_ratio=ffn_ratio,
+        dropout=dropout,
+        attn_dropout=attn_dropout,
         num_categories=31,
         num_modalities=6,
         text_dim=768,
@@ -434,8 +484,10 @@ def main():
         echo_dim=512,
         numeric_dim=44,
         temporal_layers=4,
+        layer_scale_init=layer_scale_init,
         alpha_post=0.3,
         gamma_prior=0.1,
+        category_class_weights=category_class_weights,
     ).to(args.device)
 
     total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -462,7 +514,9 @@ def main():
         epoch_start_t = time.time()
 
         pbar = tqdm(train_loader, desc=f"Epoch {epoch+1}/{args.epochs} (beta={beta:.2f})")
-        for batch in pbar:
+        optimizer.zero_grad()
+
+        for step_idx, batch in enumerate(pbar):
             step_start_t = time.time()
             lr = get_lr(global_step, total_steps, warmup_steps, args.lr)
             for param_group in optimizer.param_groups:
@@ -470,7 +524,6 @@ def main():
 
             batch_dev = {k: v.to(args.device) for k, v in batch.items()}
 
-            optimizer.zero_grad()
             total_loss, breakdown, aux = model(
                 category_ids=batch_dev["category_ids"],
                 modality_ids=batch_dev["modality_ids"],
@@ -488,20 +541,27 @@ def main():
                 beta=beta,
             )
 
-            total_loss.backward()
+            # Scale loss for gradient accumulation
+            scaled_loss = total_loss / grad_accum_steps
+            scaled_loss.backward()
 
-            # Measure grad norm before clipping
+            step_did_update = False
             grad_norm = 0.0
-            for p in model.parameters():
-                if p.grad is not None:
-                    param_norm = p.grad.data.norm(2)
-                    grad_norm += param_norm.item() ** 2
-            grad_norm = grad_norm ** 0.5
 
-            if args.grad_clip > 0:
-                torch.nn.utils.clip_grad_norm_(model.parameters(), args.grad_clip)
+            if (step_idx + 1) % grad_accum_steps == 0 or (step_idx + 1) == len(train_loader):
+                for p in model.parameters():
+                    if p.grad is not None:
+                        param_norm = p.grad.data.norm(2)
+                        grad_norm += param_norm.item() ** 2
+                grad_norm = grad_norm ** 0.5
 
-            optimizer.step()
+                if args.grad_clip > 0:
+                    torch.nn.utils.clip_grad_norm_(model.parameters(), args.grad_clip)
+
+                optimizer.step()
+                optimizer.zero_grad()
+                global_step += 1
+                step_did_update = True
 
             step_time = time.time() - step_start_t
             scored_tokens_in_step = int(batch_dev["loss_mask"].sum().item())
@@ -593,14 +653,35 @@ def main():
             )
             wandb.log({f"rollout/epoch_{epoch+1}": rollout_table}, step=global_step)
 
+        # Memory tracking
+        if torch.cuda.is_available() and "cuda" in str(args.device):
+            peak_vram_gb = torch.cuda.max_memory_allocated(device=args.device) / (1024 ** 3)
+            print(f"[Memory] Peak VRAM: {peak_vram_gb:.2f} GB")
+            if args.use_wandb:
+                import wandb
+                wandb.log({"system/peak_vram_gb": peak_vram_gb}, step=global_step)
+
         # Checkpoint every epoch
         ckpt_path = output_dir / f"pilot_checkpoint_epoch_{epoch+1}.pt"
+        saved_config = {
+            "d_model": d_model,
+            "d_latent": d_latent,
+            "n_layers": n_layers,
+            "n_heads": n_heads,
+            "head_dim": d_head,
+            "ffn_ratio": ffn_ratio,
+            "dropout": dropout,
+            "attn_dropout": attn_dropout,
+            "layer_scale_init": layer_scale_init,
+            "use_class_weights": args.use_class_weights,
+        }
         torch.save({
             "epoch": epoch + 1,
             "global_step": global_step,
             "model_state_dict": model.state_dict(),
             "optimizer_state_dict": optimizer.state_dict(),
             "loss": avg_loss,
+            "config": saved_config,
         }, ckpt_path)
         print(f"Checkpoint saved to {ckpt_path}")
 

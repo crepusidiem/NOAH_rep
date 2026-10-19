@@ -1,0 +1,154 @@
+{
+  "test_metrics": {
+    "test_total_loss": 1.5741895728641087,
+    "test_rec_post": 3.56783029768202,
+    "test_rec_prior": 3.9041919814215764,
+    "test_kl": 0.11342122538222207,
+    "category_accuracy": 0.7558491335718596,
+    "modality_accuracy": 0.8936320293710216,
+    "time_gate_accuracy": 0.8248252461860299,
+    "time_gate_roc_auc": 0.8190146529581597,
+    "time_gate_precision": 0.5534991636540225,
+    "time_gate_recall": 0.237552683988699,
+    "time_positive_mae_hours": 123.9679048047126,
+    "text_mean_cos_sim": 0.39823961555800463,
+    "cxr_mean_cos_sim": 0.19144091374314517,
+    "ecg_mean_cos_sim": 0.977235288178736,
+    "numeric_mean_cos_sim": 0.31545260277137177,
+    "total_test_tokens_evaluated": 235334
+  },
+  "rollout_dynamics": [
+    {
+      "patient_idx": 0,
+      "entropy": 0.286,
+      "unique_categories": 2,
+      "zero_gap_percentage": 100.0,
+      "total_cumulative_hours": 0.0,
+      "trajectory_sample": [
+        {
+          "step": 1,
+          "category": "NOTE_RADIOLOGYREPORT",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 2,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 3,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 4,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 5,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        }
+      ]
+    },
+    {
+      "patient_idx": 1,
+      "entropy": 0.286,
+      "unique_categories": 2,
+      "zero_gap_percentage": 100.0,
+      "total_cumulative_hours": 0.0,
+      "trajectory_sample": [
+        {
+          "step": 1,
+          "category": "TRANSFER",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 2,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 3,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 4,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 5,
+          "category": "LAB_TEST",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        }
+      ]
+    },
+    {
+      "patient_idx": 2,
+      "entropy": 2.364,
+      "unique_categories": 7,
+      "zero_gap_percentage": 90.0,
+      "total_cumulative_hours": 2.72,
+      "trajectory_sample": [
+        {
+          "step": 1,
+          "category": "TRANSFER",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 2,
+          "category": "X_RAY",
+          "modality": "NUMERIC",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 3,
+          "category": "X_RAY",
+          "modality": "CATEGORICAL",
+          "gap_hours": 0.0,
+          "cum_hours": 0.0
+        },
+        {
+          "step": 4,
+          "category": "LEAVE_TRANSFER",
+          "modality": "CATEGORICAL",
+          "gap_hours": 2.0,
+          "cum_hours": 2.0
+        },
+        {
+          "step": 5,
+          "category": "TRANSFER",
+          "modality": "CATEGORICAL",
+          "gap_hours": 0.0,
+          "cum_hours": 2.0
+        }
+      ]
+    }
+  ]
+}

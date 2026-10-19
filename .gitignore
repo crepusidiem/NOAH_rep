@@ -233,6 +233,8 @@ __marimo__/
 /cache/
 /data/raw/
 /data/processed/
+/data/processed_with_cxr/
+/data/processed_dynamic_demo/
 /data/cache/
 /data/embeddings/
 *.pt
