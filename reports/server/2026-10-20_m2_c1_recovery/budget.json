@@ -1,0 +1,28 @@
+{
+  "status": "PROPOSED_NOT_AUTHORIZED",
+  "jobs": 1,
+  "cpus": 2,
+  "memory_GiB": 8,
+  "wall_minutes": 60,
+  "controller_deadline_seconds": 3530,
+  "duckdb_validation_memory": "256MB",
+  "streaming_path_uses_duckdb": false,
+  "output_GiB_cap": 8,
+  "metadata_reserve_MiB": 64,
+  "expected_runtime_minutes_conditional": [
+    35,
+    55
+  ],
+  "expected_output_GiB_conditional": [
+    1,
+    4
+  ],
+  "measured_prefix_chunk_bytes_per_selected_row": 44.62422391857506,
+  "conditional_reference_payload_GiB": 1.289758444739643,
+  "uncertainty": "prefix composition, gzip/decompression, filesystem latency, note width and total input rows differ; completion within cap is not guaranteed",
+  "stop_behavior": "stop on deadline/output/quota or termination; preserve atomic verified chunks and failure receipts; no extension, retry or follow-on submission",
+  "gpu_count": 0,
+  "training": false,
+  "media_encoding": false,
+  "alpha": false
+}

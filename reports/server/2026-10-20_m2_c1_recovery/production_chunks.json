@@ -1,0 +1,51 @@
+{
+  "chunks": 6,
+  "completeness": "EOF_AND_SOURCE_HASH_VERIFIED",
+  "readiness": "HOLD",
+  "selected_rows": 127725,
+  "source_identity": {
+    "bounded_verification_max_source_records": null,
+    "chunk_limits": [
+      250000,
+      25000,
+      16777216
+    ],
+    "dataset": "icu_bounded_prefix",
+    "implementation_sha256": "b6ab2f8190580191de6a85ced01850c9624543462e281b5495d95f4c31493118",
+    "schema_version": "c1-stream-v1",
+    "source_header": [
+      "subject_id",
+      "hadm_id",
+      "stay_id",
+      "caregiver_id",
+      "charttime",
+      "storetime",
+      "itemid",
+      "value",
+      "valuenum",
+      "valueuom",
+      "warning"
+    ],
+    "source_path": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/NOAH_rep/output/worktrees/clean-baseline/artifacts/reduced_pilot/m2/m2-c1-recovery-real-20261020-01/chartevents-first500000.csv",
+    "source_sha256": "84b2d7b6c56d9f9453962258651e460484e5bdf60c43aa11e82e7a2a21f7ab1f",
+    "splits_sha256": "3066c69e2cb5bef311fbe8c533f15ab705c7b2345215f6c2d89b917bcf90d1a1",
+    "table": "chartevents",
+    "version": "2.2 prefix only"
+  },
+  "source_records": 500000,
+  "split_patients": {
+    "test": 3,
+    "train": 5
+  },
+  "split_rows": {
+    "test": 7236,
+    "train": 120489
+  },
+  "status": "SOURCE_COMPLETE_NOT_MODEL_READY",
+  "elapsed_seconds": 7.1005853805691,
+  "peak_rss_KiB": 204936,
+  "resume_preserved_chunks": true,
+  "source_original_scope": "first500000 CSV records only; not full original source",
+  "logical_rows_match_independent_reference_verified_layout": "PASS",
+  "chunk_bytes": 5699629
+}

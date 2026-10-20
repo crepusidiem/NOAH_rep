@@ -1,0 +1,84 @@
+┌───────────────────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│           split           │
+│ source_csv_record_ordinal │
+│         subject_id        │
+│          hadm_id          │
+│          stay_id          │
+│         charttime         │
+│         storetime         │
+│           itemid          │
+│           value           │
+│          valuenum         │
+│          valueuom         │
+│                           │
+│      ~44,868,382 rows     │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         HASH_JOIN         │
+│    ────────────────────   │
+│      Join Type: INNER     │
+│                           │
+│        Conditions:        ├──────────────┐
+│ CAST(subject_id AS BIGINT)│              │
+│        = subject_id       │              │
+│                           │              │
+│      ~44,868,382 rows     │              │
+└─────────────┬─────────────┘              │
+┌─────────────┴─────────────┐┌─────────────┴─────────────┐
+│         PROJECTION        ││        PANDAS_SCAN        │
+│    ────────────────────   ││    ────────────────────   │
+│ source_csv_record_ordinal ││   Function: PANDAS_SCAN   │
+│         subject_id        ││                           │
+│          hadm_id          ││        Projections:       │
+│          stay_id          ││         subject_id        │
+│         charttime         ││           split           │
+│         storetime         ││                           │
+│           itemid          ││                           │
+│           value           ││                           │
+│          valuenum         ││                           │
+│          valueuom         ││                           │
+│                           ││                           │
+│      ~44,868,382 rows     ││        ~15,000 rows       │
+└─────────────┬─────────────┘└───────────────────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│             #0            │
+│             #1            │
+│             #2            │
+│             #3            │
+│             #4            │
+│             #5            │
+│             #6            │
+│             #7            │
+│             #8            │
+│             #9            │
+│                           │
+│      ~44,868,382 rows     │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      STREAMING_WINDOW     │
+│    ────────────────────   │
+│        Projections:       │
+│    ROW_NUMBER() OVER ()   │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│          READ_CSV         │
+│    ────────────────────   │
+│     Function: READ_CSV    │
+│                           │
+│        Projections:       │
+│         subject_id        │
+│          hadm_id          │
+│          stay_id          │
+│         charttime         │
+│         storetime         │
+│           itemid          │
+│           value           │
+│          valuenum         │
+│          valueuom         │
+│                           │
+│      ~44,868,382 rows     │
+└───────────────────────────┘

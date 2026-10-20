@@ -1,0 +1,260 @@
+{
+  "reused_indexes": 11,
+  "reused_dictionaries": 3,
+  "remaining": [
+    {
+      "dataset": "cxr",
+      "table": "cxr-record-list",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/cxr/MIMIC-CXR/2.0.0/cxr-record-list.csv.gz",
+      "version": "2.0.0 resized derivative; transformation provenance unverified",
+      "fingerprint": {
+        "bytes": 14871705,
+        "mtime_ns": 1648366047110905000
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 32133,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "cxr",
+      "table": "mimic-cxr-2.0.0-metadata",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/cxr/MIMIC-CXR/2.0.0/mimic-cxr-2.0.0-metadata.csv.gz",
+      "version": "2.0.0 resized derivative; transformation provenance unverified",
+      "fingerprint": {
+        "bytes": 16546905,
+        "mtime_ns": 1648366047703605000
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": null,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "ecg",
+      "table": "record_list",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-ecg/1.0/record_list.csv",
+      "version": "1.0",
+      "fingerprint": {
+        "bytes": 70403124,
+        "mtime_ns": 1693487968000000000
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 65137,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "echo",
+      "table": "echo-record-list",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-echo/1.0.1/echo-record-list.csv",
+      "version": "1.0.1; deviation from paper1.0",
+      "fingerprint": {
+        "bytes": 45075838,
+        "mtime_ns": 1788283879000000000
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 48130,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "ed",
+      "table": "diagnosis",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-ed/physionet.org/files/mimic-iv-ed/2.2/ed/diagnosis.csv",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 52243384,
+        "mtime_ns": 1738553920991538273
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 58823,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "ed",
+      "table": "edstays",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-ed/physionet.org/files/mimic-iv-ed/2.2/ed/edstays.csv",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 39546845,
+        "mtime_ns": 1738553921023167726
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 27183,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "ed",
+      "table": "medrecon",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-ed/physionet.org/files/mimic-iv-ed/2.2/ed/medrecon.csv",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 376877193,
+        "mtime_ns": 1738553921165132541
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 241474,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "ed",
+      "table": "pyxis",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-ed/physionet.org/files/mimic-iv-ed/2.2/ed/pyxis.csv",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 110448935,
+        "mtime_ns": 1738553921213974171
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 118349,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "ed",
+      "table": "triage",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-ed/physionet.org/files/mimic-iv-ed/2.2/ed/triage.csv",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 38682149,
+        "mtime_ns": 1738553921253860641
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 27183,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "ed",
+      "table": "vitalsign",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-ed/physionet.org/files/mimic-iv-ed/2.2/ed/vitalsign.csv",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 120300320,
+        "mtime_ns": 1738553921315716953
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 114670,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "icu",
+      "table": "d_items",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/icu/d_items.csv.gz",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 57476,
+        "mtime_ns": 1672942771000000000
+      },
+      "dictionary": true,
+      "independent_prior_reference_rows": null,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "icu",
+      "table": "icustays",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/icu/icustays.csv.gz",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 2614571,
+        "mtime_ns": 1672942771000000000
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 6481,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "icu",
+      "table": "inputevents",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/icu/inputevents.csv.gz",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 324218488,
+        "mtime_ns": 1672942771000000000
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 820711,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "icu",
+      "table": "outputevents",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/icu/outputevents.csv.gz",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 38747895,
+        "mtime_ns": 1672942771000000000
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 394737,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "icu",
+      "table": "procedureevents",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/icu/procedureevents.csv.gz",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 20717852,
+        "mtime_ns": 1672942771000000000
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 62847,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "note",
+      "table": "discharge",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-note/physionet.org/files/mimic-iv-note/2.2/note/discharge.csv",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 3528784291,
+        "mtime_ns": 1749385440397897088
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 28528,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "note",
+      "table": "radiology",
+      "status": "NOT_REACHED",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-note/physionet.org/files/mimic-iv-note/2.2/note/radiology.csv",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 2871206405,
+        "mtime_ns": 1666969976000000000
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 181245,
+      "recovery_execution": "NOT_SUBMITTED"
+    },
+    {
+      "dataset": "icu",
+      "table": "chartevents",
+      "status": "FAILED_INCOMPLETE",
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/icu/chartevents.csv.gz",
+      "version": "2.2",
+      "fingerprint": {
+        "bytes": 2467761053,
+        "mtime_ns": 1672942771000000000
+      },
+      "dictionary": false,
+      "independent_prior_reference_rows": 28806356,
+      "recovery_execution": "NOT_SUBMITTED"
+    }
+  ],
+  "reference_rows_excluding_auxiliary_metadata": 31033987,
+  "semantics": "prior source-row references; not newly indexed events or training eligibility"
+}

@@ -1,0 +1,28 @@
+{
+  "status": "PASS_BOUNDED_RECOVERY_CHECKS",
+  "tests": 119,
+  "elapsed_seconds": 24.62,
+  "targeted_streaming_tests": 11,
+  "parent_slurm_allocation": "56795452",
+  "verification_steps": {
+    "cpus_each": 2,
+    "memory_GiB_each": 4
+  },
+  "full_recovery_submitted": false,
+  "future_authorization_required": true,
+  "readiness": "HOLD",
+  "cases": [
+    "global CSV record ordinals and multiline records",
+    "chunk boundaries and empty chunks",
+    "raw strings including numeric zero and missing hadm_id",
+    "date-field precision including midnight-formatted dates",
+    "observed raw availability vs unknown",
+    "clinical duplicates retained",
+    "crashes before write/before publish/after publish",
+    "resume split/source/recipe/hash/range validation",
+    "independent count and patient reference mismatch rejection",
+    "small sources survive ICU failure",
+    "real ICU SQL parity",
+    "real note/CXR/ECG/ECHO metadata prefix parity"
+  ]
+}

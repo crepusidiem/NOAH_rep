@@ -1,0 +1,9 @@
+{
+  "describe": "PASS",
+  "describe_seconds": 0.1460278918966651,
+  "execution": "EXPLAIN_ONLY_NO_FULL_SCAN_OR_COPY",
+  "elapsed_seconds": 0.33407008182257414,
+  "peak_rss_KiB": 249184,
+  "source_table": "icu/chartevents",
+  "duckdb": "1.5.6"
+}

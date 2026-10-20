@@ -1,0 +1,10 @@
+{
+  "accepted_C1": {
+    "files": 37,
+    "status": "PASS_CONTENT_AND_READ_ONLY",
+    "inventory_sha256": "21dc5303e7f1e8221e203806d2f77b3f585120fb3e76f667a279ed52961018c7"
+  },
+  "patient_split": "UNCHANGED",
+  "original_C1_authorization": "CONSUMED_UNCHANGED",
+  "recovery_authorized": false
+}

@@ -1,0 +1,139 @@
+{
+  "status": "PASS_BOUNDED_PREFIX_CHECKS",
+  "full_source_indexing": false,
+  "source": "icu/chartevents first500000 CSV records only",
+  "original_source_identity": "original stat fingerprint only; prefix copies have separate full hashes, not original full-source hashes",
+  "prefix_checks": [
+    {
+      "status": "SOURCE_COMPLETE_NOT_MODEL_READY",
+      "source_identity": {
+        "schema_version": "c1-stream-v1",
+        "dataset": "icu_bounded_prefix",
+        "table": "chartevents",
+        "version": "2.2 prefix only",
+        "source_path": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/NOAH_rep/output/worktrees/clean-baseline/artifacts/reduced_pilot/m2/m2-c1-recovery-real-20261020-01/chartevents-first50000.csv",
+        "source_sha256": "d5ba65b5ee7bec0613ff6c68c8cdfd8f948495b2f9c61c8a63ae545ab644d459",
+        "splits_sha256": "3066c69e2cb5bef311fbe8c533f15ab705c7b2345215f6c2d89b917bcf90d1a1",
+        "implementation_sha256": "227892b81b2067a9595a116537faadd268d69e939283775823baeeb8788e96bf",
+        "chunk_limits": [
+          50000,
+          5000,
+          4194304
+        ],
+        "bounded_verification_max_source_records": null,
+        "source_header": [
+          "subject_id",
+          "hadm_id",
+          "stay_id",
+          "caregiver_id",
+          "charttime",
+          "storetime",
+          "itemid",
+          "value",
+          "valuenum",
+          "valueuom",
+          "warning"
+        ]
+      },
+      "source_records": 50000,
+      "selected_rows": 458,
+      "split_rows": {
+        "train": 458
+      },
+      "split_patients": {
+        "train": 1
+      },
+      "chunks": 1,
+      "completeness": "EOF_AND_SOURCE_HASH_VERIFIED",
+      "readiness": "HOLD",
+      "resume_preserved_chunks": true,
+      "elapsed_seconds": 1.4401380559429526,
+      "peak_rss_KiB": 134404,
+      "prefix_source_records": 50000,
+      "prefix_bytes": 4825882,
+      "independent_raw_field_ordinal_split_count_coverage_reference": "PASS"
+    },
+    {
+      "status": "SOURCE_COMPLETE_NOT_MODEL_READY",
+      "source_identity": {
+        "schema_version": "c1-stream-v1",
+        "dataset": "icu_bounded_prefix",
+        "table": "chartevents",
+        "version": "2.2 prefix only",
+        "source_path": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/NOAH_rep/output/worktrees/clean-baseline/artifacts/reduced_pilot/m2/m2-c1-recovery-real-20261020-01/chartevents-first500000.csv",
+        "source_sha256": "84b2d7b6c56d9f9453962258651e460484e5bdf60c43aa11e82e7a2a21f7ab1f",
+        "splits_sha256": "3066c69e2cb5bef311fbe8c533f15ab705c7b2345215f6c2d89b917bcf90d1a1",
+        "implementation_sha256": "227892b81b2067a9595a116537faadd268d69e939283775823baeeb8788e96bf",
+        "chunk_limits": [
+          50000,
+          5000,
+          4194304
+        ],
+        "bounded_verification_max_source_records": null,
+        "source_header": [
+          "subject_id",
+          "hadm_id",
+          "stay_id",
+          "caregiver_id",
+          "charttime",
+          "storetime",
+          "itemid",
+          "value",
+          "valuenum",
+          "valueuom",
+          "warning"
+        ]
+      },
+      "source_records": 500000,
+      "selected_rows": 127725,
+      "split_rows": {
+        "train": 120489,
+        "test": 7236
+      },
+      "split_patients": {
+        "train": 5,
+        "test": 3
+      },
+      "chunks": 30,
+      "completeness": "EOF_AND_SOURCE_HASH_VERIFIED",
+      "readiness": "HOLD",
+      "resume_preserved_chunks": true,
+      "elapsed_seconds": 6.719249255023897,
+      "peak_rss_KiB": 208916,
+      "prefix_source_records": 500000,
+      "prefix_bytes": 48327874,
+      "independent_raw_field_ordinal_split_count_coverage_reference": "PASS"
+    }
+  ],
+  "legacy_256MB_check": {
+    "status": "PASS_BOUNDED_LEGACY",
+    "stages": [
+      "DESCRIBE",
+      "COPY_TO_PARQUET",
+      "POST_WRITE_DIAGNOSTIC",
+      "POST_WRITE_DIAGNOSTIC",
+      "POST_WRITE_DIAGNOSTIC",
+      "POST_WRITE_DIAGNOSTIC",
+      "POST_WRITE_DIAGNOSTIC",
+      "POST_WRITE_DIAGNOSTIC",
+      "POST_WRITE_DIAGNOSTIC",
+      "POST_WRITE_DIAGNOSTIC"
+    ],
+    "counts": [
+      {
+        "split": "test",
+        "source_rows": 7236,
+        "patients": 3
+      },
+      {
+        "split": "train",
+        "source_rows": 120489,
+        "patients": 5
+      }
+    ],
+    "elapsed_seconds": 4.787157077342272,
+    "peak_rss_KiB": 765736
+  },
+  "elapsed_seconds": 22.316960502415895,
+  "job_id": "56795452"
+}

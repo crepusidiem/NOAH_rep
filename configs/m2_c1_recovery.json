@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "execution_authorized": false,
+  "approval_reference": null,
+  "maximum_submissions": 1,
+  "inventory": "m2-a-20261020-01",
+  "reuse_run": "m2-c1-source-index-20261020-01",
+  "reuse_inventory_sha256": "21dc5303e7f1e8221e203806d2f77b3f585120fb3e76f667a279ed52961018c7",
+  "patient_splits_sha256": "5df6b9e96b1921b94867cdacd04440de25a42e84d33c4a6fbd9ad5e26277d869",
+  "resume_directory": null,
+  "limits": {"cpus": 2, "memory_GiB": 8, "elapsed_seconds": 3530, "new_output_GiB": 8, "duckdb_validation_memory": "256MB"},
+  "chunks": {"source_records_per_chunk": 250000, "selected_rows_per_chunk": 25000, "selected_bytes_per_chunk": 16777216},
+  "source_order": ["cxr", "ecg", "echo", "ed", "icu_small", "note", "icu_chartevents"],
+  "index_scope": "All remaining planned C1 source records; no subsampling or canonical event mapping",
+  "readiness": "HOLD",
+  "training_authorized": false,
+  "bulk_media_encoding_authorized": false,
+  "alpha_authorized": false
+}

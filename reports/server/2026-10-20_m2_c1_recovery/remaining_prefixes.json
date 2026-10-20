@@ -1,0 +1,111 @@
+{
+  "status": "PASS_BOUNDED_REMAINING_PREFIXES",
+  "checks": [
+    {
+      "dataset": "cxr",
+      "table": "cxr-record-list",
+      "prefix_records": 5000,
+      "selected_rows": 360,
+      "split_rows": {
+        "test": 51,
+        "train": 283,
+        "val": 26
+      },
+      "split_patients": {
+        "test": 9,
+        "train": 36,
+        "val": 8
+      },
+      "independent_raw_field_and_text_hash_reference": "PASS",
+      "full_original_source_indexed": false
+    },
+    {
+      "dataset": "cxr",
+      "table": "mimic-cxr-2.0.0-metadata",
+      "prefix_records": 5000,
+      "selected_rows": 360,
+      "split_rows": {
+        "test": 51,
+        "train": 283,
+        "val": 26
+      },
+      "split_patients": {
+        "test": 9,
+        "train": 36,
+        "val": 8
+      },
+      "independent_raw_field_and_text_hash_reference": "PASS",
+      "full_original_source_indexed": false
+    },
+    {
+      "dataset": "ecg",
+      "table": "record_list",
+      "prefix_records": 5000,
+      "selected_rows": 402,
+      "split_rows": {
+        "test": 66,
+        "train": 326,
+        "val": 10
+      },
+      "split_patients": {
+        "test": 14,
+        "train": 44,
+        "val": 6
+      },
+      "independent_raw_field_and_text_hash_reference": "PASS",
+      "full_original_source_indexed": false
+    },
+    {
+      "dataset": "echo",
+      "table": "echo-record-list",
+      "prefix_records": 5000,
+      "selected_rows": 100,
+      "split_rows": {
+        "train": 100
+      },
+      "split_patients": {
+        "train": 1
+      },
+      "independent_raw_field_and_text_hash_reference": "PASS",
+      "full_original_source_indexed": false
+    },
+    {
+      "dataset": "note",
+      "table": "discharge",
+      "prefix_records": 500,
+      "selected_rows": 46,
+      "split_rows": {
+        "test": 11,
+        "train": 31,
+        "val": 4
+      },
+      "split_patients": {
+        "test": 4,
+        "train": 13,
+        "val": 3
+      },
+      "independent_raw_field_and_text_hash_reference": "PASS",
+      "full_original_source_indexed": false
+    },
+    {
+      "dataset": "note",
+      "table": "radiology",
+      "prefix_records": 500,
+      "selected_rows": 63,
+      "split_rows": {
+        "test": 1,
+        "train": 32,
+        "val": 30
+      },
+      "split_patients": {
+        "test": 1,
+        "train": 3,
+        "val": 4
+      },
+      "independent_raw_field_and_text_hash_reference": "PASS",
+      "full_original_source_indexed": false
+    }
+  ],
+  "elapsed_seconds": 17.583447134122252,
+  "peak_rss_KiB": 223436
+}
