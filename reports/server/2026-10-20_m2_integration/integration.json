@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "source_commit": "f40aca5167807752939b13df4f5c81b11503b1e5",
+  "recipe_sha256": "0a5568b9b33a8be3628f55e5f342f4f117c390a38fd4b220f11d29654c1ee14c",
+  "expanded_split_sha256": "5df6b9e96b1921b94867cdacd04440de25a42e84d33c4a6fbd9ad5e26277d869",
+  "media_results_sha256": "c23824504936079cab06304a00a5ea9657589aea7ec9c157520bff38a2d46f43",
+  "source_inventory_sha256": "28fca8575e219a806bf2256dee806c2952a1021845e1c03f2ad1c28365e547bd",
+  "full_cohort_materialized": false,
+  "variants": {
+    "upstream_linear": {
+      "status": "PASS",
+      "events": 208,
+      "patients": 7,
+      "windows": 10,
+      "strict_available_windows": 0,
+      "strict_metadata_blocks": 1,
+      "strict_prospective_metadata_status": "BLOCKED_UNKNOWN_SOURCE_AVAILABILITY",
+      "modalities": {
+        "text": 4,
+        "ecg": 2,
+        "categorical": 106,
+        "numeric": 92,
+        "cxr": 2,
+        "echo": 2
+      },
+      "specifics_bound": 96,
+      "actual_overlap_stress_patients": 2,
+      "missing_value_embeddings": 0,
+      "shifted_ownership": "exactly_once",
+      "shard_replay": "exact",
+      "serialized_window_replay": "bitwise tensors and exact source sidecars",
+      "real_suffix_invariance": "bitwise tensors and hidden states for two source histories",
+      "model_parameters": 4760468,
+      "untrained_forward_windows": 10,
+      "untrained_objective_mean": 9.862943148612976,
+      "interpretation": "routing/numerical diagnostic only; not learning, efficacy or prospective performance"
+    },
+    "analytic_extension": {
+      "status": "PASS",
+      "events": 208,
+      "patients": 7,
+      "windows": 10,
+      "strict_available_windows": 0,
+      "strict_metadata_blocks": 1,
+      "strict_prospective_metadata_status": "BLOCKED_UNKNOWN_SOURCE_AVAILABILITY",
+      "modalities": {
+        "text": 4,
+        "ecg": 2,
+        "categorical": 106,
+        "numeric": 92,
+        "cxr": 2,
+        "echo": 2
+      },
+      "specifics_bound": 96,
+      "actual_overlap_stress_patients": 2,
+      "missing_value_embeddings": 0,
+      "shifted_ownership": "exactly_once",
+      "shard_replay": "exact",
+      "serialized_window_replay": "bitwise tensors and exact source sidecars",
+      "real_suffix_invariance": "bitwise tensors and hidden states for two source histories",
+      "model_parameters": 4760468,
+      "untrained_forward_windows": 10,
+      "untrained_objective_mean": 9.861904788017274,
+      "interpretation": "routing/numerical diagnostic only; not learning, efficacy or prospective performance"
+    }
+  },
+  "elapsed_seconds": 12.559118939563632,
+  "stress_sampling": "two lowest-ID train patients with>=70 immutable M1 events, bounded160 each; verification only, no cohort alteration",
+  "training_launched": false,
+  "bulk_encoding_launched": false
+}

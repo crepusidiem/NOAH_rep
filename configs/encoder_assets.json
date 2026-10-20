@@ -10,7 +10,8 @@
       "manifest_path": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/models/otis/author-base-2024/asset_manifest.json",
       "author_repository": "https://github.com/oetu/otis",
       "repository_revision": "30282e9e2fd98511f9e33d90c2b9d86d5ae874e0",
-      "status": "PATCH_WIDTH_AND_192D_VERIFIED_INFERENCE_PENDING"
+      "status": "REAL_PATCH_MEAN192_REPLAY_VERIFIED_POSITION_CHOICE_PENDING",
+      "evidence_report": "reports/server/2026-10-20_m2_integration/REPORT.md"
     },
     "echoprime": {
       "path": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/models/echoprime/v1.0.0/echo_prime_encoder.pt",
@@ -19,7 +20,26 @@
       "manifest_path": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/models/echoprime/v1.0.0/asset_manifest.json",
       "author_repository": "https://github.com/echonet/EchoPrime",
       "repository_revision": "03874a5f203695f38968068c21584656d475b6b1",
-      "status": "STRICT_512D_ARCHITECTURE_LOAD_VERIFIED_VIDEO_PIPELINE_PENDING"
+      "status": "REAL_VIDEO512_REPLAY_VERIFIED_PREPROCESSING_CANDIDATE",
+      "evidence_report": "reports/server/2026-10-20_m2_integration/REPORT.md"
+    },
+    "biolord": {
+      "path": "/home/wey371/rajpurkarlab/home/wey371/models/huggingface/hub/models--FremyCompany--BioLORD-2023/snapshots/167aab527b238a50ca65224e6319215d2ff4fc9f/model.safetensors",
+      "manifest_path": "/home/wey371/rajpurkarlab/home/wey371/models/huggingface/hub/models--FremyCompany--BioLORD-2023/snapshots/167aab527b238a50ca65224e6319215d2ff4fc9f/asset_manifest.json",
+      "weight_sha256": "f8c969586cc6b0fd393faa7d879de93d6cc532123956041fefd3474194322050",
+      "repository": "https://huggingface.co/FremyCompany/BioLORD-2023",
+      "revision": "167aab527b238a50ca65224e6319215d2ff4fc9f",
+      "status": "VERIFIED_M2_REAL_SOURCE_CANDIDATE",
+      "evidence_report": "reports/server/2026-10-20_m2/REPORT.md"
+    },
+    "rad_dino": {
+      "path": "/home/wey371/rajpurkarlab/home/wey371/models/huggingface/hub/models--microsoft--rad-dino/snapshots/110cbc18d5133582e320b43d53bf5c44e410c936/model.safetensors",
+      "manifest_path": "/home/wey371/rajpurkarlab/home/wey371/models/huggingface/hub/models--microsoft--rad-dino/snapshots/110cbc18d5133582e320b43d53bf5c44e410c936/asset_manifest.json",
+      "weight_sha256": "dbfb9f54459c38773505de64a6ab7807bdcb392610fe1e697166342e43fb91ae",
+      "repository": "https://huggingface.co/microsoft/rad-dino",
+      "revision": "110cbc18d5133582e320b43d53bf5c44e410c936",
+      "status": "VERIFIED_M2_REAL_SOURCE_CANDIDATE",
+      "evidence_report": "reports/server/2026-10-20_m2/REPORT.md"
     }
   }
 }

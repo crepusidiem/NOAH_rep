@@ -1,0 +1,17 @@
+{
+  "source_hr_rows": 5000,
+  "training_patients": 19,
+  "repeated_timestamp_pairs": 0,
+  "positive_gap_pairs": 4968,
+  "positive_gap_quantiles_minutes": [
+    60.0,
+    60.0,
+    60.0,
+    60.0
+  ],
+  "status": "PASS",
+  "elapsed_seconds": 2.7547799749299884,
+  "itemid": "220045",
+  "scope": "first5000 eligible training-source HR rows only; not population cadence or canonical eligibility",
+  "source_hr_row_cap": 5000
+}

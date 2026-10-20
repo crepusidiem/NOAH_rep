@@ -10,19 +10,17 @@ Pilot entry: N-01 server inventory, N-02 minimal configuration and N-03 encoder 
 
 ## 0. Current milestone
 
-The first milestone is one complete real-data workflow on the **existing 1,000-patient candidate manifest**, with a named reduced model/context and proposed five modalities (categorical, numeric, text, CXR, ECG). The patient file is already present with 700/150/150 subject assignments. ECHO timing and the final pilot event/model scope remain decisions, not completed work.
+B0, M1 and the single approved M1.5 run are accepted/frozen. The active scope is the revised M2: scalable cohort/source inventory, all six modality pipelines, unified provenance-preserving events/windows and statistical readiness. See [current status](PROJECT_STATUS.md), [migration milestones](MIGRATION_BASELINE.md) and the [executed integration report](../reports/server/2026-10-20_m2_integration/REPORT.md). The N-01–07 dependency details below remain reference requirements, not an instruction to restart completed phases.
 
-Current artifacts and helpers should be reused and completed, not recreated from scratch. There is no complete encoder/cache/window/model/training/rollout path yet. O2 GPU access has been confirmed by the researcher; exact asset paths, interpreter, allocation and throughput need runtime records. Start with N-01/N-02/N-03 in [PROJECT_STATUS.md](PROJECT_STATUS.md).
+M2-A fixes15,000 assigned patients (10,500/2,250/2,250); B has actual encoder evidence for all six modalities, with unresolved preprocessing/mappings labeled PARTIALLY VERIFIED. A bounded C chain of208 events/7 patients/10 windows passes target, cache, replay, suffix and model-routing checks. Full canonical counts/≥64-target eligibility and production coverage are not yet established. The existing model/loss candidate and M1/M1.5 evidence remain unchanged.
 
-Pilot priorities:
+Next dependency order:
 
-- Use the existing 1,000-person candidate list. Measure retained/scorable counts after complete selected-event extraction; do not assume all 1,000 qualify from partial readers.
-- Make ECHO acquisition a separate dependency for full six-modality reproduction. It need not hold up an agreed five-modality pilot or synthetic mathematics work.
-- Use verified upstream encoder interfaces from the implementation guide; prioritize the OTIS 1x24/checkpoint match and CXR derivative provenance, with separately configured unresolved preprocessing settings.
-- Freeze only the settings needed by the next stage. Do not require every later evaluation A-ID to be solved before the first synthetic model or real batch.
-- Bring progress and execution evidence into dated status/report files. A code-only commit, an SLURM request and a finished training run are distinct.
-- Retain full scientific evaluation scope, but defer clinical probes, NEWS2, survival HPO, counterfactual endpoints, large bootstrap/rollout budgets and comprehensive sensitivities until after the functional pilot.
-- Keep independent correctness tests, prior/posterior loss diagnostics, information-boundary checks and checkpoint recovery on the pilot's critical path. These are not optional simplifications.
+1. Approve the concrete C1 source-index budget before large preprocessing:2 CPUs,16GiB,60min,8GiB new output. Prepared code/config/script remain disabled. This indexes source identities/fields/unknowns without media encoding or scientific chronology/aggregation decisions.
+2. Use indexed source evidence to freeze applicable A-01/02/04/09 choices and complete canonical mappings/counts. Preserve the cohort even if qualification is lower than the assigned count; report rather than density-resample.
+3. Validate broader preprocessing/encoder cases and propose a separate bulk cache budget. Small two-record timings are conditional estimates, not a production throughput guarantee.
+4. Materialize the versioned complete event/cache/window dataset; pass actual target ownership, split/content/provenance and full-M2 gates. Produce final category/rare/modality/clinical-support statistics and the next bounded training resource proposal.
+5. Keep paper-fidelity work, strict prospective availability, new training and the alpha sweep separately gated. No M2 source-index approval implies any of them.
 
 ## 1. Reproduction levels and dependency graph
 

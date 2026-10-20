@@ -39,6 +39,7 @@ class Event:
             if not getattr(self,k):raise ValueError('Missing source provenance: '+k)
         if not math.isfinite(self.occurred_at) or self.available_at is not None and not math.isfinite(self.available_at):
             raise ValueError('Invalid timestamp')
+        if not self.availability_source:raise ValueError('Availability provenance must be explicit')
         if (self.available_at is None)!=(self.availability_source=='unknown'):
             raise ValueError('Unknown availability cannot become an occurrence-time proxy')
         if self.linkage_status not in {'source','unique_interval','ambiguous','unlinked'}:raise ValueError('Unknown linkage status')
@@ -83,10 +84,15 @@ class EmbeddingCache:
 
     def get(self,reference):
         path=self.namespace.owned(Path(reference['path']))
+        recipe_sha=hashlib.sha256(json.dumps(reference['recipe'],sort_keys=True,separators=(',',':')).encode()).hexdigest()
+        expected=self.namespace.cache_path(recipe_sha256=recipe_sha,dataset_sha256=reference['dataset_sha256'],
+            encoder_checkpoint_sha256=reference['encoder_checkpoint_sha256'],item_sha256=reference['content_sha256']).with_suffix('.npy')
+        if recipe_sha!=reference['recipe_sha256'] or path.resolve()!=expected.resolve():
+            raise ValueError('Cache reference identity/recipe/path mismatch')
         if hashlib.sha256(path.read_bytes()).hexdigest()!=reference['file_sha256']:
             raise ValueError('Cache content hash mismatch')
         value=np.load(path,allow_pickle=False)
-        if value.shape!=(DIMENSIONS[reference['kind']],) or not np.isfinite(value).all():
+        if value.dtype!=np.float32 or value.shape!=(DIMENSIONS[reference['kind']],) or not np.isfinite(value).all():
             raise ValueError('Cached modality representation mismatch')
         return value
 

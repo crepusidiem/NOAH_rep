@@ -10,6 +10,16 @@ Use `python -I tools/m2_run.py PHASE --output-name NEW_NAME`, optionally `--inve
 
 `packages/noah_baseline/m2/` contains deterministic protected cohort sampling, bounded source census, versioned event/cache contracts and genuine-record checks. `evaluation/bootstrap.py` provides patient-cluster and exactly aligned paired metric intervals. The [executed M2 report](../reports/server/2026-10-20_m2/REPORT.md) identifies actual source captures, config revisions, coverage and asset states. Text/CXR smoke success does not complete the ECG/ECHO pipelines or M2-C. New schemas have not replaced M1 datasets/checkpoints. Keep candidate text truncation, numeric aggregation and encounter-linkage rules explicit before any larger extraction.
 
+The current genuine-media and integration commands are `media-smoke`, `adapter-smoke`, `integration-smoke` and `readiness`. `--media-name` and `--integration-name` bind exact upstream runs; defaults identify the active runs in project status. `readiness` intentionally exits2 for incomplete full-cohort evidence. `m2/otis.py` loads all trained encoder tensors and exposes patch means, not the upstream classifier/CLS output. `m2/echo.py` preserves metadata-first crop/AVI/frame order and fails unsupported clips; its annotation policy remains a candidate. `m2/dataset.py` binds source hashes to actual caches and keeps source/encounter IDs beside model tensors. Strict windows require explicit observed demographic availability.
+
+Install media dependencies into the isolated ignored target, preserving the validated base environment:
+
+```bash
+/home/wey371/.local/bin/uv pip install --python /home/wey371/rajpurkarlab/home/wey371/.venvs/noah/bin/python --target artifacts/reduced_pilot/m2/runtime-deps --no-deps -r configs/m2-media-requirements.txt
+```
+
+The separate `source-index` phase uses the disabled `configs/m2_c1.json` proposal and prepared CPU batch script. Do not submit it before the required resource approval. Its Parquet output is a provenance/source-row index, not canonical event/window/qualification evidence. Read [the executed report and next-budget proposal](../reports/server/2026-10-20_m2_integration/REPORT.md) before bulk work.
+
 ## 1. Established requirements and unresolved settings
 
 The paper specifies ECG input dimensions, patches and final mean pooling; ECHO preprocessing and global CLS extraction; and the text and CXR encoders. Remaining details include exact checkpoint versions, some input-processing parameters, boundary policies and model/training settings.

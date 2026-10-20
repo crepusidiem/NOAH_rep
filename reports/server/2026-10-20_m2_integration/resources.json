@@ -1,0 +1,62 @@
+{
+  "timings": {
+    "ecg": {
+      "preprocessing_seconds": [
+        0.07026813924312592,
+        0.017971833236515522
+      ],
+      "inference_and_repeat_seconds": [
+        0.24076723400503397,
+        0.01271484512835741
+      ],
+      "sample_records": 2,
+      "unique_sample_patients": 1
+    },
+    "echo": {
+      "preprocessing_seconds": [
+        6.703587080352008,
+        5.001698903739452
+      ],
+      "inference_and_repeat_seconds": [
+        0.19255501590669155,
+        0.037277198396623135
+      ],
+      "sample_records": 2,
+      "unique_sample_patients": 1
+    }
+  },
+  "echo_avi_bytes": [
+    1569068,
+    2161192
+  ],
+  "example_source_frames": [
+    81,
+    81
+  ],
+  "vector_payload_bytes": 891730688,
+  "lab_and_icu_numeric_raw_upper_payload_GiB": 6.325111493468285,
+  "conditional_echo_preprocessing_worker_hours": [
+    66.86993562138329,
+    89.62323504926171
+  ],
+  "conditional_persistent_avi_GiB": 83.60362323001027,
+  "planning_limits": "two clips from one subject; no population-throughput or total bulk-runtime claim",
+  "note_smoke": {
+    "actual_notes": 4,
+    "truncated_notes": 4,
+    "native_public_max_length": 128,
+    "l2": "declared candidate",
+    "token_length_range": [
+      436,
+      1802
+    ]
+  },
+  "proposed_C1": {
+    "cpus": 2,
+    "memory_GiB": 16,
+    "slurm_wall_minutes": 60,
+    "new_output_GiB": 8,
+    "scope": "full fixed-cohort source index and counts only; no media bodies, encoding, chronology proxies, aggregation, training or alpha",
+    "authorization": "PENDING; configs/m2_c1.json execution_authorized=false"
+  }
+}

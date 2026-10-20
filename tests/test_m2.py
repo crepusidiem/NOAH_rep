@@ -34,6 +34,7 @@ def test_event_unknown_future_and_encounter_identity():
     assert cutoff_view([delayed],2,'strict_prospective')==[]
     assert cutoff_view([e,replace(e,event_id='future',occurred_at=5.)],2,'occurrence_diagnostic')==[e]
     with pytest.raises(ValueError):replace(e,available_at=1.).validate()
+    with pytest.raises(ValueError):replace(e,available_at=1.,availability_source='').validate()
     with pytest.raises(ValueError):replace(e,embedding_ref='unverified.npy').validate()
     with pytest.raises(ValueError):replace(e,encounter_id=None).validate()
 

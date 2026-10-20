@@ -1,0 +1,42 @@
+{
+  "source_commit": "f40aca5167807752939b13df4f5c81b11503b1e5",
+  "config_sha256": "f616edbec03b318fe6a9e5e86f7f5ffe12f0513623fa9671adb97c4e7fc191db",
+  "job_id": "56998960",
+  "gpu": "NVIDIA L40S",
+  "torch": "2.14.1+cu130",
+  "seed": 42,
+  "modalities": {
+    "ecg": {
+      "status": "PARTIALLY VERIFIED",
+      "encoder_check": "VERIFIED",
+      "records": 2,
+      "position_sensitivity": [
+        {
+          "cosine": 0.9598349332809448,
+          "mean_absolute_difference": 0.08089953660964966
+        },
+        {
+          "cosine": 0.9692572355270386,
+          "mean_absolute_difference": 0.07225850969552994
+        }
+      ],
+      "production_position_policy": null,
+      "limitation": "explicit alternate temporal tables and normalization are candidates; production selection not made"
+    },
+    "echo": {
+      "status": "PARTIALLY VERIFIED",
+      "encoder_check": "VERIFIED",
+      "records": 2,
+      "limitation": "metadata crop/AVI/frame path executed; annotation-removal candidate needs visual review and production freeze"
+    }
+  },
+  "auxiliary_specifics": {
+    "status": "VERIFIED",
+    "source_item_strings": 3,
+    "dimension": 768
+  },
+  "elapsed_seconds": 55.95517260860652,
+  "peak_gpu_memory_bytes": 484416512,
+  "training_launched": false,
+  "bulk_encoding_launched": false
+}

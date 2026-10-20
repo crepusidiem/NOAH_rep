@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "scope": "bounded real-source M2-B and M2-C engineering verification; not a production extraction recipe",
+  "seed": 42,
+  "inventory": "m2-a-20261020-01",
+  "verified_content_run": "m2-b-20261020-02",
+  "ecg": {
+    "max_records": 2,
+    "lead_order": [
+      "I",
+      "II",
+      "III",
+      "aVR",
+      "aVL",
+      "aVF",
+      "V1",
+      "V2",
+      "V3",
+      "V4",
+      "V5",
+      "V6"
+    ],
+    "sample_rate_hz": 500,
+    "samples": 5000,
+    "normalization": "sample_robust_zscore_3sigma_clip4",
+    "tail_policy": "discard_last_8_samples_per_lead",
+    "position_policies": [
+      "upstream_linear",
+      "analytic_extension"
+    ],
+    "production_position_policy": null,
+    "domain": "ecg",
+    "output": "final_norm_patch_mean_excluding_cls",
+    "classification": "ASSUMED preprocessing and position candidates; EXPLICIT patch size and output pooling"
+  },
+  "echo": {
+    "max_records": 2,
+    "region_policy": "largest_2d_tissue_region_fail_if_missing",
+    "annotation_policy": "metadata_region_then_motion_hull_and_static_chromatic_candidate",
+    "avi_codec": "ffv1",
+    "zoom_fraction_per_edge": 0.05,
+    "zoom_interpretation": "10 percent total span removed; candidate, not author-specified convention",
+    "clip_start": 0,
+    "frames": 16,
+    "stride": 2,
+    "padding": "zeros_after_normalization",
+    "pixel_range": [
+      0,
+      255
+    ],
+    "mean": [
+      29.110628,
+      28.076836,
+      29.096405
+    ],
+    "std": [
+      47.989223,
+      46.456997,
+      47.20083
+    ],
+    "classification": "ASSUMED crop/mask/codec/start/padding candidates; EXPLICIT metadata crop, dimensions and sampling"
+  },
+  "windows": {
+    "length": 64,
+    "overlap": 16,
+    "minimum_events_for_smoke": 1
+  },
+  "limits": {
+    "cpus": 2,
+    "memory_GiB": 16,
+    "gpu_minutes": 10,
+    "new_output_GiB": 1
+  },
+  "bulk_encoding_authorized": false,
+  "training_authorized": false,
+  "alpha_authorized": false,
+  "production_choices": {
+    "ecg_production_position_policy": null,
+    "vital_aggregation_span_and_stride": null,
+    "full_note_policy": null,
+    "untimed_diagnosis_and_triage_policy": null,
+    "rx_duplicate_source_policy": null,
+    "echo_production_annotation_policy": null
+  }
+}

@@ -136,13 +136,49 @@ def acquire(root, kind):
         print(json.dumps({'asset': kind, **record, 'path': str(target)}, indent=2), flush=True)
 
 
+HF_ASSETS = {
+    'biolord': ('FremyCompany/BioLORD-2023', '167aab527b238a50ca65224e6319215d2ff4fc9f',
+                'f8c969586cc6b0fd393faa7d879de93d6cc532123956041fefd3474194322050'),
+    'rad-dino': ('microsoft/rad-dino', '110cbc18d5133582e320b43d53bf5c44e410c936',
+                 'dbfb9f54459c38773505de64a6ab7807bdcb392610fe1e697166342e43fb91ae'),
+}
+
+
+def acquire_hf(root, kind):
+    repo, revision, expected = HF_ASSETS[kind]
+    directory = root/'huggingface/hub'/('models--'+repo.replace('/', '--'))/'snapshots'/revision
+    receipt = directory/'asset_manifest.json'
+    if receipt.exists():
+        old = json.loads(receipt.read_text())
+        if old['weight_sha256'] != expected or any(sha(directory/name) != digest for name,digest in old['files'].items()):
+            raise RuntimeError('Pinned Hugging Face asset failed registered content verification')
+        print(json.dumps(dict(asset=kind,status='EXISTING_HASH_VERIFIED',path=str(directory))),flush=True)
+        return
+    from huggingface_hub import snapshot_download
+    resolved = Path(snapshot_download(repo,revision=revision,cache_dir=str(root/'huggingface/hub'),
+        allow_patterns=['*.json','*.txt','*.model','model.safetensors'],max_workers=2))
+    if resolved.resolve()!=directory.resolve() or sha(directory/'model.safetensors')!=expected:
+        raise RuntimeError('Hugging Face revision or verified M2 weights changed')
+    files = {str(p.relative_to(directory)):sha(p) for p in sorted(directory.rglob('*')) if p.is_file()}
+    record = dict(schema_version=1,asset=kind,repository='https://huggingface.co/'+repo,
+        revision=revision,weight_sha256=expected,files=files,acquired_at_utc=datetime.now(timezone.utc).isoformat(),
+        status='PINNED_M2_WEIGHTS_VERIFIED',noah_checkpoint_identity='public upstream candidate; not confirmed author checkpoint')
+    with receipt.open('x') as f:
+        json.dump(record,f,indent=2);f.write('\n')
+    receipt.chmod(0o444)
+    for name in files:
+        path=directory/name;path.chmod(path.stat().st_mode & ~0o222)
+    print(json.dumps(dict(asset=kind,status='PINNED_HASH_VERIFIED',path=str(directory))),flush=True)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root', type=Path, default=Path('/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/models'))
-    p.add_argument('--asset', choices=['otis', 'echoprime', 'all'], default='all')
+    p.add_argument('--asset', choices=['otis', 'echoprime', 'biolord', 'rad-dino', 'all'], default='all')
     args = p.parse_args(); args.root.mkdir(parents=True, exist_ok=True)
-    for kind in (['otis', 'echoprime'] if args.asset == 'all' else [args.asset]):
-        acquire(args.root, kind)
+    for kind in (['otis', 'echoprime', 'biolord', 'rad-dino'] if args.asset == 'all' else [args.asset]):
+        if kind in HF_ASSETS:acquire_hf(args.root,kind)
+        else:acquire(args.root,kind)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,174 @@
+{
+  "status": "HOLD",
+  "variants": {
+    "upstream_linear": {
+      "status": "HOLD",
+      "summary": {
+        "minimum_events": 64,
+        "canonical_events": 208,
+        "assigned_patients": {
+          "val": 2250,
+          "test": 2250,
+          "train": 10500
+        },
+        "materialized_patients": {
+          "train": 7,
+          "val": 0,
+          "test": 0
+        },
+        "qualified_patients": {
+          "train": 2,
+          "val": 0,
+          "test": 0
+        },
+        "category_counts": {
+          "0": 2,
+          "1": 2,
+          "2": 2,
+          "3": 2,
+          "4": 0,
+          "5": 33,
+          "6": 2,
+          "7": 0,
+          "8": 0,
+          "9": 0,
+          "10": 0,
+          "11": 0,
+          "12": 33,
+          "13": 0,
+          "14": 19,
+          "15": 0,
+          "16": 0,
+          "17": 0,
+          "18": 0,
+          "19": 0,
+          "20": 0,
+          "21": 0,
+          "22": 21,
+          "23": 0,
+          "24": 0,
+          "25": 0,
+          "26": 0,
+          "27": 0,
+          "28": 92,
+          "29": 0,
+          "30": 0
+        },
+        "modality_counts": {
+          "text": 4,
+          "ecg": 2,
+          "categorical": 106,
+          "numeric": 92,
+          "cxr": 2,
+          "echo": 2
+        },
+        "counts_scope": "actual canonical entries only; prefix, overlap and alternate recipe copies do not add targets",
+        "failures": [
+          "Fewer than10000 actual training patients with>=64 canonical clinical targets",
+          "Missing executed evidence: complete_source_hashes",
+          "Missing executed evidence: all31_source_adapter_evidence",
+          "Missing executed evidence: cohort_wide_canonical_counts",
+          "Unfrozen production choice: ecg_production_position_policy",
+          "Unfrozen production choice: vital_aggregation_span_and_stride",
+          "Unfrozen production choice: full_note_policy",
+          "Unfrozen production choice: untimed_diagnosis_and_triage_policy",
+          "Unfrozen production choice: rx_duplicate_source_policy",
+          "Unfrozen production choice: echo_production_annotation_policy"
+        ]
+      },
+      "executed_evidence": {
+        "complete_source_hashes": false,
+        "all31_source_adapter_evidence": false,
+        "cohort_wide_canonical_counts": false,
+        "complete_content_bindings": true,
+        "shifted_window_ownership": true,
+        "genuine_six_modality_checks": true
+      }
+    },
+    "analytic_extension": {
+      "status": "HOLD",
+      "summary": {
+        "minimum_events": 64,
+        "canonical_events": 208,
+        "assigned_patients": {
+          "val": 2250,
+          "test": 2250,
+          "train": 10500
+        },
+        "materialized_patients": {
+          "train": 7,
+          "val": 0,
+          "test": 0
+        },
+        "qualified_patients": {
+          "train": 2,
+          "val": 0,
+          "test": 0
+        },
+        "category_counts": {
+          "0": 2,
+          "1": 2,
+          "2": 2,
+          "3": 2,
+          "4": 0,
+          "5": 33,
+          "6": 2,
+          "7": 0,
+          "8": 0,
+          "9": 0,
+          "10": 0,
+          "11": 0,
+          "12": 33,
+          "13": 0,
+          "14": 19,
+          "15": 0,
+          "16": 0,
+          "17": 0,
+          "18": 0,
+          "19": 0,
+          "20": 0,
+          "21": 0,
+          "22": 21,
+          "23": 0,
+          "24": 0,
+          "25": 0,
+          "26": 0,
+          "27": 0,
+          "28": 92,
+          "29": 0,
+          "30": 0
+        },
+        "modality_counts": {
+          "text": 4,
+          "ecg": 2,
+          "categorical": 106,
+          "numeric": 92,
+          "cxr": 2,
+          "echo": 2
+        },
+        "counts_scope": "actual canonical entries only; prefix, overlap and alternate recipe copies do not add targets",
+        "failures": [
+          "Fewer than10000 actual training patients with>=64 canonical clinical targets",
+          "Missing executed evidence: complete_source_hashes",
+          "Missing executed evidence: all31_source_adapter_evidence",
+          "Missing executed evidence: cohort_wide_canonical_counts",
+          "Unfrozen production choice: ecg_production_position_policy",
+          "Unfrozen production choice: vital_aggregation_span_and_stride",
+          "Unfrozen production choice: full_note_policy",
+          "Unfrozen production choice: untimed_diagnosis_and_triage_policy",
+          "Unfrozen production choice: rx_duplicate_source_policy",
+          "Unfrozen production choice: echo_production_annotation_policy"
+        ]
+      },
+      "executed_evidence": {
+        "complete_source_hashes": false,
+        "all31_source_adapter_evidence": false,
+        "cohort_wide_canonical_counts": false,
+        "complete_content_bindings": true,
+        "shifted_window_ownership": true,
+        "genuine_six_modality_checks": true
+      }
+    }
+  },
+  "bounded_foundation_checks": "PASS separately; cannot promote to full materialization or prospective validity"
+}

@@ -1,0 +1,9 @@
+{
+  "private_inventory_sha256": "c47252d176cec0aa0a1d9a9e27a93ae95e99b0bc29e193b093d9533967f35ca0",
+  "files": 254,
+  "active_integration": "m2-integration-real-20261020-05",
+  "active_media": "m2-media-real-20261020-02",
+  "source_generating_head": "f40aca5167807752939b13df4f5c81b11503b1e5",
+  "dirty_source_captured": true,
+  "full_cohort_materialized": false
+}

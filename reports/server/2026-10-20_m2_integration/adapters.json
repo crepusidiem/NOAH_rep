@@ -1,0 +1,298 @@
+{
+  "status": "PASS_BOUNDED_ADAPTER_CHECK_NOT_FULL_MAPPING_APPROVAL",
+  "tables": 23,
+  "source_rows": 46,
+  "timed_candidate_events": 40,
+  "deferred_candidate_events": 19,
+  "source_rows_are_not_event_counts": true,
+  "tables_summary": [
+    {
+      "dataset": "hosp",
+      "table": "admissions",
+      "source_rows": 2,
+      "timed_candidate_events": 4,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "5": 2,
+        "12": 2
+      },
+      "observed_availability": 0
+    },
+    {
+      "dataset": "hosp",
+      "table": "diagnoses_icd",
+      "source_rows": 2,
+      "timed_candidate_events": 0,
+      "deferred_candidate_events": 2,
+      "deferred_reasons": {
+        "source_has_no_precise_occurrence_clock; retain_untimed": 2
+      },
+      "categories": {},
+      "observed_availability": 0
+    },
+    {
+      "dataset": "hosp",
+      "table": "emar",
+      "source_rows": 2,
+      "timed_candidate_events": 2,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "21": 1,
+        "18": 1
+      },
+      "observed_availability": 2
+    },
+    {
+      "dataset": "hosp",
+      "table": "labevents",
+      "source_rows": 2,
+      "timed_candidate_events": 0,
+      "deferred_candidate_events": 2,
+      "deferred_reasons": {
+        "nonnumeric_payload_requires_explicit_encoding": 2
+      },
+      "categories": {},
+      "observed_availability": 0
+    },
+    {
+      "dataset": "hosp",
+      "table": "microbiologyevents",
+      "source_rows": 2,
+      "timed_candidate_events": 1,
+      "deferred_candidate_events": 1,
+      "deferred_reasons": {
+        "missing_occurrence_timestamp": 1
+      },
+      "categories": {
+        "9": 1
+      },
+      "observed_availability": 1
+    },
+    {
+      "dataset": "hosp",
+      "table": "pharmacy",
+      "source_rows": 2,
+      "timed_candidate_events": 0,
+      "deferred_candidate_events": 2,
+      "deferred_reasons": {
+        "rx_primary_source_or_duplicate_reconciliation_pending": 2
+      },
+      "categories": {},
+      "observed_availability": 0
+    },
+    {
+      "dataset": "hosp",
+      "table": "prescriptions",
+      "source_rows": 2,
+      "timed_candidate_events": 0,
+      "deferred_candidate_events": 2,
+      "deferred_reasons": {
+        "rx_primary_source_or_duplicate_reconciliation_pending": 2
+      },
+      "categories": {},
+      "observed_availability": 0
+    },
+    {
+      "dataset": "hosp",
+      "table": "procedures_icd",
+      "source_rows": 2,
+      "timed_candidate_events": 0,
+      "deferred_candidate_events": 2,
+      "deferred_reasons": {
+        "source_has_no_precise_occurrence_clock; retain_untimed": 2
+      },
+      "categories": {},
+      "observed_availability": 0
+    },
+    {
+      "dataset": "hosp",
+      "table": "services",
+      "source_rows": 2,
+      "timed_candidate_events": 2,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "10": 2
+      },
+      "observed_availability": 0
+    },
+    {
+      "dataset": "hosp",
+      "table": "transfers",
+      "source_rows": 2,
+      "timed_candidate_events": 3,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "16": 2,
+        "11": 1
+      },
+      "observed_availability": 0
+    },
+    {
+      "dataset": "icu",
+      "table": "chartevents",
+      "source_rows": 2,
+      "timed_candidate_events": 0,
+      "deferred_candidate_events": 2,
+      "deferred_reasons": {
+        "explicit_chart_item_category_required": 2
+      },
+      "categories": {},
+      "observed_availability": 0
+    },
+    {
+      "dataset": "icu",
+      "table": "icustays",
+      "source_rows": 2,
+      "timed_candidate_events": 4,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "7": 2,
+        "8": 2
+      },
+      "observed_availability": 0
+    },
+    {
+      "dataset": "icu",
+      "table": "inputevents",
+      "source_rows": 2,
+      "timed_candidate_events": 4,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "19": 2,
+        "30": 2
+      },
+      "observed_availability": 4
+    },
+    {
+      "dataset": "icu",
+      "table": "outputevents",
+      "source_rows": 2,
+      "timed_candidate_events": 2,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "15": 2
+      },
+      "observed_availability": 2
+    },
+    {
+      "dataset": "icu",
+      "table": "procedureevents",
+      "source_rows": 2,
+      "timed_candidate_events": 4,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "24": 2,
+        "13": 2
+      },
+      "observed_availability": 4
+    },
+    {
+      "dataset": "ed",
+      "table": "diagnosis",
+      "source_rows": 2,
+      "timed_candidate_events": 0,
+      "deferred_candidate_events": 2,
+      "deferred_reasons": {
+        "source_has_no_precise_occurrence_clock; retain_untimed": 2
+      },
+      "categories": {},
+      "observed_availability": 0
+    },
+    {
+      "dataset": "ed",
+      "table": "edstays",
+      "source_rows": 2,
+      "timed_candidate_events": 4,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "22": 2,
+        "14": 2
+      },
+      "observed_availability": 0
+    },
+    {
+      "dataset": "ed",
+      "table": "medrecon",
+      "source_rows": 2,
+      "timed_candidate_events": 2,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "23": 2
+      },
+      "observed_availability": 0
+    },
+    {
+      "dataset": "ed",
+      "table": "pyxis",
+      "source_rows": 2,
+      "timed_candidate_events": 2,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "18": 2
+      },
+      "observed_availability": 0
+    },
+    {
+      "dataset": "ed",
+      "table": "triage",
+      "source_rows": 2,
+      "timed_candidate_events": 0,
+      "deferred_candidate_events": 4,
+      "deferred_reasons": {
+        "source_has_no_precise_occurrence_clock; retain_untimed": 4
+      },
+      "categories": {},
+      "observed_availability": 0
+    },
+    {
+      "dataset": "ed",
+      "table": "vitalsign",
+      "source_rows": 2,
+      "timed_candidate_events": 2,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "28": 2
+      },
+      "observed_availability": 0
+    },
+    {
+      "dataset": "note",
+      "table": "discharge",
+      "source_rows": 2,
+      "timed_candidate_events": 2,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "6": 2
+      },
+      "observed_availability": 2
+    },
+    {
+      "dataset": "note",
+      "table": "radiology",
+      "source_rows": 2,
+      "timed_candidate_events": 2,
+      "deferred_candidate_events": 0,
+      "deferred_reasons": {},
+      "categories": {
+        "3": 2
+      },
+      "observed_availability": 2
+    }
+  ],
+  "mapping_classification": "ASSUMED candidates; untimed/unclassified rows retained, never silently ordered",
+  "elapsed_seconds": 6.39857916533947,
+  "source_sha256": "f3e5f4b77583df2385f68f00e68d044945a0d0a1ff5a7978551c2f4cfb957ae5"
+}

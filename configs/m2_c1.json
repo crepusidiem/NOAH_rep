@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "stage": "M2-C1 source-complete provenance index; not model-ready canonical events",
+  "execution_authorized": false,
+  "approval_reference": null,
+  "inventory": "m2-a-20261020-01",
+  "patient_splits_sha256": "5df6b9e96b1921b94867cdacd04440de25a42e84d33c4a6fbd9ad5e26277d869",
+  "limits": {"cpus": 2, "memory_GiB": 16, "elapsed_seconds": 3530, "new_output_GiB": 8, "spill_GiB": 1},
+  "scientific_policy": "Preserve source clocks as strings, date-only precision and unknowns; retain unresolved records; no chronology proxies, vital aggregation or encoder selection.",
+  "note_payload": "sha256 and source-row reference only; do not copy note text",
+  "training_authorized": false,
+  "bulk_media_encoding_authorized": false,
+  "alpha_authorized": false
+}
