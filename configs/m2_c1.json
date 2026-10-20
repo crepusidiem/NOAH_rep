@@ -1,7 +1,9 @@
 {
   "schema_version": 1,
   "stage": "M2-C1 source-complete provenance index; not model-ready canonical events",
-  "execution_authorized": true,
+  "execution_authorized": false,
+  "authorization_consumed_by_job_id": "57006471",
+  "authorization_status": "CONSUMED_INCOMPLETE_NO_RETRY",
   "approval_reference": "Researcher approval 2026-10-20: exactly one M2-C1 CPU source-index job; 2 CPUs,16GiB,60min,8GiB; no retries or follow-on stages",
   "maximum_submissions": 1,
   "readiness_after_execution": "HOLD",

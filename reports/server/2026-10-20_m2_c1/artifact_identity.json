@@ -1,0 +1,10 @@
+{
+  "private_inventory_sha256": "21dc5303e7f1e8221e203806d2f77b3f585120fb3e76f667a279ed52961018c7",
+  "files": 37,
+  "source_commit": "d404af557944961980a45bce43f636d871465cb6",
+  "job_id": "57006471",
+  "status": "INCOMPLETE",
+  "read_only": true,
+  "readiness": "HOLD",
+  "no_retry": true
+}

@@ -1,0 +1,86 @@
+[
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/admissions.csv",
+    "sha256": "59a99ad5a5549f1ffe2e4995caafb8f727a1b726e595737f3aeb43eee6bb32ac",
+    "role": "indexed_source"
+  },
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/d_icd_diagnoses.csv",
+    "sha256": "ca30fb4e9137f4faaa5f6417da3927d844c4b9d01cf3b4e97fe0bc8b16efe834",
+    "role": "dictionary"
+  },
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/d_icd_procedures.csv.gz",
+    "sha256": "aecde5377e77b9756c4f38a90c53e3263dc2f7e82771794488a8bdc03183662b",
+    "role": "dictionary"
+  },
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/d_labitems.csv",
+    "sha256": "55106120ac39d0319f4968b0f51c5fdb9ff02946663f8eadc26b0408d815ffca",
+    "role": "dictionary"
+  },
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/diagnoses_icd.csv",
+    "sha256": "c21587c6b18d1b86e1f1b80d7ade8734eb242e0d3eac189c5dab5a5e4242f55b",
+    "role": "indexed_source"
+  },
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/emar.csv",
+    "sha256": "a738aa6c57b8e0b21a16c1a06fcdc42dfa1fdc7909e446e3a455303872d3b2e4",
+    "role": "indexed_source"
+  },
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/labevents.csv",
+    "sha256": "686a3e4116e8fa78d5b74aa77b7c2546d0e77e0dd304f16da34c6ea5279e291c",
+    "role": "indexed_source"
+  },
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/microbiologyevents.csv",
+    "sha256": "2e5b13bfee8e81a79bc2466e6554532b8e90cff17cbe1074f8f855cb8ca11764",
+    "role": "indexed_source"
+  },
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/patients.csv",
+    "sha256": "d6920a7f4efad739a4755ecb5e57b6447bd293a056cf18acb64f780c2df2aa89",
+    "role": "indexed_source"
+  },
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/pharmacy.csv",
+    "sha256": "5f38f24701022e7a151f878cd42a816c550cfccb449451445e9e248decfd083e",
+    "role": "indexed_source"
+  },
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/prescriptions.csv",
+    "sha256": "ff950f08a97e56bc7ba0cee428e837f14a256f483905fec8940b22babfefac98",
+    "role": "indexed_source"
+  },
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/procedures_icd.csv.gz",
+    "sha256": "9e871c81aaf046718bb5f38f50ce123fd08fc0d3905fff42380fa2abc7d7032c",
+    "role": "indexed_source"
+  },
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/services.csv.gz",
+    "sha256": "9a350fe6fc505bd98c158fadf002b456aee6523923bb66f2569c3200ba2177b8",
+    "role": "indexed_source"
+  },
+  {
+    "dataset": "hosp",
+    "path": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/transfers.csv.gz",
+    "sha256": "a5a7fba8ae20338462fecf3cf30a78f80d831c221a6d412af427577cded44be6",
+    "role": "indexed_source"
+  }
+]

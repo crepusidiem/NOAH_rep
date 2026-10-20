@@ -1,0 +1,186 @@
+{
+  "status": "INCOMPLETE",
+  "job_state": "FAILED",
+  "exit_code": "1:0",
+  "failed_source": "icu/chartevents",
+  "error_type": "OutOfMemoryException",
+  "sanitized_cause": "DuckDB could not allocate another30.5MiB at its8,000,000,000-byte memory limit (reported7.4GiB/7.4GiB used).",
+  "exact_failing_operator": "NOT_RECORDED: schema discovery, COPY and diagnostic stages are not separately instrumented.",
+  "no_source_invalidity_inference": true,
+  "source_status": [
+    {
+      "dataset": "hosp",
+      "table": "admissions",
+      "status": "INDEX_COMPLETE"
+    },
+    {
+      "dataset": "hosp",
+      "table": "d_icd_diagnoses",
+      "status": "DICTIONARY_HASH_VERIFIED"
+    },
+    {
+      "dataset": "hosp",
+      "table": "d_icd_procedures",
+      "status": "DICTIONARY_HASH_VERIFIED"
+    },
+    {
+      "dataset": "hosp",
+      "table": "d_labitems",
+      "status": "DICTIONARY_HASH_VERIFIED"
+    },
+    {
+      "dataset": "hosp",
+      "table": "diagnoses_icd",
+      "status": "INDEX_COMPLETE"
+    },
+    {
+      "dataset": "hosp",
+      "table": "emar",
+      "status": "INDEX_COMPLETE"
+    },
+    {
+      "dataset": "hosp",
+      "table": "labevents",
+      "status": "INDEX_COMPLETE"
+    },
+    {
+      "dataset": "hosp",
+      "table": "microbiologyevents",
+      "status": "INDEX_COMPLETE"
+    },
+    {
+      "dataset": "hosp",
+      "table": "patients",
+      "status": "INDEX_COMPLETE"
+    },
+    {
+      "dataset": "hosp",
+      "table": "pharmacy",
+      "status": "INDEX_COMPLETE"
+    },
+    {
+      "dataset": "hosp",
+      "table": "prescriptions",
+      "status": "INDEX_COMPLETE"
+    },
+    {
+      "dataset": "hosp",
+      "table": "procedures_icd",
+      "status": "INDEX_COMPLETE"
+    },
+    {
+      "dataset": "hosp",
+      "table": "services",
+      "status": "INDEX_COMPLETE"
+    },
+    {
+      "dataset": "hosp",
+      "table": "transfers",
+      "status": "INDEX_COMPLETE"
+    },
+    {
+      "dataset": "icu",
+      "table": "chartevents",
+      "status": "FAILED_INCOMPLETE"
+    },
+    {
+      "dataset": "icu",
+      "table": "d_items",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "icu",
+      "table": "icustays",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "icu",
+      "table": "inputevents",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "icu",
+      "table": "outputevents",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "icu",
+      "table": "procedureevents",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "ed",
+      "table": "diagnosis",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "ed",
+      "table": "edstays",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "ed",
+      "table": "medrecon",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "ed",
+      "table": "pyxis",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "ed",
+      "table": "triage",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "ed",
+      "table": "vitalsign",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "note",
+      "table": "discharge",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "note",
+      "table": "radiology",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "cxr",
+      "table": "cxr-record-list",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "cxr",
+      "table": "mimic-cxr-2.0.0-metadata",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "ecg",
+      "table": "record_list",
+      "status": "NOT_REACHED"
+    },
+    {
+      "dataset": "echo",
+      "table": "echo-record-list",
+      "status": "NOT_REACHED"
+    }
+  ],
+  "remaining_sources_not_verified": 18,
+  "verified_completed_files": 14,
+  "indexed_patient_tables": 11,
+  "partial_parquet_files": [],
+  "spill_files_retained": [],
+  "failed_source_full_hash": "NOT_PERSISTED_AS_VERIFIED",
+  "failed_source_rows": "NOT_COUNTED",
+  "remaining_dataset_patient_coverage": "NOT_MEASURED_BY_C1",
+  "aggregate_cross_table_dataset_union": "NOT_COMPUTED_BY_C1: end-of-run coverage phase not reached",
+  "canonical_event_counts": "NOT_COMPUTED",
+  "qualified_64_target_patients": "NOT_COMPUTED",
+  "readiness": "HOLD",
+  "next_stage": "NO_SUBMISSION_AUTHORIZED",
+  "possible_future_engineering_option": "Propose bounded streaming CSV record batches preserving identical row ordinals/fields and verify exact parity before any separately approved retry; not implemented or executed."
+}

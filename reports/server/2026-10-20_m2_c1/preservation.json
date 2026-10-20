@@ -1,0 +1,32 @@
+{
+  "M1": {
+    "status": "PASS_CONTENT_AND_READ_ONLY",
+    "files": 32,
+    "inventory_sha256": "350b79a92d242033e8c15bc174477b05a383643eb18d45dab90bb6e89784b28b"
+  },
+  "M1.5": {
+    "status": "PASS_CONTENT_AND_READ_ONLY",
+    "files": 105,
+    "inventory_sha256": "722f6d66715c30508a05252b723b948bac98608519f75b482629713f3a2c2920"
+  },
+  "initial_M2": {
+    "status": "PASS_CONTENT_AND_READ_ONLY",
+    "files": 80,
+    "inventory_sha256": "aa609c8d77fcb6ab8aec86512246bd3db7a6da9d528d1badf9f6ff9e0de586c6"
+  },
+  "prior_M2_integration": {
+    "status": "PASS_CONTENT_AND_READ_ONLY",
+    "files": 254,
+    "inventory_sha256": "c47252d176cec0aa0a1d9a9e27a93ae95e99b0bc29e193b093d9533967f35ca0"
+  },
+  "C1_completed_index_rehash": {
+    "status": "PASS",
+    "files": 11,
+    "source_rows": 15559829,
+    "failed_source_excluded": true
+  },
+  "patient_splits": {
+    "status": "UNCHANGED",
+    "sha256": "5df6b9e96b1921b94867cdacd04440de25a42e84d33c4a6fbd9ad5e26277d869"
+  }
+}

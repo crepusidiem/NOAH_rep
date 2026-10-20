@@ -1,0 +1,18 @@
+{
+  "preflight_tests": 108,
+  "preflight_seconds": 20.74,
+  "preflight_command": "srun --jobid=56795452 --overlap --exact --ntasks=1 --cpus-per-task=2 --cpu-bind=threads --mem=8G --time=00:05:00 /home/wey371/rajpurkarlab/home/wey371/.venvs/noah/bin/python -I tools/run.py test -q tests/test_m2_source_index.py",
+  "test_runner_scope": "tools/run.py includes the full tests directory; all108 tests executed",
+  "source_hash_checks": "before/after equality required for every published indexed source and dictionary",
+  "canonical_event_counts": "NOT_COMPUTED",
+  "qualified_64_target_patients": "NOT_COMPUTED",
+  "encounter_matching": "PENDING",
+  "deduplication": "PENDING",
+  "content_validity": "PENDING",
+  "prospective_availability": "PENDING",
+  "readiness": "HOLD",
+  "additional_submission_authorized": false,
+  "C2_started": false,
+  "encoding_started": false,
+  "training_started": false
+}

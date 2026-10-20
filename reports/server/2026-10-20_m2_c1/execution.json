@@ -1,0 +1,16 @@
+{
+  "status": "INCOMPLETE",
+  "error": "OutOfMemoryException",
+  "active_or_failed_source": "icu/chartevents",
+  "elapsed_seconds": 324.1295430599712,
+  "intended_source_files": 32,
+  "patient_splits_sha256": "5df6b9e96b1921b94867cdacd04440de25a42e84d33c4a6fbd9ad5e26277d869",
+  "source_index_is_not_model_ready": true,
+  "readiness": "HOLD",
+  "retry_authorized": false,
+  "output_bytes": 189978503,
+  "peak_rss_KiB": 8593448,
+  "job_id": "57006471",
+  "training_launched": false,
+  "bulk_encoding_launched": false
+}

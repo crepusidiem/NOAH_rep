@@ -18,7 +18,7 @@ Install media dependencies into the isolated ignored target, preserving the vali
 /home/wey371/.local/bin/uv pip install --python /home/wey371/rajpurkarlab/home/wey371/.venvs/noah/bin/python --target artifacts/reduced_pilot/m2/runtime-deps --no-deps -r configs/m2-media-requirements.txt
 ```
 
-The separate `source-index` phase uses the disabled `configs/m2_c1.json` proposal and prepared CPU batch script. Do not submit it before the required resource approval. Its Parquet output is a provenance/source-row index, not canonical event/window/qualification evidence. Read [the executed report and next-budget proposal](../reports/server/2026-10-20_m2_integration/REPORT.md) before bulk work.
+The separate `source-index` phase consumed its one approved submission in job57006471, source `d404af5`. It stopped INCOMPLETE on the ICU chartevents8GB engine-memory cap after11 hospital tables/14 verified source files. `configs/m2_c1.json` now disables execution; the persistent exclusive claim and no-requeue script prevent reuse of that approval. Preserve partial evidence and do not retry or increase resources automatically. Its Parquet output is a source-row index, not canonical event/window/qualification evidence. Read the [actual C1 report](../reports/server/2026-10-20_m2_c1/REPORT.md) before proposing another strategy or budget. M2 readiness remains HOLD; no C2 or bulk job follows indexing automatically.
 
 ## 1. Established requirements and unresolved settings
 

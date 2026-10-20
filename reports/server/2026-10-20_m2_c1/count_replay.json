@@ -1,0 +1,216 @@
+{
+  "comparisons": [
+    {
+      "dataset": "hosp",
+      "table": "admissions",
+      "split": "test",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "admissions",
+      "split": "train",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "admissions",
+      "split": "val",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "diagnoses_icd",
+      "split": "test",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "diagnoses_icd",
+      "split": "train",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "diagnoses_icd",
+      "split": "val",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "emar",
+      "split": "test",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "emar",
+      "split": "train",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "emar",
+      "split": "val",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "labevents",
+      "split": "test",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "labevents",
+      "split": "train",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "labevents",
+      "split": "val",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "microbiologyevents",
+      "split": "test",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "microbiologyevents",
+      "split": "train",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "microbiologyevents",
+      "split": "val",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "pharmacy",
+      "split": "test",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "pharmacy",
+      "split": "train",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "pharmacy",
+      "split": "val",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "prescriptions",
+      "split": "test",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "prescriptions",
+      "split": "train",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "prescriptions",
+      "split": "val",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "procedures_icd",
+      "split": "test",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "procedures_icd",
+      "split": "train",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "procedures_icd",
+      "split": "val",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "services",
+      "split": "test",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "services",
+      "split": "train",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "services",
+      "split": "val",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "transfers",
+      "split": "test",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "transfers",
+      "split": "train",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    },
+    {
+      "dataset": "hosp",
+      "table": "transfers",
+      "split": "val",
+      "source_rows_match": true,
+      "patient_coverage_match": true
+    }
+  ],
+  "all_comparable_counts_match": true,
+  "interpretation": "comparison against prior actual source census for the same fixed patient split, not event validity"
+}

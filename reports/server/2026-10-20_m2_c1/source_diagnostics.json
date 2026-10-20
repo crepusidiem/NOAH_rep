@@ -1,0 +1,1326 @@
+[
+  {
+    "dataset": "hosp",
+    "table": "admissions",
+    "file": "hosp-admissions.parquet",
+    "file_sha256": "cebc2192b572719023237adb11e49e86512d936d42b179d09f0d6dd5a3ffd664",
+    "source_sha256": "59a99ad5a5549f1ffe2e4995caafb8f727a1b726e595737f3aeb43eee6bb32ac",
+    "counts": [
+      {
+        "split": "test",
+        "source_rows": 5520,
+        "patients": 2250
+      },
+      {
+        "split": "train",
+        "source_rows": 25733,
+        "patients": 10500
+      },
+      {
+        "split": "val",
+        "source_rows": 5316,
+        "patients": 2250
+      }
+    ],
+    "raw_clock_completeness": {
+      "admittime": [
+        {
+          "split": "test",
+          "denominator": 5520,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 5520,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 25733,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 25733,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 5316,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 5316,
+          "other_nonempty_strings": 0
+        }
+      ],
+      "deathtime": [
+        {
+          "split": "test",
+          "denominator": 5520,
+          "missing": 5405,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 115,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 25733,
+          "missing": 25167,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 566,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 5316,
+          "missing": 5210,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 106,
+          "other_nonempty_strings": 0
+        }
+      ],
+      "dischtime": [
+        {
+          "split": "test",
+          "denominator": 5520,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 5520,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 25733,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 25733,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 5316,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 5316,
+          "other_nonempty_strings": 0
+        }
+      ]
+    },
+    "raw_field_completeness": {
+      "hadm_id": [
+        {
+          "split": "test",
+          "denominator": 5520,
+          "missing": 0,
+          "distinct_nonnull_values": 5520
+        },
+        {
+          "split": "train",
+          "denominator": 25733,
+          "missing": 0,
+          "distinct_nonnull_values": 25733
+        },
+        {
+          "split": "val",
+          "denominator": 5316,
+          "missing": 0,
+          "distinct_nonnull_values": 5316
+        }
+      ]
+    },
+    "availability_validation": "PENDING: field presence/parseability does not establish prospective availability",
+    "canonical_events": "NOT_COMPUTED",
+    "qualified_64_target_patients": "NOT_COMPUTED",
+    "encounter_matching": "PENDING",
+    "duplicates_and_content_validity": "PENDING",
+    "included_fields": [
+      "subject_id",
+      "hadm_id",
+      "admittime",
+      "dischtime",
+      "deathtime",
+      "insurance",
+      "language",
+      "marital_status",
+      "race"
+    ],
+    "text_body_policy": "not_applicable",
+    "hashed_payload_fields": [],
+    "source_row_limit": null,
+    "semantics": "source rows, not canonical events or qualified model targets"
+  },
+  {
+    "dataset": "hosp",
+    "table": "diagnoses_icd",
+    "file": "hosp-diagnoses_icd.parquet",
+    "file_sha256": "fd4e71936c89527a5b016f8fc47b997a71fda5f7a0b07c960bea9cc1599bb2d0",
+    "source_sha256": "c21587c6b18d1b86e1f1b80d7ade8734eb242e0d3eac189c5dab5a5e4242f55b",
+    "counts": [
+      {
+        "split": "test",
+        "source_rows": 61957,
+        "patients": 2248
+      },
+      {
+        "split": "train",
+        "source_rows": 288661,
+        "patients": 10498
+      },
+      {
+        "split": "val",
+        "source_rows": 60058,
+        "patients": 2246
+      }
+    ],
+    "raw_clock_completeness": {},
+    "raw_field_completeness": {
+      "hadm_id": [
+        {
+          "split": "test",
+          "denominator": 61957,
+          "missing": 0,
+          "distinct_nonnull_values": 5513
+        },
+        {
+          "split": "train",
+          "denominator": 288661,
+          "missing": 0,
+          "distinct_nonnull_values": 25705
+        },
+        {
+          "split": "val",
+          "denominator": 60058,
+          "missing": 0,
+          "distinct_nonnull_values": 5310
+        }
+      ]
+    },
+    "availability_validation": "PENDING: field presence/parseability does not establish prospective availability",
+    "canonical_events": "NOT_COMPUTED",
+    "qualified_64_target_patients": "NOT_COMPUTED",
+    "encounter_matching": "PENDING",
+    "duplicates_and_content_validity": "PENDING",
+    "included_fields": [
+      "subject_id",
+      "hadm_id",
+      "seq_num",
+      "icd_code",
+      "icd_version"
+    ],
+    "text_body_policy": "not_applicable",
+    "hashed_payload_fields": [],
+    "source_row_limit": null,
+    "semantics": "source rows, not canonical events or qualified model targets"
+  },
+  {
+    "dataset": "hosp",
+    "table": "emar",
+    "file": "hosp-emar.parquet",
+    "file_sha256": "aca59e479cc87bb7e14557e2941d6eceb58cdb47dc79867c3fe7ae114499ba3f",
+    "source_sha256": "a738aa6c57b8e0b21a16c1a06fcdc42dfa1fdc7909e446e3a455303872d3b2e4",
+    "counts": [
+      {
+        "split": "test",
+        "source_rows": 379768,
+        "patients": 1317
+      },
+      {
+        "split": "train",
+        "source_rows": 1557577,
+        "patients": 5977
+      },
+      {
+        "split": "val",
+        "source_rows": 356321,
+        "patients": 1332
+      }
+    ],
+    "raw_clock_completeness": {
+      "charttime": [
+        {
+          "split": "test",
+          "denominator": 379768,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 379768,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 1557577,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 1557577,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 356321,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 356321,
+          "other_nonempty_strings": 0
+        }
+      ],
+      "storetime": [
+        {
+          "split": "test",
+          "denominator": 379768,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 379768,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 1557577,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 1557577,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 356321,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 356321,
+          "other_nonempty_strings": 0
+        }
+      ]
+    },
+    "raw_field_completeness": {
+      "hadm_id": [
+        {
+          "split": "test",
+          "denominator": 379768,
+          "missing": 22057,
+          "distinct_nonnull_values": 2512
+        },
+        {
+          "split": "train",
+          "denominator": 1557577,
+          "missing": 81237,
+          "distinct_nonnull_values": 11366
+        },
+        {
+          "split": "val",
+          "denominator": 356321,
+          "missing": 17294,
+          "distinct_nonnull_values": 2568
+        }
+      ]
+    },
+    "availability_validation": "PENDING: field presence/parseability does not establish prospective availability",
+    "canonical_events": "NOT_COMPUTED",
+    "qualified_64_target_patients": "NOT_COMPUTED",
+    "encounter_matching": "PENDING",
+    "duplicates_and_content_validity": "PENDING",
+    "included_fields": [
+      "subject_id",
+      "hadm_id",
+      "emar_id",
+      "emar_seq",
+      "poe_id",
+      "pharmacy_id",
+      "charttime",
+      "medication",
+      "event_txt",
+      "storetime"
+    ],
+    "text_body_policy": "not_applicable",
+    "hashed_payload_fields": [],
+    "source_row_limit": null,
+    "semantics": "source rows, not canonical events or qualified model targets"
+  },
+  {
+    "dataset": "hosp",
+    "table": "labevents",
+    "file": "hosp-labevents.parquet",
+    "file_sha256": "5b20c0c566df859817b12547c4eaf7ff0fa9de037d571aa58b1a5fae5cb88007",
+    "source_sha256": "686a3e4116e8fa78d5b74aa77b7c2546d0e77e0dd304f16da34c6ea5279e291c",
+    "counts": [
+      {
+        "split": "test",
+        "source_rows": 1533476,
+        "patients": 2213
+      },
+      {
+        "split": "train",
+        "source_rows": 6847469,
+        "patients": 10331
+      },
+      {
+        "split": "val",
+        "source_rows": 1400976,
+        "patients": 2219
+      }
+    ],
+    "raw_clock_completeness": {
+      "charttime": [
+        {
+          "split": "test",
+          "denominator": 1533476,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 1533476,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 6847469,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 6847469,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 1400976,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 1400976,
+          "other_nonempty_strings": 0
+        }
+      ],
+      "storetime": [
+        {
+          "split": "test",
+          "denominator": 1533476,
+          "missing": 22486,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 1510990,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 6847469,
+          "missing": 104503,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 6742966,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 1400976,
+          "missing": 21905,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 1379071,
+          "other_nonempty_strings": 0
+        }
+      ]
+    },
+    "raw_field_completeness": {
+      "hadm_id": [
+        {
+          "split": "test",
+          "denominator": 1533476,
+          "missing": 708031,
+          "distinct_nonnull_values": 4580
+        },
+        {
+          "split": "train",
+          "denominator": 6847469,
+          "missing": 3095778,
+          "distinct_nonnull_values": 21150
+        },
+        {
+          "split": "val",
+          "denominator": 1400976,
+          "missing": 656460,
+          "distinct_nonnull_values": 4381
+        }
+      ],
+      "itemid": [
+        {
+          "split": "test",
+          "denominator": 1533476,
+          "missing": 0,
+          "distinct_nonnull_values": 769
+        },
+        {
+          "split": "train",
+          "denominator": 6847469,
+          "missing": 0,
+          "distinct_nonnull_values": 850
+        },
+        {
+          "split": "val",
+          "denominator": 1400976,
+          "missing": 0,
+          "distinct_nonnull_values": 767
+        }
+      ],
+      "valuenum": [
+        {
+          "split": "test",
+          "denominator": 1533476,
+          "missing": 209422,
+          "distinct_nonnull_values": 7658
+        },
+        {
+          "split": "train",
+          "denominator": 6847469,
+          "missing": 938134,
+          "distinct_nonnull_values": 13805
+        },
+        {
+          "split": "val",
+          "denominator": 1400976,
+          "missing": 191669,
+          "distinct_nonnull_values": 7372
+        }
+      ],
+      "valueuom": [
+        {
+          "split": "test",
+          "denominator": 1533476,
+          "missing": 224127,
+          "distinct_nonnull_values": 56
+        },
+        {
+          "split": "train",
+          "denominator": 6847469,
+          "missing": 1010095,
+          "distinct_nonnull_values": 58
+        },
+        {
+          "split": "val",
+          "denominator": 1400976,
+          "missing": 209724,
+          "distinct_nonnull_values": 55
+        }
+      ]
+    },
+    "availability_validation": "PENDING: field presence/parseability does not establish prospective availability",
+    "canonical_events": "NOT_COMPUTED",
+    "qualified_64_target_patients": "NOT_COMPUTED",
+    "encounter_matching": "PENDING",
+    "duplicates_and_content_validity": "PENDING",
+    "included_fields": [
+      "labevent_id",
+      "subject_id",
+      "hadm_id",
+      "specimen_id",
+      "itemid",
+      "charttime",
+      "storetime",
+      "value",
+      "valuenum",
+      "valueuom"
+    ],
+    "text_body_policy": "hash_only",
+    "hashed_payload_fields": [
+      "comments"
+    ],
+    "source_row_limit": null,
+    "semantics": "source rows, not canonical events or qualified model targets"
+  },
+  {
+    "dataset": "hosp",
+    "table": "microbiologyevents",
+    "file": "hosp-microbiologyevents.parquet",
+    "file_sha256": "b2ab879f7c77d992819ebbf669c5d85932fd83d7338967a17cebd0330347eb67",
+    "source_sha256": "2e5b13bfee8e81a79bc2466e6554532b8e90cff17cbe1074f8f855cb8ca11764",
+    "counts": [
+      {
+        "split": "test",
+        "source_rows": 39471,
+        "patients": 1779
+      },
+      {
+        "split": "train",
+        "source_rows": 183873,
+        "patients": 8317
+      },
+      {
+        "split": "val",
+        "source_rows": 37434,
+        "patients": 1755
+      }
+    ],
+    "raw_clock_completeness": {
+      "chartdate": [
+        {
+          "split": "test",
+          "denominator": 39471,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 39471,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 183873,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 183873,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 37434,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 37434,
+          "other_nonempty_strings": 0
+        }
+      ],
+      "charttime": [
+        {
+          "split": "test",
+          "denominator": 39471,
+          "missing": 3022,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 36449,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 183873,
+          "missing": 14148,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 169725,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 37434,
+          "missing": 3093,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 34341,
+          "other_nonempty_strings": 0
+        }
+      ],
+      "storedate": [
+        {
+          "split": "test",
+          "denominator": 39471,
+          "missing": 195,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 39276,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 183873,
+          "missing": 597,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 183276,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 37434,
+          "missing": 166,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 37268,
+          "other_nonempty_strings": 0
+        }
+      ],
+      "storetime": [
+        {
+          "split": "test",
+          "denominator": 39471,
+          "missing": 353,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 39118,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 183873,
+          "missing": 1355,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 182518,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 37434,
+          "missing": 290,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 37144,
+          "other_nonempty_strings": 0
+        }
+      ]
+    },
+    "raw_field_completeness": {
+      "hadm_id": [
+        {
+          "split": "test",
+          "denominator": 39471,
+          "missing": 21095,
+          "distinct_nonnull_values": 2195
+        },
+        {
+          "split": "train",
+          "denominator": 183873,
+          "missing": 96073,
+          "distinct_nonnull_values": 9974
+        },
+        {
+          "split": "val",
+          "denominator": 37434,
+          "missing": 20412,
+          "distinct_nonnull_values": 2059
+        }
+      ]
+    },
+    "availability_validation": "PENDING: field presence/parseability does not establish prospective availability",
+    "canonical_events": "NOT_COMPUTED",
+    "qualified_64_target_patients": "NOT_COMPUTED",
+    "encounter_matching": "PENDING",
+    "duplicates_and_content_validity": "PENDING",
+    "included_fields": [
+      "microevent_id",
+      "subject_id",
+      "hadm_id",
+      "micro_specimen_id",
+      "chartdate",
+      "charttime",
+      "spec_itemid",
+      "spec_type_desc",
+      "storedate",
+      "storetime",
+      "test_itemid",
+      "test_name",
+      "org_itemid",
+      "org_name",
+      "ab_itemid",
+      "ab_name",
+      "interpretation"
+    ],
+    "text_body_policy": "hash_only",
+    "hashed_payload_fields": [
+      "comments"
+    ],
+    "source_row_limit": null,
+    "semantics": "source rows, not canonical events or qualified model targets"
+  },
+  {
+    "dataset": "hosp",
+    "table": "patients",
+    "file": "hosp-patients.parquet",
+    "file_sha256": "406d6bc960e22c7638e1fe144e531da62d774acf60f51455b51cb756f6c53fb2",
+    "source_sha256": "d6920a7f4efad739a4755ecb5e57b6447bd293a056cf18acb64f780c2df2aa89",
+    "counts": [
+      {
+        "split": "test",
+        "source_rows": 2250,
+        "patients": 2250
+      },
+      {
+        "split": "train",
+        "source_rows": 10500,
+        "patients": 10500
+      },
+      {
+        "split": "val",
+        "source_rows": 2250,
+        "patients": 2250
+      }
+    ],
+    "raw_clock_completeness": {},
+    "raw_field_completeness": {},
+    "availability_validation": "PENDING: field presence/parseability does not establish prospective availability",
+    "canonical_events": "NOT_COMPUTED",
+    "qualified_64_target_patients": "NOT_COMPUTED",
+    "encounter_matching": "PENDING",
+    "duplicates_and_content_validity": "PENDING",
+    "included_fields": [
+      "subject_id",
+      "gender",
+      "anchor_age",
+      "anchor_year"
+    ],
+    "text_body_policy": "not_applicable",
+    "hashed_payload_fields": [],
+    "source_row_limit": null,
+    "semantics": "source rows, not canonical events or qualified model targets"
+  },
+  {
+    "dataset": "hosp",
+    "table": "pharmacy",
+    "file": "hosp-pharmacy.parquet",
+    "file_sha256": "c9019d81555e6ac41ec01e65aaa5ee739aba2a149da4ecd2ff132e2fe2a94809",
+    "source_sha256": "5f38f24701022e7a151f878cd42a816c550cfccb449451445e9e248decfd083e",
+    "counts": [
+      {
+        "split": "test",
+        "source_rows": 183542,
+        "patients": 1994
+      },
+      {
+        "split": "train",
+        "source_rows": 827514,
+        "patients": 9194
+      },
+      {
+        "split": "val",
+        "source_rows": 167731,
+        "patients": 1984
+      }
+    ],
+    "raw_clock_completeness": {
+      "entertime": [
+        {
+          "split": "test",
+          "denominator": 183542,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 183542,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 827514,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 827514,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 167731,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 167731,
+          "other_nonempty_strings": 0
+        }
+      ],
+      "starttime": [
+        {
+          "split": "test",
+          "denominator": 183542,
+          "missing": 274,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 183268,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 827514,
+          "missing": 969,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 826545,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 167731,
+          "missing": 181,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 167550,
+          "other_nonempty_strings": 0
+        }
+      ],
+      "stoptime": [
+        {
+          "split": "test",
+          "denominator": 183542,
+          "missing": 1274,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 182268,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 827514,
+          "missing": 4093,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 823421,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 167731,
+          "missing": 679,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 167052,
+          "other_nonempty_strings": 0
+        }
+      ],
+      "verifiedtime": [
+        {
+          "split": "test",
+          "denominator": 183542,
+          "missing": 48,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 183494,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 827514,
+          "missing": 193,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 827321,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 167731,
+          "missing": 105,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 167626,
+          "other_nonempty_strings": 0
+        }
+      ]
+    },
+    "raw_field_completeness": {
+      "hadm_id": [
+        {
+          "split": "test",
+          "denominator": 183542,
+          "missing": 0,
+          "distinct_nonnull_values": 4759
+        },
+        {
+          "split": "train",
+          "denominator": 827514,
+          "missing": 0,
+          "distinct_nonnull_values": 21852
+        },
+        {
+          "split": "val",
+          "denominator": 167731,
+          "missing": 0,
+          "distinct_nonnull_values": 4566
+        }
+      ]
+    },
+    "availability_validation": "PENDING: field presence/parseability does not establish prospective availability",
+    "canonical_events": "NOT_COMPUTED",
+    "qualified_64_target_patients": "NOT_COMPUTED",
+    "encounter_matching": "PENDING",
+    "duplicates_and_content_validity": "PENDING",
+    "included_fields": [
+      "subject_id",
+      "hadm_id",
+      "pharmacy_id",
+      "poe_id",
+      "starttime",
+      "stoptime",
+      "medication",
+      "entertime",
+      "verifiedtime"
+    ],
+    "text_body_policy": "not_applicable",
+    "hashed_payload_fields": [],
+    "source_row_limit": null,
+    "semantics": "source rows, not canonical events or qualified model targets"
+  },
+  {
+    "dataset": "hosp",
+    "table": "prescriptions",
+    "file": "hosp-prescriptions.parquet",
+    "file_sha256": "b5bdf48ce9b57752fff9e3c93cb8a778a09086c31ca77d9e6f821e8099b9dcc6",
+    "source_sha256": "ff950f08a97e56bc7ba0cee428e837f14a256f483905fec8940b22babfefac98",
+    "counts": [
+      {
+        "split": "test",
+        "source_rows": 208062,
+        "patients": 1994
+      },
+      {
+        "split": "train",
+        "source_rows": 940067,
+        "patients": 9194
+      },
+      {
+        "split": "val",
+        "source_rows": 190231,
+        "patients": 1984
+      }
+    ],
+    "raw_clock_completeness": {
+      "starttime": [
+        {
+          "split": "test",
+          "denominator": 208062,
+          "missing": 274,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 207788,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 940067,
+          "missing": 969,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 939098,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 190231,
+          "missing": 181,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 190050,
+          "other_nonempty_strings": 0
+        }
+      ],
+      "stoptime": [
+        {
+          "split": "test",
+          "denominator": 208062,
+          "missing": 321,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 207741,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 940067,
+          "missing": 1321,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 938746,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 190231,
+          "missing": 329,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 189902,
+          "other_nonempty_strings": 0
+        }
+      ]
+    },
+    "raw_field_completeness": {
+      "hadm_id": [
+        {
+          "split": "test",
+          "denominator": 208062,
+          "missing": 0,
+          "distinct_nonnull_values": 4759
+        },
+        {
+          "split": "train",
+          "denominator": 940067,
+          "missing": 0,
+          "distinct_nonnull_values": 21852
+        },
+        {
+          "split": "val",
+          "denominator": 190231,
+          "missing": 0,
+          "distinct_nonnull_values": 4566
+        }
+      ]
+    },
+    "availability_validation": "PENDING: field presence/parseability does not establish prospective availability",
+    "canonical_events": "NOT_COMPUTED",
+    "qualified_64_target_patients": "NOT_COMPUTED",
+    "encounter_matching": "PENDING",
+    "duplicates_and_content_validity": "PENDING",
+    "included_fields": [
+      "subject_id",
+      "hadm_id",
+      "pharmacy_id",
+      "poe_id",
+      "poe_seq",
+      "starttime",
+      "stoptime",
+      "drug"
+    ],
+    "text_body_policy": "not_applicable",
+    "hashed_payload_fields": [],
+    "source_row_limit": null,
+    "semantics": "source rows, not canonical events or qualified model targets"
+  },
+  {
+    "dataset": "hosp",
+    "table": "procedures_icd",
+    "file": "hosp-procedures_icd.parquet",
+    "file_sha256": "0c68eae42f4c958cd3268d25743097b0c0ce229ced0b3695b43cfe7b5676e830",
+    "source_sha256": "9e871c81aaf046718bb5f38f50ce123fd08fc0d3905fff42380fa2abc7d7032c",
+    "counts": [
+      {
+        "split": "test",
+        "source_rows": 8678,
+        "patients": 1536
+      },
+      {
+        "split": "train",
+        "source_rows": 40418,
+        "patients": 7158
+      },
+      {
+        "split": "val",
+        "source_rows": 8285,
+        "patients": 1500
+      }
+    ],
+    "raw_clock_completeness": {
+      "chartdate": [
+        {
+          "split": "test",
+          "denominator": 8678,
+          "missing": 0,
+          "date_only_strings": 8678,
+          "parseable_timestamp_strings": 0,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 40418,
+          "missing": 0,
+          "date_only_strings": 40418,
+          "parseable_timestamp_strings": 0,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 8285,
+          "missing": 0,
+          "date_only_strings": 8285,
+          "parseable_timestamp_strings": 0,
+          "other_nonempty_strings": 0
+        }
+      ]
+    },
+    "raw_field_completeness": {
+      "hadm_id": [
+        {
+          "split": "test",
+          "denominator": 8678,
+          "missing": 0,
+          "distinct_nonnull_values": 3037
+        },
+        {
+          "split": "train",
+          "denominator": 40418,
+          "missing": 0,
+          "distinct_nonnull_values": 13746
+        },
+        {
+          "split": "val",
+          "denominator": 8285,
+          "missing": 0,
+          "distinct_nonnull_values": 2819
+        }
+      ]
+    },
+    "availability_validation": "PENDING: field presence/parseability does not establish prospective availability",
+    "canonical_events": "NOT_COMPUTED",
+    "qualified_64_target_patients": "NOT_COMPUTED",
+    "encounter_matching": "PENDING",
+    "duplicates_and_content_validity": "PENDING",
+    "included_fields": [
+      "subject_id",
+      "hadm_id",
+      "seq_num",
+      "chartdate",
+      "icd_code",
+      "icd_version"
+    ],
+    "text_body_policy": "not_applicable",
+    "hashed_payload_fields": [],
+    "source_row_limit": null,
+    "semantics": "source rows, not canonical events or qualified model targets"
+  },
+  {
+    "dataset": "hosp",
+    "table": "services",
+    "file": "hosp-services.parquet",
+    "file_sha256": "01c5ab6df41111af22349351263da6847f2f646961e07453064ca33e66b3abb8",
+    "source_sha256": "9a350fe6fc505bd98c158fadf002b456aee6523923bb66f2569c3200ba2177b8",
+    "counts": [
+      {
+        "split": "test",
+        "source_rows": 5995,
+        "patients": 2250
+      },
+      {
+        "split": "train",
+        "source_rows": 27987,
+        "patients": 10500
+      },
+      {
+        "split": "val",
+        "source_rows": 5760,
+        "patients": 2250
+      }
+    ],
+    "raw_clock_completeness": {
+      "transfertime": [
+        {
+          "split": "test",
+          "denominator": 5995,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 5995,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 27987,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 27987,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 5760,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 5760,
+          "other_nonempty_strings": 0
+        }
+      ]
+    },
+    "raw_field_completeness": {
+      "hadm_id": [
+        {
+          "split": "test",
+          "denominator": 5995,
+          "missing": 0,
+          "distinct_nonnull_values": 5520
+        },
+        {
+          "split": "train",
+          "denominator": 27987,
+          "missing": 0,
+          "distinct_nonnull_values": 25733
+        },
+        {
+          "split": "val",
+          "denominator": 5760,
+          "missing": 0,
+          "distinct_nonnull_values": 5316
+        }
+      ]
+    },
+    "availability_validation": "PENDING: field presence/parseability does not establish prospective availability",
+    "canonical_events": "NOT_COMPUTED",
+    "qualified_64_target_patients": "NOT_COMPUTED",
+    "encounter_matching": "PENDING",
+    "duplicates_and_content_validity": "PENDING",
+    "included_fields": [
+      "subject_id",
+      "hadm_id",
+      "transfertime",
+      "prev_service",
+      "curr_service"
+    ],
+    "text_body_policy": "not_applicable",
+    "hashed_payload_fields": [],
+    "source_row_limit": null,
+    "semantics": "source rows, not canonical events or qualified model targets"
+  },
+  {
+    "dataset": "hosp",
+    "table": "transfers",
+    "file": "hosp-transfers.parquet",
+    "file_sha256": "1542f0f999f95a0bdee781c8b3511b9b3c5917a0010dd793200c24eb57e75893",
+    "source_sha256": "a5a7fba8ae20338462fecf3cf30a78f80d831c221a6d412af427577cded44be6",
+    "counts": [
+      {
+        "split": "test",
+        "source_rows": 22015,
+        "patients": 2250
+      },
+      {
+        "split": "train",
+        "source_rows": 103313,
+        "patients": 10500
+      },
+      {
+        "split": "val",
+        "source_rows": 21621,
+        "patients": 2250
+      }
+    ],
+    "raw_clock_completeness": {
+      "intime": [
+        {
+          "split": "test",
+          "denominator": 22015,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 22015,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 103313,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 103313,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 21621,
+          "missing": 0,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 21621,
+          "other_nonempty_strings": 0
+        }
+      ],
+      "outtime": [
+        {
+          "split": "test",
+          "denominator": 22015,
+          "missing": 5520,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 16495,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "train",
+          "denominator": 103313,
+          "missing": 25733,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 77580,
+          "other_nonempty_strings": 0
+        },
+        {
+          "split": "val",
+          "denominator": 21621,
+          "missing": 5316,
+          "date_only_strings": 0,
+          "parseable_timestamp_strings": 16305,
+          "other_nonempty_strings": 0
+        }
+      ]
+    },
+    "raw_field_completeness": {
+      "hadm_id": [
+        {
+          "split": "test",
+          "denominator": 22015,
+          "missing": 1969,
+          "distinct_nonnull_values": 5520
+        },
+        {
+          "split": "train",
+          "denominator": 103313,
+          "missing": 9623,
+          "distinct_nonnull_values": 25733
+        },
+        {
+          "split": "val",
+          "denominator": 21621,
+          "missing": 2242,
+          "distinct_nonnull_values": 5316
+        }
+      ]
+    },
+    "availability_validation": "PENDING: field presence/parseability does not establish prospective availability",
+    "canonical_events": "NOT_COMPUTED",
+    "qualified_64_target_patients": "NOT_COMPUTED",
+    "encounter_matching": "PENDING",
+    "duplicates_and_content_validity": "PENDING",
+    "included_fields": [
+      "subject_id",
+      "hadm_id",
+      "careunit",
+      "intime",
+      "outtime"
+    ],
+    "text_body_policy": "not_applicable",
+    "hashed_payload_fields": [],
+    "source_row_limit": null,
+    "semantics": "source rows, not canonical events or qualified model targets"
+  }
+]
