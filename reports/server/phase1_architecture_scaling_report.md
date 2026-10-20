@@ -1,5 +1,7 @@
 # Phase 1 Architecture Scaling Scientific Report: 152M Parameter NOAH
 
+Evidence classification: historical candidate-architecture experiments with whole-record pooled, subject-level retrospective probes. These metrics are invalid for prospective or paper landmark interpretation. Readmission and NEWS2 labels require correction before clinical endpoint use. Reconstruction metrics are conditional diagnostics with recipe/provenance limitations. Original reports and checkpoint bytes are preserved in the private remediation snapshot; see [the remediation matrix](../../docs/ARCHITECTURE_AUDIT.md#historical-metric-interpretation). No corrected clinical evaluation is reported here.
+
 **Date:** October 19, 2026  
 **Hardware Platform:** Harvard Medical School O2 Cluster (`compute-gc-17-241`, NVIDIA L40S, 48GB VRAM)  
 **Execution Context:** SLURM Jobs `56789358` (Training & Audit) & `56792006` (Clinical Probes)  
@@ -10,8 +12,8 @@
 
 ## 1. Executive Summary
 
-In Phase 1 of our systematic scaling roadmap, we successfully scaled the NOAH architecture from the 4-layer 5.4M parameter prototype to the **exact paper-scale parameterization** specified in arXiv:2609.09140v1 ($d_{\text{model}} = 768, d_{\text{latent}} = 384, N = 12 \text{ causal decoder layers}, H = 12 \text{ attention heads}, \text{FFN expansion ratio } 8$, initializing with LayerScale $\alpha = 10^{-4}$):
-- **Model Capacity:** Expanded by **$+2,710\%$** ($28.1\times$ parameter growth) from **5,431,852** to **152,655,380** trainable parameters, exactly matching the paper's target configuration (~150.3M).
+In Phase 1 of our systematic scaling roadmap, we successfully scaled the NOAH architecture from the 4-layer 5.4M parameter prototype to the **candidate paper-dimension parameterization** specified in arXiv:2609.09140v1 ($d_{\text{model}} = 768, d_{\text{latent}} = 384, N = 12 \text{ causal decoder layers}, H = 12 \text{ attention heads}, \text{FFN expansion ratio } 8$, initializing with LayerScale $\alpha = 10^{-4}$):
+- **Model Capacity:** Expanded by **$+2,710\%$** ($28.1\times$ parameter growth) from **5,431,852** to **152,655,380** trainable parameters, exceeding the paper's150,322,970 parameters by2,332,410; this is not an exact architectural match.
 - **Computational Profile:** Confirmed superior memory and throughput performance on an NVIDIA L40S GPU. Peak VRAM was **7.43 GB** ($16.1\%$ of 48GB GPU capacity) using batch size 4 with 2 gradient accumulation steps (effective batch size 8). Training throughput was **~5.1 iterations/second** (~95 seconds per epoch, total 10-epoch training completed in under 16 minutes).
 - **Clinical Predictive Gains:** The 152M representation achieved an in-hospital mortality **AUROC of 0.7446** (an absolute increase of **+3.72%** over the 5.4M prototype's 0.7074) and improved probabilistic calibration (Brier score decreased from $0.1033 \to 0.0849$). Acuity correlation with physiological NEWS2 scores also rose ($r = 0.1048$ vs $0.0973$).
 - **The "Capacity-Data Mismatch" Finding:** When scaling a 152M foundation model on a small 700-patient pilot cohort (1,890 training windows), categorical token forecasting accuracy dropped from $77.8\%$ to $65.5\%$, and 30-day readmission AUROC softened from $0.7333$ to $0.6689$. This empirical finding strongly demonstrates that **model capacity scaling alone quickly exhausts the small pilot training distribution**, validating the imperative for **Phase 2 Data Scaling** (expanding from 1,000 to 10,000–50,000+ MIMIC patients) to fully unlock the power of the 152M foundation model.
@@ -20,17 +22,17 @@ In Phase 1 of our systematic scaling roadmap, we successfully scaled the NOAH ar
 
 ## 2. Experimental Setup & Model Parameterization
 
-The model architecture, encoder projections, and training hyperparameters were configured according to the exact NOAH specification ([arXiv:2609.09140v1, Section 3.1 & Extended Data Table 1](paper/NOAH.pdf)).
+This run used paper backbone dimensions but a candidate implementation and pilot optimization settings. The paper architecture reference is Supplementary Table16, p.50; its150,322,970 parameters differ from this run. Current fidelity limits are recorded in [the architecture audit](../../docs/ARCHITECTURE_AUDIT.md).
 
 | Architectural Component | 5.4M Prototype Baseline | 152.6M Paper-Scale (Phase 1) | Specification Source |
 |---|---|---|---|
-| **Backbone Hidden Dim ($d_{\text{model}}$)** | 256 | **768** | Section 3.1 & Table 1 |
-| **Latent Bottleneck Dim ($d_{\text{latent}}$)** | 128 | **384** | Section 3.1 & LAT-01 |
-| **Transformer Decoder Layers ($N$)** | 4 | **12** | Section 3.1 |
-| **Multi-Head Attention Heads ($H$)** | 4 | **12** | Section 3.1 |
+| **Backbone Hidden Dim ($d_{\text{model}}$)** | 256 | **768** | Supplementary Table16, p.50 |
+| **Latent Bottleneck Dim ($d_{\text{latent}}$)** | 128 | **384** | Supplementary Table16, p.50 |
+| **Transformer Decoder Layers ($N$)** | 4 | **12** | Supplementary Table16, p.50 |
+| **Multi-Head Attention Heads ($H$)** | 4 | **12** | Supplementary Table16, p.50 |
 | **Head Dimension ($d_{\text{head}}$)** | 64 | **64** | $768 / 12 = 64$ |
-| **FFN Expansion Ratio** | 4 ($d_{\text{ffn}} = 1024$) | **8 ($d_{\text{ffn}} = 6144$)** | Section 3.1 |
-| **LayerScale Initialization ($\alpha$)** | None | **$10^{-4}$** | Section 3.1 & p. 50 |
+| **FFN Expansion Ratio** | 4 ($d_{\text{ffn}} = 1024$) | **8 ($d_{\text{ffn}} = 6144$)** | Supplementary Table16, p.50 |
+| **LayerScale Initialization ($\alpha$)** | None | **$10^{-4}$** | Supplementary Table16, p.50 |
 | **Total Trainable Parameters** | 5,431,852 (~5.4M) | **152,655,380 (~152.7M)** | Paper reports 150,322,970 |
 | **Active Modalities** | 5 (Tabular, Numeric, CXR, Text, ECG) | 5 (Tabular, Numeric, CXR, Text, ECG) | Scope agreement (ECHO deferred) |
 | **Effective Batch Size** | 8 (batch_size=8, accum=1) | 8 (batch_size=4, accum=2) | Matched effective batch size |
@@ -58,7 +60,7 @@ The model architecture, encoder projections, and training hyperparameters were c
 | **10** | 1.00 | **1.5771** | **3.6528** | **3.9260** | **0.0887** | 1.6425 | 68.3% | 90.4% | 83.7% | 94.3 s | 7.43 GB |
 
 ### 3.2 Computational Profile Insights
-- **Memory Footprint:** Peak VRAM reached only **7.43 GB**, leaving $>40$ GB of head-room on an L40S (or $>72$ GB on an A100). This confirms that Phase 2 can scale the sequence length from $L = 1024$ to the paper's full context length $L = 2048$ without risking GPU Out-Of-Memory exceptions.
+- **Memory Footprint:** Peak VRAM reached only **7.43 GB**, leaving $>40$ GB of head-room on an L40S (or $>72$ GB on an A100). This measurement at $L=1024$ does not establish memory requirements or freedom from OOM at $L=2048$; those require a separately measured run.
 - **Throughput:** Average epoch execution was $95.8 \pm 1.0$ seconds. With 473 steps per epoch, the model processes **5.05 batches/sec** (40.4 patient window tokens/sec).
 - **Optimization Stability:** The combination of LayerScale initialization ($\alpha = 10^{-4}$), gradient clipping ($1.0$), and linear warmup prevented any vanishing or exploding gradients across all 12 deep layers.
 
@@ -143,7 +145,7 @@ At the same time, we observe an apparent paradox:
 The explanation lies in statistical learning theory:
 - **152.6 Million Parameters vs. 1,890 Training Windows:** A 152M transformer has sufficient capacity to memorize a small cohort of 700 patients. Without sufficient training diversity, the high-dimensional projection layers cannot generalize subtle category transition distributions as easily as a heavily constrained 5.4M model.
 - **Latent Space Expansion ($128 \to 384$):** The 384-D latent space is $3\times$ wider, requiring substantial data volume to densely populate the Gaussian prior manifold.
-- **Empirical Confirmation:** This finding confirms the phased roadmap established before Phase 1: **model architecture scaling cannot exist in isolation from data scaling.**
+- **Interpretation:** Capacity/data mismatch is a hypothesis; these small-cohort retrospective results do not isolate its mechanism or establish a requirement for cohort scaling before validity remediation.
 
 ---
 
@@ -152,7 +154,7 @@ The explanation lies in statistical learning theory:
 With Phase 1 complete, we have verified that:
 1. The 152.6M paper-scale NOAH architecture is completely stable, builds, trains, and evaluates without numerical anomalies.
 2. VRAM usage (7.43 GB) is exceptionally well-controlled, leaving ample budget for larger contexts and batches.
-3. Downstream mortality prediction is significantly enhanced.
+3. The legacy pooled retrospective mortality metric has a higher point estimate; no prospective or statistical-significance conclusion is established.
 
 ### Proposed Next Milestones (Phase 2 & Phase 3):
 1. **Phase 2 (Cohort Scaling to 10k–50k Patients):**

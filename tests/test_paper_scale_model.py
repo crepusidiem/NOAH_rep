@@ -1,7 +1,7 @@
 """
 Unit Tests for NOAH Paper-Scale Architecture (ARCH-01, LAT-01..05, DEC-01..06).
 Verifies:
-1. 152.65M parameter count conformance with paper specifications (d_model=768, d_latent=384, 12 layers).
+1. Candidate parameter inventory and explicit mismatch with Table 16.
 2. Proper forward pass tensor shapes across causal backbone, variational latents, and decoders.
 3. Backward pass gradient flow through all 12 layers and all multimodal projection/decoder heads.
 4. Numerical stability with LayerScale (10^-4) and FlashAttention-2 / SDPA.
@@ -42,9 +42,13 @@ def test_paper_scale_parameter_count():
     )
 
     n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    # Paper reports 150,322,970 trainable parameters; our model has 152,655,380 (~1.5% delta due to head layouts)
-    assert 150_000_000 <= n_params <= 155_000_000, f"Expected ~150M params, got {n_params:,}"
-    print(f"Verified paper-scale parameter count: {n_params:,}")
+    # Pin the candidate inventory without mislabeling a tolerance band as paper conformance.
+    assert n_params == 148_957_844
+    assert n_params != 150_322_970  # A-58 remains unresolved; do not pad the parameter count.
+    assert model.decoder.F_cat[-1].out_features == 384
+    assert model.decoder.F_spec[0].in_features == 384
+    assert isinstance(model.decoder.z_to_hidden, torch.nn.Identity)
+
 
 
 def test_paper_scale_forward_and_backward():

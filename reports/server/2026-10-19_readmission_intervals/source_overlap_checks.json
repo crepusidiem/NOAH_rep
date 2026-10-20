@@ -1,0 +1,111 @@
+{
+  "death_markers": [
+    {
+      "hospital_expire_flag": 0,
+      "next_expire_flag": 0,
+      "pairs": 43,
+      "identical_nonmissing_deathtime": 0
+    },
+    {
+      "hospital_expire_flag": 0,
+      "next_expire_flag": 1,
+      "pairs": 7,
+      "identical_nonmissing_deathtime": 0
+    },
+    {
+      "hospital_expire_flag": 1,
+      "next_expire_flag": 0,
+      "pairs": 9,
+      "identical_nonmissing_deathtime": 0
+    }
+  ],
+  "tie_order_sensitivity": [
+    {
+      "differing_successors": 0
+    }
+  ],
+  "negative_location_pairs": [
+    {
+      "discharge_location": null,
+      "next_admission_location": "EMERGENCY ROOM",
+      "pairs": 15
+    },
+    {
+      "discharge_location": "DIED",
+      "next_admission_location": "PACU",
+      "pairs": 12
+    },
+    {
+      "discharge_location": "DIED",
+      "next_admission_location": "PHYSICIAN REFERRAL",
+      "pairs": 6
+    },
+    {
+      "discharge_location": "HOME",
+      "next_admission_location": "EMERGENCY ROOM",
+      "pairs": 5
+    },
+    {
+      "discharge_location": null,
+      "next_admission_location": "PHYSICIAN REFERRAL",
+      "pairs": 5
+    },
+    {
+      "discharge_location": "HOME",
+      "next_admission_location": "PHYSICIAN REFERRAL",
+      "pairs": 3
+    },
+    {
+      "discharge_location": "PSYCH FACILITY",
+      "next_admission_location": "PHYSICIAN REFERRAL",
+      "pairs": 3
+    },
+    {
+      "discharge_location": "REHAB",
+      "next_admission_location": "EMERGENCY ROOM",
+      "pairs": 2
+    },
+    {
+      "discharge_location": "SKILLED NURSING FACILITY",
+      "next_admission_location": "EMERGENCY ROOM",
+      "pairs": 2
+    },
+    {
+      "discharge_location": "ACUTE HOSPITAL",
+      "next_admission_location": "PHYSICIAN REFERRAL",
+      "pairs": 1
+    },
+    {
+      "discharge_location": "AGAINST ADVICE",
+      "next_admission_location": "EMERGENCY ROOM",
+      "pairs": 1
+    },
+    {
+      "discharge_location": "PSYCH FACILITY",
+      "next_admission_location": "EMERGENCY ROOM",
+      "pairs": 1
+    },
+    {
+      "discharge_location": "PSYCH FACILITY",
+      "next_admission_location": "INTERNAL TRANSFER TO OR FROM PSYCH",
+      "pairs": 1
+    },
+    {
+      "discharge_location": "SKILLED NURSING FACILITY",
+      "next_admission_location": "PHYSICIAN REFERRAL",
+      "pairs": 1
+    },
+    {
+      "discharge_location": null,
+      "next_admission_location": "WALK-IN/SELF REFERRAL",
+      "pairs": 1
+    }
+  ],
+  "affected_discharge_order": [
+    {
+      "nested_earlier_end": 19,
+      "shared_discharge": 3,
+      "later_discharge": 37
+    }
+  ]
+}

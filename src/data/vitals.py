@@ -36,6 +36,8 @@ def aggregate_vitals_sliding_window(
     Both min and max are timestamped at the mean charttime of the window.
     Both min and max share the same mean timestamp (yielding delta = 0 between them).
     """
+    if window_span_hours <= 0 or window_stride_hours <= 0:
+        raise ValueError("Vital aggregation span and stride must be positive")
     if not measurements:
         return []
 
@@ -56,11 +58,10 @@ def aggregate_vitals_sliding_window(
         
         if window_pts:
             mean_charttime = float(np.mean([m.charttime for m in window_pts]))
-            max_storetime = max(
-                (m.storetime for m in window_pts if m.storetime is not None),
-                default=mean_charttime
-            )
-            
+            # Missing source availability remains unknown; occurrence/mean time is not evidence.
+            max_storetime = (max(m.storetime for m in window_pts)
+                             if all(m.storetime is not None for m in window_pts) else None)
+
             # Group by vital_name
             by_vital: Dict[str, List[RawVitalMeasurement]] = {}
             for m in window_pts:

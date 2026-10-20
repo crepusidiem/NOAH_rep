@@ -1,5 +1,7 @@
 # NOAH dependency-aware reproduction plan
 
+Current code verification and selected implementation candidates (2026-10-19): [ARCHITECTURE_AUDIT.md](ARCHITECTURE_AUDIT.md). Paper requirements below remain distinct from implementation/test status.
+
 Updated 2026-10-14. This is the action plan for the current pilot and the later paper-scale reproduction. See [current progress](PROJECT_STATUS.md), [operational implementation guide](IMPLEMENTATION_GUIDE.md), [specification](REPRODUCTION_SPEC.md), [traceability](PAPER_TRACEABILITY.md), [decision register](ASSUMPTIONS.md), and [test plan](TEST_PLAN.md).
 
 Pilot entry: N-01 server inventory, N-02 minimal configuration and N-03 encoder compatibility. Implementation and execution follow the researcher’s active task; paper-scale training is a separate scope and resource decision.
@@ -115,7 +117,7 @@ The synthetic generator must expose:
 - Missing versus zero values, procedure ends, metadata changes, overlap/tails, and long records.
 - Known event/rollout clocks and unscorable/stopping states. Detailed clinical competing-endpoint fixtures can be added when their evaluation is implemented.
 
-Reduced dimensions must still satisfy \(2F\mid d_h\). A proposed tiny profile is d=128, H=4 (head width 32), two layers, k=64, nominal FFN ratio 8, shorter explicit context: **DEVIATION for prototype scope**, not paper settings. All module formulas, gates, and dual loss paths remain exercised. A full-size model-construction test separately verifies the reported dimensions; parameter count remains an evidence gate.
+Reduced dimensions must still satisfy $2F\mid d_h$. A proposed tiny profile is d=128, H=4 (head width 32), two layers, k=64, nominal FFN ratio 8, shorter explicit context: **DEVIATION for prototype scope**, not paper settings. All module formulas, gates, and dual loss paths remain exercised. A full-size model-construction test separately verifies the reported dimensions; parameter count remains an evidence gate.
 
 Exit: relevant mathematical/unit/integration tests and synthetic temporal/generative correctness experiments pass with a named configuration. Where a scientific test requires clinical labels or a trained real model, defer it and record that dependency rather than treating it as a synthetic-model prerequisite. Literal versus strict information tests demonstrate their expected difference. Report posterior/prior reconstruction, KL, sigma bounds, zero gaps, compatibility and rollout validity. Low posterior loss alone is insufficient.
 
@@ -135,7 +137,7 @@ Required preprocessing outputs:
 - Patient split IDs, 64-event inclusion rule, window ownership proof, missing/terminal gap masks.
 - Modality/type statistics, within-stay density/gaps/composition compared with ED Fig.5, and train/val/test cohort summaries.
 
-Run a one-batch gradient audit before an extended job. Then a tiny real-batch overfit, followed by a predeclared small training budget. Use full reported d/layers where resources permit; reduced architecture/schedule gets a separate experiment name. Keep posterior/prior sampling and \(.3,.1,\beta\) weights; do not simplify to a deterministic autoencoder to obtain a working run.
+Run a one-batch gradient audit before an extended job. Then a tiny real-batch overfit, followed by a predeclared small training budget. Use full reported d/layers where resources permit; reduced architecture/schedule gets a separate experiment name. Keep posterior/prior sampling and $.3,.1,\beta$ weights; do not simplify to a deterministic autoencoder to obtain a working run.
 
 Sensitivity priority:
 
@@ -165,16 +167,16 @@ Before provisioning/starting a long job, measure:
 
 Engineering estimates must use measured quantities:
 
-\[
+$$
 \text{pretraining wall time}\approx
 \frac{\text{epochs}\times\text{attended training token positions per epoch}}
 {\text{measured aggregate token positions/s}}
 +\text{validation/checkpoint overhead}.
-\]
+$$
 
-With an assumed total budget of 2048 tokens, six prefix tokens, 256 clinical tokens of overlap, and stride 1786 clinical events, interior attended positions are approximately \(2048/1786\approx1.147\) times newly scored events. This estimate ignores first/tail windows and filtering; exact counts come from the window manifest. Report scored tokens and attended tokens separately.
+With an assumed total budget of 2048 tokens, six prefix tokens, 256 clinical tokens of overlap, and stride 1786 clinical events, interior attended positions are approximately $2048/1786\approx1.147$ times newly scored events. This estimate ignores first/tail windows and filtering; exact counts come from the window manifest. Report scored tokens and attended tokens separately.
 
-A cache-size estimate can sum \(\sum_m n_mD_m\cdot\text{bytes per scalar}\), plus separately cached specifics, IDs, and timestamps. Under a *candidate* 44-dimensional numeric bank and fp16 storage, per-event text/value caches without deduplication are roughly 0.34 TB for Table 15's whole corpus, excluding specifics/raw data/indexing. This is an engineering estimate, not a paper storage claim. Deduplicated repeated text/specifics can materially reduce it; storage precision is an assumption needing numeric validation.
+A cache-size estimate can sum $\sum_m n_mD_m\cdot\text{bytes per scalar}$, plus separately cached specifics, IDs, and timestamps. Under a *candidate* 44-dimensional numeric bank and fp16 storage, per-event text/value caches without deduplication are roughly 0.34 TB for Table 15's whole corpus, excluding specifics/raw data/indexing. This is an engineering estimate, not a paper storage claim. Deduplicated repeated text/specifics can materially reduce it; storage precision is an assumption needing numeric validation.
 
 Total epochs/global batch/accumulation/cosine floor/Muon internals are not stated. Obtain corroboration or preregister explicit assumptions and compute ceilings. The audit cannot honestly supply author GPU-hours, wall time, or training cost.
 
@@ -212,3 +214,9 @@ Archive final code/configs/tests only in later approved phases, with environment
 The final report must state: what was reproduced exactly; what was reconstructed with assumptions; what was intentionally changed; what remains unresolved/unexecuted; and how much evidence supports each numerical or scientific claim.
 
 For every subsequent run, store its safe execution report under [reports/](../reports/README.md) and update [PROJECT_STATUS.md](PROJECT_STATUS.md) to the attained evidence level. Remote sync and optional SSH setup are in [REMOTE_WORKFLOW.md](REMOTE_WORKFLOW.md).
+
+## Controlled remediation before alpha experiments
+
+The current dependency order is preservation -> narrow guards -> approved clinical/methodology contracts -> source availability and cutoff views -> encounter labels and landmark state integration -> independent clinical label/metric verification -> frozen comparison recipe -> separately authorized experiments. The detailed G01–G15 matrix, M01–M12 recommendations and historical metric eligibility are in [ARCHITECTURE_AUDIT.md](ARCHITECTURE_AUDIT.md#controlled-remediation-preserved-evidence-and-revision-separation).
+
+The alpha launcher is on an explicit hold and exits before training. In particular, define whether alpha varies category only or all weighted heads, propagate alpha=0 explicitly, freeze loss reductions and one architecture/source/data/probe revision, and pass applicable real-data release checks before submitting an array. No existing historical headline AUROC closes these dependencies.

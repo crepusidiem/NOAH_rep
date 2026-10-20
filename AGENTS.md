@@ -55,10 +55,14 @@ O2 GPU access is available. Record actual GPU allocation, memory, throughput and
 
 ## Repository and documentation hygiene
 
+Use dollar-delimited math in all Markdown: `$...$` for inline formulas and `$$` on separate lines around display formulas. This convention is required for VS Code Markdown preview; do not use backslash-based math delimiters.
+
 All versioned repository content intended for collaborators must be in English: documentation, reports, reusable agent prompts, code comments/docstrings, test descriptions, user-facing messages and commit/PR descriptions. Use English filenames. Conversation with the researcher may be in Chinese. Preserve technical identifiers, source citations and original data values; do not translate clinical data to satisfy a repository language check. Keep private Chinese explanations outside versioned content.
 
 Follow [REPOSITORY_POLICY.md](docs/REPOSITORY_POLICY.md) before committing or pushing. Keep presentation tooling, renders, intermediate outputs, clinical data, embeddings and checkpoints in ignored locations. Stage explicit reviewed paths and inspect staged content and outgoing commits. Do not force-add ignored artifacts. Ignore rules do not untrack existing files.
 
 Write documentation about the current state, technical requirements and next actions. Update it in place; Git retains history. Omit reactions to previous reports, historical correction sections and conversational task narration. Retain source provenance, scientific assumptions and dated execution evidence.
+
+Evaluation and reporting must use the experiment manifest and release contracts in `src/evaluation/contracts.py`. Landmark extraction must reject future events, unavailable prospective evidence and full-record pooling. Do not relabel retrospective, posterior-reconstruction or oracle-time metrics as prospective. Preserve architecture-specific checkpoints/results before modifications, and obtain explicit approval for unresolved clinical methodology. The alpha-sweep remains on hold until its documented dependencies and authorization are satisfied.
 
 Update source traceability, chosen assumptions and execution status when changing behavior. Keep documentation-only tasks documentation-only. Preserve existing user work and do not claim results for work that has not run.

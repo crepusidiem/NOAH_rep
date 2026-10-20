@@ -1,0 +1,36 @@
+{
+  "src/data/duckdb_extractor.py:_extract_admissions_and_demographics": {
+    "HEAD": {
+      "function_ast_sha256": "0a35d603b58a4aecc381e4ac4f02e53f72619aa4da59afe8aa4e2f3ea2828a38",
+      "line": 208,
+      "file_sha256": "e2191243659eca11af6cb287d4c509630575a67e43efe5898ad7e103d39dc665"
+    },
+    "pre_remediation": {
+      "function_ast_sha256": "0a35d603b58a4aecc381e4ac4f02e53f72619aa4da59afe8aa4e2f3ea2828a38",
+      "line": 208,
+      "file_sha256": "64386dcb78077ed181e1df9f9a7a4eb784c2380f9c78d626ecfc68e2b2437606"
+    },
+    "current": {
+      "function_ast_sha256": "0a35d603b58a4aecc381e4ac4f02e53f72619aa4da59afe8aa4e2f3ea2828a38",
+      "line": 208,
+      "file_sha256": "64386dcb78077ed181e1df9f9a7a4eb784c2380f9c78d626ecfc68e2b2437606"
+    }
+  },
+  "scripts/evaluate_clinical_probes.py:extract_patient_labels": {
+    "HEAD": {
+      "function_ast_sha256": "6b348ff8ce79a67fb1f0ae42e5fcdfb48ccf87487b515b3b5a211b44d36714a1",
+      "line": 178,
+      "file_sha256": "9ed3fbdbef322e1a30747984eb9b6770a10a43e1f58bbd811706372cac0dda0b"
+    },
+    "pre_remediation": {
+      "function_ast_sha256": "6b348ff8ce79a67fb1f0ae42e5fcdfb48ccf87487b515b3b5a211b44d36714a1",
+      "line": 181,
+      "file_sha256": "30ef7a1952496863f2d4c8f80ec33db8db0e853d24b73526131539ad13c8797e"
+    },
+    "current": {
+      "function_ast_sha256": "0accd59c3669a029284b8e8544e3a1b50cb0fac88e15d0f645280df550c79668",
+      "line": 107,
+      "file_sha256": "af278c12ed936c3ad9577888ac8ea655721e9801f25d06e32625a80dc9e325ad"
+    }
+  }
+}

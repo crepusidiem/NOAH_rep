@@ -79,7 +79,7 @@ Define event and availability times. `charttime` often indicates clinical record
 
 Current code uses hourly gaps, age in years and category/source-ID tie ordering. These are code choices, not necessarily paper settings.
 
-The final observed event does not imply a simultaneous successor. Unknown next gaps differ from true zero. Current final `delta_next=0` needs boundary availability/target masks during training.
+The final observed event does not imply a simultaneous successor. Unknown next gaps differ from true zero. The boundary mask `has_next_gap` distinguishes unknown terminal gaps from observed zero gaps during training.
 
 ### 4.5 Aggregate dense vital signs
 
@@ -113,17 +113,7 @@ Split 70/15/15 by patient, not by encounters. A patient's admissions cannot be d
 
 ## 5. Current repository progress
 
-| Artifact | Established content | Remaining evidence/work |
-|---|---|---|
-| `pilot_cohort_manifest.csv` | 1,000 unique IDs; 700 train/150 val/150 test | Media readability, complete events and at least 64 valid scored events |
-| `subcohort.py` | Adult admission/ECG/CXR intersection, seed=42 | This enriched pilot differs from the paper's full cohort distribution |
-| `extract_events.py` | Admission/discharge/death, ECG/CXR metadata and numeric lab code | Remaining categories, text, medications and ED/ICU details |
-| `numeric.py` | Candidate 44-D dyadic sine/cosine encoding | Author-exact phase/scaling remain unspecified |
-| `vitals.py` | Min/max helper, defaults 2h/1h | Connection and execution in the main pilot path |
-| `test_pilot_extraction.py` | Four reader methods for the first two patients, with printed sequences | 1,000-patient ETL/windows/embedding caches |
-| `run_pilot_gpu.sh` | Resource request/environment setup and nvidia-smi entry | Actual allocation, encoder execution and training |
-
-The patient manifest and partial event code are available. Complete clinical content, actual reading/encoding and acceptance remain before trainable samples are ready. Current CXR paths point to `mimic-cxr-resized/2.0.0`; verify source, resolution and transforms against the paper's CXR-JPG path.
+See [PROJECT_STATUS.md](PROJECT_STATUS.md) and [ARCHITECTURE_AUDIT.md](ARCHITECTURE_AUDIT.md) for the 2026-10-19 code and evidence snapshot. Multiple real-data pilot reports exist, alongside complete-model code. Faithful frozen-ECG provenance, ICU vital aggregation, ECHO preprocessing, cache recipes and corrected-model integration remain open. The researcher-supplied ECHO1.0.1 directory exists; that does not establish usable videos or512-D embeddings. Earlier pilot results are not paper-scale acceptance.
 
 ## 6. Topics for PI guidance
 

@@ -1,5 +1,7 @@
 # NOAH paper-to-requirement traceability
 
+Current code verification and selected implementation candidates (2026-10-19): [ARCHITECTURE_AUDIT.md](ARCHITECTURE_AUDIT.md). Paper requirements below remain distinct from implementation/test status.
+
 Updated 2026-10-14. Authority: [supplied PDF](../paper/NOAH.pdf), arXiv:2609.09140v1, SHA-256 0f3a7bb049d6f7eb6cdf61c2aa9692d0695037851f95b73711a26ed803576730. Every page below is both the PDF page and the printed page. Specification: [REPRODUCTION_SPEC.md](REPRODUCTION_SPEC.md); decision register: [ASSUMPTIONS.md](ASSUMPTIONS.md); tests: [TEST_PLAN.md](TEST_PLAN.md).
 
 E=EXPLICIT, D=DERIVED, A=ASSUMED, V=DEVIATION. Where a row combines these, only the expressly stated part is E. Evidence for an absent detail is the nearest relevant passage, not proof that a candidate choice appears in the paper.
@@ -10,22 +12,22 @@ The displayed equations in this PDF are **unnumbered**. E01-E16 below are audit 
 
 | Audit locator | Page | Exact subsection | Displayed formula/anchor |
 |---|---:|---|---|
-| E01 | 16 | Overall architecture and pretraining | Definition \(D_{KL}(q_\phi(z_t\mid h_{t-1},e_t)\Vert p_\theta(z_t\mid h_{t-1}))\) as expected log ratio |
-| E02 | 17 | Bidirectional temporal attention | Inline shifted-log transform \(\widetilde\delta_t^\bullet=\log(1+\delta_t^\bullet)\) |
-| E03 | 17 | Bidirectional temporal attention | \(\omega_n=T^{-n/N}\), n=0..N-1; preceding prose defines N and T |
-| E04 | 18 | Bidirectional temporal attention | Two displays for \(\psi(u_i)\) and concatenated \(\Psi_F(u)\) |
-| E05 | 18 | Bidirectional temporal attention | Additive updates \(q_t\leftarrow q_t+\Psi_2(v_t^{base})+\Psi_1(v_t^{fwd})\) and corresponding k update |
-| E06 | 18 | Variational autoregression with a context-conditional prior | Marginal next-event integral \(p_\theta(x_t\mid x_{<t})=\int p_\theta(x_t\mid z_t)p_\theta(z_t\mid h_{t-1})dz_t\) |
-| E07 | 18 | Same subsection | Posterior \(q_\phi(z_t\mid h_{t-1},e_t)=\mathcal N(\mu_q,\operatorname{diag}\sigma_q^2)\) |
-| E08 | 19 | Same subsection | Conditional prior \(p_\theta(z_t\mid h_{t-1})=\mathcal N(\mu_p,\operatorname{diag}\sigma_p^2)\) |
-| E09 | 19 | Same subsection | Closed-form \(\mathcal L_{KL,t}\), sum over j=1..k |
-| E10 | 19 | Same subsection | Bound \(\log\sigma_p\in(\log\sigma_{\min},\log\sigma_{\max})\), .05 and 2 |
-| E11 | 19 | Same subsection | Posterior reparameterization \(z_t=\mu_q+\sigma_q\odot\epsilon\) |
-| E12 | 19 | Same subsection | Inference prior covariance multiplied by \(\tau^2\) |
-| E13 | 20 | Multimodal output decoding | Product factorization \(p_\theta(x_t\mid z_t)\) over c,s,m,v,delta_next |
-| E14 | 20-21 | Pretraining | Total \(\mathcal L(\theta,\phi)\): alpha posterior reconstruction + beta KL + gamma prior reconstruction; p.21 defines samples/terms |
-| E15 | 25 | Survival analysis | Survival \(S(t\mid x)=P(T>t\mid X=x)=\exp(-\int_0^t h(u\mid x)du)\) |
-| E16 | 25 | Survival analysis | Cox hazard \(h(t\mid x)=h_0(t)e^{h(x)}\) |
+| E01 | 16 | Overall architecture and pretraining | Definition $D_{KL}(q_\phi(z_t\mid h_{t-1},e_t)\Vert p_\theta(z_t\mid h_{t-1}))$ as expected log ratio |
+| E02 | 17 | Bidirectional temporal attention | Inline shifted-log transform $\widetilde\delta_t^\bullet=\log(1+\delta_t^\bullet)$ |
+| E03 | 17 | Bidirectional temporal attention | $\omega_n=T^{-n/N}$, n=0..N-1; preceding prose defines N and T |
+| E04 | 18 | Bidirectional temporal attention | Two displays for $\psi(u_i)$ and concatenated $\Psi_F(u)$ |
+| E05 | 18 | Bidirectional temporal attention | Additive updates $q_t\leftarrow q_t+\Psi_2(v_t^{base})+\Psi_1(v_t^{fwd})$ and corresponding k update |
+| E06 | 18 | Variational autoregression with a context-conditional prior | Marginal next-event integral $p_\theta(x_t\mid x_{<t})=\int p_\theta(x_t\mid z_t)p_\theta(z_t\mid h_{t-1})dz_t$ |
+| E07 | 18 | Same subsection | Posterior $q_\phi(z_t\mid h_{t-1},e_t)=\mathcal N(\mu_q,\operatorname{diag}\sigma_q^2)$ |
+| E08 | 19 | Same subsection | Conditional prior $p_\theta(z_t\mid h_{t-1})=\mathcal N(\mu_p,\operatorname{diag}\sigma_p^2)$ |
+| E09 | 19 | Same subsection | Closed-form $\mathcal L_{KL,t}$, sum over j=1..k |
+| E10 | 19 | Same subsection | Bound $\log\sigma_p\in(\log\sigma_{\min},\log\sigma_{\max})$, .05 and 2 |
+| E11 | 19 | Same subsection | Posterior reparameterization $z_t=\mu_q+\sigma_q\odot\epsilon$ |
+| E12 | 19 | Same subsection | Inference prior covariance multiplied by $\tau^2$ |
+| E13 | 20 | Multimodal output decoding | Product factorization $p_\theta(x_t\mid z_t)$ over c,s,m,v,delta_next |
+| E14 | 20-21 | Pretraining | Total $\mathcal L(\theta,\phi)$: alpha posterior reconstruction + beta KL + gamma prior reconstruction; p.21 defines samples/terms |
+| E15 | 25 | Survival analysis | Survival $S(t\mid x)=P(T>t\mid X=x)=\exp(-\int_0^t h(u\mid x)du)$ |
+| E16 | 25 | Survival analysis | Cox hazard $h(t\mid x)=h_0(t)e^{h(x)}$ |
 
 ## Data and frozen encoders
 
@@ -164,3 +166,16 @@ The displayed equations in this PDF are **unnumbered**. E01-E16 below are audit 
 8. **Table16 exact parameter count versus missing block/MLP settings:** total is a consistency constraint, not enough evidence to reconstruct architecture by reverse fitting.
 
 All proposed controls/tests/schedules are audit methodology, not paper requirements with a fabricated page citation. A-ID configuration keys originate in this audit; the register names nearby source passages and labels every proposed choice. Future implementation requirements added beyond these IDs require a new row and a classification before use.
+
+## Controlled-remediation implementation links
+
+| Requirement / audit gap | Implementation and executable verification | Current evidence boundary |
+|---|---|---|
+| ARCH-04/EVAL-04/ALIGN-04; G01/G04/G14 | `evaluation.landmarks.extract_landmark_state`, `validate_context`, `tests/test_evaluation_contracts.py` single-state/future-availability/gap/demographic tests | Synthetic contract checks implemented; approved real-data view/landmark/probe integration pending |
+| EVAL-02/EVAL-04; G02 | `evaluation.outcomes.encounter_labels`, `readmission_label`; encounter discordance, overlap, threshold and censor fixtures | No encounter selection or transfer/censor scientific default selected |
+| DATA-04/availability; G03/G15 | `data.vitals.aggregate_vitals_sliding_window`; unknown-availability and invalid-span regression | Preserves absence of evidence; does not implement source availability ingestion or alter paper occurrence timestamps |
+| EVAL-06; G05 | Legacy clinical CLI held; `NEWS2Scorer.calculate` missing-input rejection and tests | Five-component helper is not a validated full paper NEWS2 label/MLP protocol |
+| ARCH-01/HP-01; G11/G12 | Private per-checkpoint snapshot counts/configs; strict legacy/YAML identity checks; release parameter gate | Preserved152,655,380 and current148,957,844 remain distinct from paper150,322,970 |
+| Evidence/release engineering; G06/G13 | `evaluation.contracts`, `validate_experiment_release.py`, reporting and artifact-mutation tests | These are reproduction safeguards, not additional paper claims; pending/unknown required evidence blocks release |
+
+The [controlled remediation matrix](ARCHITECTURE_AUDIT.md#controlled-remediation-preserved-evidence-and-revision-separation) maps all fifteen findings to impacts, tests and experiment blockers. Existing paper facts and A-ID classifications remain unchanged.

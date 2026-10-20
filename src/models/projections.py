@@ -48,11 +48,7 @@ class ModalityInputProjector(nn.Module):
         self.modality_embed = nn.Embedding(num_modalities, d_model)
 
         # 2. Specifics projection (clinical text phrases/names)
-        self.specifics_proj = nn.Sequential(
-            nn.Linear(text_dim, d_model),
-            nn.GELU(),
-            nn.Linear(d_model, d_model),
-        )
+        self.specifics_proj = nn.Linear(text_dim, d_model)
 
         # 3. Modality-specific value projections
         self.numeric_proj = nn.Linear(numeric_dim, d_model)

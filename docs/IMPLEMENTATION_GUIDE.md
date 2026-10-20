@@ -27,24 +27,11 @@ Primary evidence: [NOAH.pdf](../paper/NOAH.pdf), arXiv:2609.09140v1, 50 pages, S
 
 Use a separate `evidence_source` for the NOAH paper, version-matched author code, encoder upstream code and this repository. Verified upstream code does not establish the exact settings used by NOAH. Upstream choices absent from NOAH remain ASSUMED until corroborated. Register candidates as independent configuration choices and proceed within the researcher's active task.
 
-## 2. Repository starting point
+## 2. Current implementation evidence
 
-Code baseline: `30dd669325f99e4ce9fe554cae2934376f35f879`. This is a static code snapshot checked on 2026-10-14; server execution evidence belongs in run reports.
+The 2026-10-19 [architecture audit](ARCHITECTURE_AUDIT.md) is the code-to-paper verification matrix. [PROJECT_STATUS.md](PROJECT_STATUS.md) distinguishes earlier pilot reports, current source fixes, CPU tests and pending corrected real-data execution. Existing experiments do not establish frozen-encoder provenance or paper protocol equivalence.
 
-| File/component | Existing content | Work to connect |
-|---|---|---|
-| `data/pilot_cohort_manifest.csv` | 1,000 unique subject IDs; 700/150/150 assignments | Verify event counts and modality content from sources; this count does not establish the candidate-pool size |
-| `src/data/subcohort.py` | Adult admission/ECG/CXR intersection; seed=42; selects the first 1,000 | Record the multimodally enriched pilot separately from the paper's natural cohort |
-| `src/data/extract_events.py` | Admission/discharge/death, numeric labs, ECG/CXR indices; chronological sorting | Clinical item names/units, remaining event readers, real media decoding and text |
-| `src/data/schema.py` | 31-category/6-modality enums, event and prefix fields | Stable source mappings, complete windows and loss ownership |
-| `numeric.py` / `vitals.py` | Candidate 44-D Fourier encoding; min/max helper | Record numerical conventions and connect vital-sign reading/aggregation |
-| `src/models/temporal.py` / `tests/test_temporal_oracle.py` | Temporal helper and test definitions | Full causal attention, variational modules, hierarchical decoding, training and rollout; execute and record tests |
-| `scripts/test_pilot_extraction.py` | Calls four readers for the first two manifest patients | Does not establish completed extraction, encoding or training for 1,000 patients |
-| `sbatch/run_pilot_gpu.sh` | Environment/resource framework with a placeholder training entry | Connect actual encoding/training commands within the authorized phase |
-
-Existing hourly gaps, January 1 birth-year proxy, tie ordering, final gap=0, 2h/1h aggregation and Fourier phase=1 are implementation choices, not automatically paper facts. The numeric=44 comment in `schema.py` is not a dimension reported by Table 15; that table does not give the numeric dimension.
-
-O2 GPU access is available. Record actual card type, allocation, memory, queue conditions and execution results in server reports.
+Current code includes DuckDB ETL, windows, projections, temporal transformer, prior/posterior, decoder, dual loss, training and rollout. Main open gates are pretrained ECG assets, pinned text/CXR recipes, ICU vital aggregation, ECHO processing, exact parameter reconciliation and complete evaluation/recovery protocols. Preserve original content dimensions and regenerate affected caches/windows after extraction changes. Architecture changes require corrected-model training; partial loading of old checkpoint tensors is not a migration.
 
 ## 3. Complete data path and implementation order
 
@@ -158,7 +145,7 @@ Independent configuration:
 
 Validate video length and actual frame indices. For a long video, the start-0 candidate is `0,2,...,30`, not 32 output frames. Check short-video frame count/padding, 224x224 size, channels/range, annotation removal and finite 512-D outputs. Ultrasound measurement tables alone do not implement the video path.
 
-The supplied inventory reports ECHO missing. A five-modality pilot can proceed under an agreed scope; complete six-modality reproduction requires ECHO. Do not fabricate zero videos or zero embeddings.
+The researcher supplied `/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-echo/1.0.1/`; directory existence was verified on 2026-10-19, while actual video preprocessing/encoding remains pending. A five-modality pilot can proceed under an agreed scope; complete six-modality reproduction requires ECHO. Do not fabricate zero videos or zero embeddings.
 
 ### 4.5 Numeric and categorical content
 
@@ -272,3 +259,11 @@ Public-source check date: 2026-10-14. Pin weights, processors and code versions 
 - EchoPrime: [official repository](https://github.com/echonet/EchoPrime), [model.py](https://github.com/echonet/EchoPrime/blob/main/echo_prime/model.py), [utils.py](https://github.com/echonet/EchoPrime/blob/main/utils/utils.py).
 
 Public candidates become a concrete run recipe after revision/hash pinning, shape/interface checks and assumption recording. They do not automatically establish all original NOAH settings.
+
+## Controlled evaluation remediation
+
+The [remediation matrix](ARCHITECTURE_AUDIT.md#controlled-remediation-preserved-evidence-and-revision-separation) defines completed guards versus pending scientific decisions and real-data integration. Historical source/configuration/checkpoint/report preservation precedes changes. Current full-dimension and legacy checkpoints must not be mixed; strict tensor loading alone does not attest semantic configuration or encoder lineage.
+
+New low-level APIs are `evaluation.outcomes.encounter_labels` / `readmission_label` and `evaluation.landmarks.extract_landmark_state`. They require selected encounters, endpoint parameters and a fully evidenced cutoff-bound view. They do not choose a last encounter, repair old shards, infer availability, sanitize a true next gap, build clinical NEWS2 labels, select folds or train a probe. The legacy pooled/subject-max clinical CLI and old reconciliation/reporting paths are held until approved integration exists.
+
+Keep model/training/input-encoding configurations unchanged during this initial guard phase. Source availability is unknown where absent, not replaced by occurrence or aggregate mean time. Before a real corrected evaluation, implement the approved raw-source/provenance/view contract and verify future-suffix invariance at that boundary. Keep literal paper timing and strict prospective timing as separate manifested modes. No alpha-sweep or retraining is authorized by a passing synthetic contract test.

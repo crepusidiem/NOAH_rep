@@ -4,7 +4,7 @@ Pilot Training Pipeline for NOAH (N-07) with Secure W&B Logging.
 Executes:
 1. Load curated dataset shards (pilot_train_windows.pt, pilot_val_windows.pt).
 2. Mini-batch collation into PyTorch tensors with padding & masks.
-3. AdamW optimizer with cosine LR schedule and linear warmup (OPT-01, OPT-02).
+3. Muon/AdamW routing with cosine LR schedule and linear warmup (OPT-01, OPT-02).
 4. Linear beta annealing for KL divergence (LOSS-03).
 5. Dual-path reconstruction loss (0.3 L_post + beta L_KL + 0.1 L_prior).
 6. Periodic validation and prior-only autoregressive rollout inspection.
@@ -20,6 +20,7 @@ Executes:
 import argparse
 import math
 import os
+import random
 import sys
 import time
 from pathlib import Path
@@ -37,6 +38,8 @@ from tqdm import tqdm
 
 from src.data.schema import ModelWindow, EventCategory, Modality
 from src.models.noah import NOAH, NOAHLossBreakdown
+from src.models.optimization import NOAHOptimizer
+from src.models.rollout import generate_autoregressive_rollout
 
 
 class WindowDataset(Dataset):
@@ -121,13 +124,14 @@ def parse_args():
     parser.add_argument("--output_dir", type=str, default="checkpoints/pilot")
     parser.add_argument("--batch_size", type=int, default=4)
     parser.add_argument("--epochs", type=int, default=5)
-    parser.add_argument("--lr", type=float, default=6e-4)
+    parser.add_argument("--lr", type=float, default=None)
     parser.add_argument("--weight_decay", type=float, default=0.01)
-    parser.add_argument("--warmup_epochs", type=int, default=1)
-    parser.add_argument("--kl_warmup_epochs", type=int, default=2)
-    parser.add_argument("--grad_clip", type=float, default=1.0)
+    parser.add_argument("--warmup_epochs", type=int, default=None)
+    parser.add_argument("--kl_warmup_epochs", type=int, default=None)
+    parser.add_argument("--grad_clip", type=float, default=None)
     parser.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu")
     
+    parser.add_argument("--optimizer", choices=["muon_adamw", "adamw"], default=None)
     parser.add_argument("--config", type=str, default=None, help="Path to YAML configuration file")
     parser.add_argument("--d_model", type=int, default=None, help="Model hidden dimension (default 256 for pilot, 768 for paper)")
     parser.add_argument("--d_latent", type=int, default=None, help="Latent space dimension (default 128 for pilot, 384 for paper)")
@@ -145,6 +149,9 @@ def parse_args():
                         help="W&B operation mode. Use 'offline' if compute node has no internet access.")
     parser.add_argument("--log_interval", type=int, default=5, help="Step interval for W&B metric logging")
     parser.add_argument("--use_class_weights", action="store_true", help="Apply inverse frequency class weights to category cross-entropy loss")
+    parser.add_argument("--class_weight_alpha", type=float, default=0.5,
+                        help="Exponent alpha for inverse frequency class weights: w_c = (N_c + 1)^(-alpha). Default: 0.5")
+    parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility across PyTorch, NumPy, and DataLoader")
     
     return parser.parse_args()
 
@@ -162,7 +169,7 @@ def get_beta(epoch: int, kl_warmup_epochs: int) -> float:
     """Linear beta warmup for KL divergence (LOSS-03)."""
     if kl_warmup_epochs <= 0:
         return 1.0
-    return min(1.0, (epoch + 1) / kl_warmup_epochs)
+    return min(1.0, max(0.0, epoch / kl_warmup_epochs))
 
 
 def evaluate(
@@ -273,68 +280,9 @@ def generate_rollout_trajectory(
 ) -> List[Dict[str, str]]:
     """
     Simulates prior-only autoregressive rollout (ROLL-01..03, LAT-05).
-    Generates anonymized clinical event predictions from demographic prefix.
+    Generates event components from supplied history and observed modality support.
     """
-    model.eval()
-    trajectory = []
-    with torch.no_grad():
-        L_prompt = 6
-        e_curr = model.projector(
-            first_batch["category_ids"][:1, :L_prompt],
-            first_batch["modality_ids"][:1, :L_prompt],
-            first_batch["specifics_vec"][:1, :L_prompt],
-            first_batch["has_specifics"][:1, :L_prompt],
-            first_batch["value_vec"][:1, :L_prompt],
-            first_batch["has_value"][:1, :L_prompt],
-        )
-        pos = first_batch["positions"][:1, :L_prompt]
-        ages = first_batch["ages"][:1, :L_prompt]
-        d_next = first_batch["delta_next"][:1, :L_prompt]
-        d_prev = first_batch["delta_prev"][:1, :L_prompt]
-        attn = first_batch["attention_mask"][:1, :L_prompt]
-
-        h = model.backbone(e=e_curr, positions=pos, ages=ages, delta_next=d_next, delta_prev=d_prev, attention_mask=attn)
-
-        # Rollout loop
-        for step_i in range(1, n_rollout_steps + 1):
-            last_h = h[:, -1:]
-            mu_p, sigma_p, _ = model.prior(last_h)
-            z_sample = mu_p + sigma_p * torch.randn_like(sigma_p)
-            dec = model.decoder(z_sample)
-
-            pred_cat = dec.category_logits.argmax(dim=-1).item()
-            pred_mod = dec.modality_logits.argmax(dim=-1).item()
-            pred_gap = model.decoder.decode_time(dec.time_gate_logits, dec.log_gap_reg).item()
-
-            cat_name = EventCategory(pred_cat).name if pred_cat < len(EventCategory) else f"CAT_{pred_cat}"
-            mod_name = Modality(pred_mod).name if pred_mod < len(Modality) else f"MOD_{pred_mod}"
-
-            trajectory.append({
-                "step": step_i,
-                "category": cat_name,
-                "modality": mod_name,
-                "predicted_gap_hours": f"{pred_gap:.2f}",
-            })
-
-            # Append synthetic placeholder token to continue context
-            new_cat = torch.tensor([[pred_cat]], device=device, dtype=torch.int64)
-            new_mod = torch.tensor([[pred_mod]], device=device, dtype=torch.int64)
-            new_spec = torch.zeros(1, 1, 768, device=device)
-            new_has_spec = torch.zeros(1, 1, device=device, dtype=torch.bool)
-            new_val = torch.zeros(1, 1, 768, device=device)
-            new_has_val = torch.zeros(1, 1, device=device, dtype=torch.bool)
-
-            new_e = model.projector(new_cat, new_mod, new_spec, new_has_spec, new_val, new_has_val)
-            e_curr = torch.cat([e_curr, new_e], dim=1)
-            pos = torch.cat([pos, pos[:, -1:] + 1.0], dim=1)
-            ages = torch.cat([ages, ages[:, -1:] + (pred_gap / 8760.0)], dim=1)
-            d_prev = torch.cat([d_prev, torch.tensor([[pred_gap]], device=device)], dim=1)
-            d_next = torch.cat([d_next, torch.zeros(1, 1, device=device)], dim=1)
-            attn = torch.cat([attn, torch.ones(1, 1, device=device, dtype=torch.bool)], dim=1)
-
-            h = model.backbone(e=e_curr, positions=pos, ages=ages, delta_next=d_next, delta_prev=d_prev, attention_mask=attn)
-
-    return trajectory
+    return generate_autoregressive_rollout(model, first_batch, device, n_rollout_steps=n_rollout_steps)
 
 
 def main():
@@ -342,9 +290,17 @@ def main():
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # Set random seeds for reproducibility
+    random.seed(args.seed)
+    np.random.seed(args.seed)
+    torch.manual_seed(args.seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(args.seed)
+
     print("=" * 70)
     print("NOAH PILOT TRAINING PIPELINE (N-07)")
     print(f"Device:       {args.device}")
+    print(f"Random Seed:  {args.seed}")
     print(f"Train Data:   {args.train_data}")
     print(f"Val Data:     {args.val_data}")
     print(f"Batch Size:   {args.batch_size}")
@@ -362,6 +318,19 @@ def main():
 
     model_cfg = cfg_dict.get("model", {})
     train_cfg = cfg_dict.get("training", {})
+    for name, key, fallback in [("lr", "learning_rate", 6e-4),
+                                ("warmup_epochs", "lr_warmup_epochs", 6),
+                                ("kl_warmup_epochs", "kl_warmup_epochs", 10),
+                                ("grad_clip", "gradient_clip_norm", train_cfg.get("grad_clip", 10.0))]:
+        if getattr(args, name) is None:
+            setattr(args, name, train_cfg.get(key, fallback))
+    configured_optimizer = train_cfg.get("optimizer", "muon_adamw")
+    if isinstance(configured_optimizer, dict):
+        if configured_optimizer != {"matrix_optimizer": "muon", "vector_optimizer": "adamw"}:
+            raise ValueError("Unsupported optimizer configuration")
+        configured_optimizer = "muon_adamw"
+    optimizer_mode = args.optimizer or configured_optimizer
+
 
     d_model = args.d_model if args.d_model is not None else model_cfg.get("d_model", 256)
     d_latent = args.d_latent if args.d_latent is not None else model_cfg.get("d_latent", 128)
@@ -431,12 +400,15 @@ def main():
         print(f"Notice: validation data not found or empty ({e}). Skipping validation evaluation.")
 
     train_dataset = WindowDataset(train_windows)
+    train_gen = torch.Generator()
+    train_gen.manual_seed(args.seed)
     train_loader = DataLoader(
         train_dataset,
         batch_size=args.batch_size,
         shuffle=True,
         collate_fn=collate_windows,
         drop_last=False,
+        generator=train_gen,
     )
 
     val_loader = None
@@ -461,11 +433,44 @@ def main():
                 if 0 <= c < 31:
                     counts[c] += 1
         
-        # Smoothed inverse square-root frequency: w_c = 1 / sqrt(N_c + 1)
-        inv_freq = 1.0 / torch.sqrt(counts + 1.0)
+        # Smoothed inverse frequency: w_c = 1 / (N_c + 1)^alpha
+        alpha = args.class_weight_alpha
+        inv_freq = 1.0 / torch.pow(counts + 1.0, alpha)
         # Normalize so that weights sum to C (mean weight = 1.0)
         category_class_weights = (31.0 * (inv_freq / inv_freq.sum())).float()
-        print(f"Computed weights for 31 categories. Min: {category_class_weights.min():.4f}, Max: {category_class_weights.max():.4f}")
+        obs_mask = counts > 0
+        min_obs = category_class_weights[obs_mask].min().item() if obs_mask.any() else 0.0
+        max_obs = category_class_weights[obs_mask].max().item() if obs_mask.any() else 0.0
+        n_obs = int(obs_mask.sum().item())
+        n_unobs = 31 - n_obs
+        unobs_w = category_class_weights[~obs_mask][0].item() if n_unobs > 0 else 0.0
+        print(f"Computed weights for 31 categories (alpha={alpha:.2f}):")
+        print(f"  Observed classes ({n_obs}/31): Min={min_obs:.4f}, Max={max_obs:.4f}, Ratio={max_obs/max(min_obs, 1e-8):.2f}x")
+        if n_unobs > 0:
+            print(f"  Unobserved classes ({n_unobs}/31, count=0): Weight={unobs_w:.4f} (inactive during training, never present in targets)")
+
+    # Train-only fitting, scored shifted targets; no validation/test support enters generation.
+    support = torch.zeros(31, 6, dtype=torch.bool)
+    mod_counts = torch.zeros(6, dtype=torch.float64)
+    presence_counts = torch.zeros(2, dtype=torch.float64)
+    for w in train_windows:
+        mask = w.loss_mask[1:] & w.attention_mask[1:] & w.attention_mask[:-1]
+        cats = torch.as_tensor(w.category_ids[1:][mask]).long()
+        mods = torch.as_tensor(w.modality_ids[1:][mask]).long()
+        presence = torch.as_tensor(w.has_specifics[1:][mask]).long()
+        support[cats, mods] = True
+        mod_counts += torch.bincount(mods, minlength=6)
+        presence_counts += torch.bincount(presence, minlength=2)
+    def class_weights(counts):
+        weights = (counts + 1).pow(-args.class_weight_alpha)
+        return (weights / weights.mean()).float()
+    weighted_heads = args.use_class_weights or train_cfg.get("class_weighted_heads", True)
+    if weighted_heads and category_class_weights is None:
+        counts = torch.zeros(31, dtype=torch.float64)
+        for w in train_windows:
+            mask = w.loss_mask[1:] & w.attention_mask[1:] & w.attention_mask[:-1]
+            counts += torch.bincount(torch.as_tensor(w.category_ids[1:][mask]).long(), minlength=31)
+        category_class_weights = class_weights(counts)
 
     model = NOAH(
         d_model=d_model,
@@ -488,6 +493,10 @@ def main():
         alpha_post=0.3,
         gamma_prior=0.1,
         category_class_weights=category_class_weights,
+        modality_class_weights=class_weights(mod_counts) if weighted_heads else None,
+        specifics_presence_class_weights=class_weights(presence_counts) if weighted_heads else None,
+        category_modality_support=support,
+        drop_path=model_cfg.get("drop_path", 0.1),
     ).to(args.device)
 
     total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -497,9 +506,10 @@ def main():
         wandb.summary["trainable_parameters"] = total_params
 
     # 4. Optimizer & Scheduler
-    optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
-    total_steps = args.epochs * len(train_loader)
-    warmup_steps = args.warmup_epochs * len(train_loader)
+    optimizer = NOAHOptimizer(model, lr=args.lr, weight_decay=args.weight_decay, mode=optimizer_mode)
+    updates_per_epoch = math.ceil(len(train_loader) / grad_accum_steps)
+    total_steps = args.epochs * updates_per_epoch
+    warmup_steps = args.warmup_epochs * updates_per_epoch
 
     global_step = 0
     t_start = time.time()
@@ -522,6 +532,7 @@ def main():
             for param_group in optimizer.param_groups:
                 param_group["lr"] = lr
 
+            beta = min(1.0, (epoch + step_idx / len(train_loader)) / args.kl_warmup_epochs) if args.kl_warmup_epochs > 0 else 1.0
             batch_dev = {k: v.to(args.device) for k, v in batch.items()}
 
             total_loss, breakdown, aux = model(
@@ -542,7 +553,9 @@ def main():
             )
 
             # Scale loss for gradient accumulation
-            scaled_loss = total_loss / grad_accum_steps
+            group_start = (step_idx // grad_accum_steps) * grad_accum_steps
+            group_size = min(grad_accum_steps, len(train_loader) - group_start)
+            scaled_loss = total_loss / group_size
             scaled_loss.backward()
 
             step_did_update = False
@@ -601,7 +614,6 @@ def main():
                     "train/tokens_per_sec": tokens_per_sec,
                 }, step=global_step)
 
-            global_step += 1
             pbar.set_postfix({
                 "loss": f"{total_loss.item():.2f}",
                 "kl": f"{breakdown.loss_kl.item():.2f}",
@@ -673,13 +685,25 @@ def main():
             "dropout": dropout,
             "attn_dropout": attn_dropout,
             "layer_scale_init": layer_scale_init,
-            "use_class_weights": args.use_class_weights,
+            "use_class_weights": weighted_heads,
+            "drop_path": model_cfg.get("drop_path", 0.1),
+            "architecture_revision": "2026-10-19",
+
         }
         torch.save({
             "epoch": epoch + 1,
             "global_step": global_step,
             "model_state_dict": model.state_dict(),
             "optimizer_state_dict": optimizer.state_dict(),
+            "category_modality_support": support,
+            "category_class_weights": category_class_weights,
+            "modality_class_weights": model.modality_class_weights,
+            "specifics_presence_class_weights": model.specifics_presence_class_weights,
+            "rng_state": torch.get_rng_state(),
+            "numpy_rng_state": np.random.get_state(),
+            "python_rng_state": random.getstate(),
+            "cuda_rng_state": torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None,
+
             "loss": avg_loss,
             "config": saved_config,
         }, ckpt_path)

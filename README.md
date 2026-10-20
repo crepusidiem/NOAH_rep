@@ -11,6 +11,11 @@ Read [current project status and next actions](docs/PROJECT_STATUS.md) first to 
 
 The [technical implementation guide](docs/IMPLEMENTATION_GUIDE.md) explains the actual reproduction steps, paper-specified feature extraction, verified upstream encoder interfaces, outstanding configuration choices and acceptance checks. It complements the [full specification](docs/REPRODUCTION_SPEC.md), [paper traceability](docs/PAPER_TRACEABILITY.md), [assumption register](docs/ASSUMPTIONS.md), [test plan](docs/TEST_PLAN.md) and [implementation schedule](docs/REPRODUCTION_PLAN.md).
 
-The supplied paper is [paper/NOAH.pdf](paper/NOAH.pdf). Existing pilot code is partial. Start pilot work with N-01 to N-03 in the project status, then follow the test and integration gates. Implementation and execution follow the researcher's active task; paper-scale training is a separate scope and resource decision.
+The [architecture audit](docs/ARCHITECTURE_AUDIT.md) connects paper requirements to current code, fixes, tests and unresolved fidelity gates.
+
+The supplied paper is [paper/NOAH.pdf](paper/NOAH.pdf). Existing pilot experiments do not establish exact reproduction. Follow the current fidelity and integration gates in project status before expansion. Implementation and execution follow the researcher's active task; paper-scale training is a separate scope and resource decision.
 
 Repository contents, ignored outputs and publishing checks follow [REPOSITORY_POLICY.md](docs/REPOSITORY_POLICY.md). Documentation describes the current state; Git retains version history.
+
+
+Controlled remediation: [all15 findings, methodology decisions and execution order](docs/ARCHITECTURE_AUDIT.md#controlled-remediation-preserved-evidence-and-revision-separation). Historical/current checkpoint families are preserved separately; the alpha-sweep and legacy pooled clinical reporting are on hold. New experiment manifests and release gates are defined in [reports/README.md](reports/README.md#experiment-manifests-and-scientific-release).

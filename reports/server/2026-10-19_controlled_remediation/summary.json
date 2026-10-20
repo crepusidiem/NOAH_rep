@@ -1,0 +1,68 @@
+{
+  "alpha_sweep": "HOLD; launcher exits 78 before work",
+  "applicable_release_gates": "remain closed until actual prediction/source/checkpoint artifacts, approved decisions and executed evidence pass",
+  "baseline_commit": "1d21fd6f85d4fabbf6cdf0022e865db82cc52dc7",
+  "clinical_integration": "NOT_COMPLETE; provenance-preserving source/views and clinical endpoint oracles pending",
+  "corrected_clinical_scores_generated": false,
+  "current_full_dimension_assembly": {
+    "completed_real_data_checkpoint": "NOT_IDENTIFIED",
+    "paper_parameter_count": 150322970,
+    "parameter_count": 148957844
+  },
+  "date": "2026-10-19",
+  "methodology_decisions": "M01-M12 pending as detailed in docs/ARCHITECTURE_AUDIT.md; recommendations are not defaults",
+  "new_slurm_jobs": 0,
+  "new_training_runs": 0,
+  "preservation": {
+    "checkpoint_bytes": 55663961469,
+    "checkpoint_copies": 51,
+    "checkpoint_families": [
+      {
+        "count": 30,
+        "parameter_count": 152655380,
+        "scope": "historical full-dimension architecture"
+      },
+      {
+        "count": 20,
+        "parameter_count": 5435924,
+        "scope": "historical pilot architecture"
+      },
+      {
+        "count": 1,
+        "parameter_count": 179108,
+        "scope": "current synthetic smoke architecture"
+      }
+    ],
+    "historical_prediction_lineage": "UNVERIFIED; original fold/prediction artifacts not found in reviewed report bundle",
+    "pre_remediation_source_inventory_sha256": "3fcd5e8574d3edc4b261d159afd0137fd1711003c13129b46c5442048174bb31",
+    "private_root": "output/reproducibility/2026-10-19_controlled_remediation_5b9bac05",
+    "verification": "independent copies; full read-back SHA-256 comparison"
+  },
+  "remediation_code": {
+    "bytes": 449414,
+    "files": 59,
+    "inventory": "remediation_code_inventory.json",
+    "inventory_sha256": "af9d6042e62c13bfd543bd9db76ba7de063206973cea1f03dbd765d318815343",
+    "private_directory": "remediation_code"
+  },
+  "schema_version": 1,
+  "stage": "controlled_remediation_guards",
+  "unchanged_during_remediation": {
+    "historical_metric_json": "not recomputed or overwritten",
+    "model_modules_trainer_numeric_yaml": true
+  },
+  "verification": {
+    "command": "OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. /home/wey371/rajpurkarlab/home/wey371/.venvs/noah/bin/python -m pytest tests/test_evaluation_contracts.py tests/test_clinical_probes.py tests/test_temporal_oracle.py tests/test_variational_oracle.py tests/test_window_builder.py tests/test_dynamic_demographics.py -q -o cache_dir=/tmp/noah_remediation_test_cache",
+    "elapsed_seconds": 7.86,
+    "failed": 0,
+    "passed": 61,
+    "scope": "synthetic contract, clinical utility, temporal/variational oracle, window and demographic tests",
+    "skipped": 0,
+    "static_checks": [
+      "git diff --check",
+      "Python AST parsing",
+      "dollar-delimited Markdown math in new audit/contract documents"
+    ]
+  },
+  "working_tree": "uncommitted; source inventory distinguishes dirty revisions"
+}

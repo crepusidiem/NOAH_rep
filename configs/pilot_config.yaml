@@ -99,6 +99,7 @@ decoder:
   specifics_gate_threshold: 0.5          # A-25 ASSUMED
 
 training:
+  class_weighted_heads: true
   batch_size: 4                          # Pilot batch size
   gradient_accumulation_steps: 2
   learning_rate: 6.0e-4                  # EXPLICIT (p. 50)

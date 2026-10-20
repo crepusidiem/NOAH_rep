@@ -1,5 +1,7 @@
 # NOAH test and scientific validation plan
 
+Current code verification and selected implementation candidates (2026-10-19): [ARCHITECTURE_AUDIT.md](ARCHITECTURE_AUDIT.md). Paper requirements below remain distinct from implementation/test status.
+
 Updated 2026-10-14. This document specifies required tests. Temporal/numeric test definitions exist; execution results and coverage are recorded in project status and server reports. See [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) for the current snapshot and encoder-specific acceptance checks. Documentation consistency checks are separate from experimental validation.
 
 Requirements/evidence: [REPRODUCTION_SPEC.md](REPRODUCTION_SPEC.md), [PAPER_TRACEABILITY.md](PAPER_TRACEABILITY.md). Pending configurations: [ASSUMPTIONS.md](ASSUMPTIONS.md). Proposed test IDs are audit artifacts, not tests supplied by the authors.
@@ -246,3 +248,24 @@ Final gates:
 5. **Paper-scale gate:** corpus/schedule/assets/evaluation protocol evidence sufficient, unresolved choices declared, full comparison and uncertainty report.
 
 Only the audit/document checks are in scope now. Implementation or running these experimental gates awaits explicit approval.
+
+## Controlled remediation: executable gates and remaining tests
+
+`tests/test_evaluation_contracts.py` implements the following independent synthetic checks:
+
+- Complete manifest/artifact requirements, revision and module-count consistency; unchanged source/prediction evidence binding; changed or missing check artifacts; FAIL/SKIP/UNKNOWN required checks and pending methodology block release.
+- One explicitly requested landmark state, no mean pooling; correct event/encounter identity; future event, delayed/unknown availability, future demographics and retained-gap inconsistency rejected; paper full-next-gap policy remains distinct from strict prospective mode.
+- Explicit encounter selection and threshold comparison, unknown outcomes retained, overlapping readmission rejected and incomplete follow-up not made negative.
+- Missing/nonfinite core vital values cannot produce a NEWS2 label; aggregate unknown availability remains unknown; nonpositive aggregation windows rejected.
+- Unsupported retrospective-to-prospective reporting and report overwrites rejected; incompatible architecture manifests cannot be aggregated; unversioned checkpoints and conflicting YAML cannot be loaded as the current model.
+- Legacy clinical evaluation fails before computation; the alpha launcher exits78 before loading modules or starting training; metric dictionaries without manifests cannot pass the release CLI.
+
+These checks exercise contracts on fictional fixtures, not a completed real-data pipeline. Methodological parameters inside fixtures are explicitly synthetic and are not project defaults. Still pending: approved source-field/availability ingestion, provenance-preserving shard/view serialization, raw-suffix view-builder invariance, full label/source fixtures, actual patient/fold artifacts, validated NEWS2 complete-window/scoring oracle, optimizer/denominator sensitivity and exact-resume replay, clinical prediction replay and all applicable paper-scale asset checks. These remain independent release blockers; unit tests do not certify them.
+
+Run the release boundary using:
+
+```bash
+python scripts/validate_experiment_release.py /private/run/manifest.json --claim prospective
+```
+
+The validator exits nonzero on unmet prerequisites and performs no model execution. A check artifact must identify its check name, PASS status, source SHA-256 and predictions SHA-256; the manifest also records and verifies the artifact's own checksum. Source snapshots, checkpoints, patient-split files and private prediction files must exist and match the manifest. Clinical evidence must come from executed checks; copying the synthetic fixture's PASS files is not valid execution evidence.

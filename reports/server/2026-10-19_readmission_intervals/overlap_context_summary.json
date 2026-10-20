@@ -1,0 +1,31 @@
+{
+  "all_overlap_pairs": [
+    {
+      "pairs": 60,
+      "subjects": 59,
+      "adjacent_pairs": 59,
+      "nonadjacent_pairs": 1
+    }
+  ],
+  "all_overlap_involved_admissions": [
+    {
+      "admissions": 119
+    }
+  ],
+  "negative_pair_duration_markers": [
+    {
+      "next_negative_own_duration": 4,
+      "next_zero_own_duration": 0,
+      "index_negative_own_duration": 0
+    }
+  ],
+  "legacy_subject_validity_decomposition": {
+    "removed_by_invalid_index_exclusion": 3,
+    "removed_by_negative_candidate_repair_on_valid_indexes": 32,
+    "lower_bound_only_misses_forward_positive_subject": 0
+  },
+  "test_subject_lists_identical": true,
+  "strictly_positive_context_cases": 1,
+  "input_sha256": "a69958e1ad26d2796ad2545eee3d26965b68420ce7b2927510e40976bdd80665",
+  "recipe_sha256": "ac93f1dcf6023d8a340f146a73e7d9ccdcf04a70d39a0f544ea390d0233f9f4a"
+}

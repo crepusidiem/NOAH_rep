@@ -75,7 +75,7 @@ class DuckDBEventExtractor:
 
     def _read_csv(self, path: Path) -> str:
         """Robust DuckDB read_csv expression handling quotes, commas, null padding, and malformed rows."""
-        return f"read_csv('{path}', header=true, quote='\"', escape='\"', null_padding=true, ignore_errors=true, parallel=false)"
+        return f"read_csv('{path}', header=true, quote='\"', escape='\"', null_padding=true, ignore_errors=false, parallel=false)"
 
     def _load_cohort_manifest(self):
         """Loads cohort manifest into DuckDB temporary table and memory."""

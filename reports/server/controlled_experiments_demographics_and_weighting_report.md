@@ -1,5 +1,7 @@
 # Controlled Experimental Report: Dynamic Demographic Prefixes and Class-Weighted Loss in NOAH
 
+Evidence classification: historical candidate-architecture experiments with whole-record pooled, subject-level retrospective probes. These metrics are invalid for prospective or paper landmark interpretation. Readmission and NEWS2 labels require correction before clinical endpoint use. Reconstruction metrics are conditional diagnostics with recipe/provenance limitations. Original reports and checkpoint bytes are preserved in the private remediation snapshot; see [the remediation matrix](../../docs/ARCHITECTURE_AUDIT.md#historical-metric-interpretation). No corrected clinical evaluation is reported here.
+
 **Date**: 2026-10-19  
 **Execution Environment**: Harvard Medical School O2 Cluster (NVIDIA L40S 48GB VRAM)  
 **Evaluated Architecture**: 152.65M Parameters (Paper-Scale: $d_{\text{model}}=768$, $d_{\text{latent}}=384$, 12 layers, 12 heads, FFN expansion ratio 8)  
@@ -80,7 +82,7 @@ All models were evaluated on the **exact same held-out test split** (146 evaluat
   - The model broke through the 0.90 AUROC threshold for Prolonged Length of Stay (>7d) reaching **0.9042**, and achieved the highest Readmission Balanced Accuracy (**70.87%**) and NEWS2 acuity correlation ($r = 0.1439$).
 - **The Trade-Off in Mortality Calibration**:
   - Why did Mortality AUROC drop to 0.6612 in Exp 2?
-  - In MIMIC-IV, in-hospital death is acutely presaged by rapid cascades in routine laboratory results (e.g. abrupt swings in lactate, potassium, BUN, blood gases). In the unweighted model, `LAB_TEST` receives 58% of the loss gradient, compelling the model to master intricate lab dynamics. In Exp 2, the inverse frequency weighting aggressively suppresses the majority `LAB_TEST` loss weight to $w = 0.0081$ (downweighted by >120x) while boosting rare event classes like `ENTER_ICU` and `DEATH` ($w = 6.87$).
+  - In MIMIC-IV, in-hospital death is acutely presaged by rapid cascades in routine laboratory results (e.g. abrupt swings in lactate, potassium, BUN, blood gases). In the unweighted model, `LAB_TEST` accounts for58% of event prevalence; its gradient share was not measured, compelling the model to master intricate lab dynamics. In Exp 2, the inverse frequency weighting aggressively suppresses the majority `LAB_TEST` loss weight to $w = 0.0081$ (a normalized class coefficient, not a measured120-fold gradient reduction) while boosting rare event classes like `ENTER_ICU` and `DEATH` ($w = 6.87$).
   - While this enables diverse generative rollouts (generating transfer notes, X-rays, and microbiology tests) and raises overall categorical accuracy, it reduces the latent representation's fidelity to fine-grained numerical lab trajectories, which are crucial for linear probing of imminent in-hospital death.
 
 ---
@@ -88,7 +90,7 @@ All models were evaluated on the **exact same held-out test split** (146 evaluat
 ## 4. Architectural & Production Recommendations
 
 1. **Adopt Dynamic Demographic Prefixing (Exp 1) as Standard Baseline**:
-   - The paper requirement of window-end dynamic demographic updating with BioLORD text embeddings provides unambiguous, across-the-board clinical probing benefits (Mortality AUROC 0.815, Readmission AUROC 0.710). It is faithful to the paper and scientifically superior.
+   - The paper requirement of window-end dynamic demographic updating with BioLORD text embeddings has recorded pooled retrospective point estimates (Mortality AUROC0.815, Readmission AUROC0.710). These do not establish leakage-free landmark performance, prospective benefit or scientific superiority.
 2. **Loss Weighting Strategy for Phase 2 Full Scaling**:
    - Rather than pure inverse frequency weighting ($1/\sqrt{N}$), a **milder loss scaling** (e.g. effective number of samples $w_c = (1 - \beta) / (1 - \beta^{N_c})$ with $\beta = 0.999$, or a maximum weight clamping $[0.1, 5.0]$) should be tested. This will preserve the categorical diversity and high classification accuracy (75.6%) without degrading the representation of high-frequency physiological lab trajectories.
 

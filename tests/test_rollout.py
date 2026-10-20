@@ -57,6 +57,7 @@ def test_rollout_anti_stall_and_diversity():
         top_p=0.9,
         max_consecutive_zero_gaps=3,
         min_forced_gap_hours=1.0,
+        category_modality_support=torch.ones(31, 6, dtype=torch.bool),
     )
 
     assert len(traj) == 15

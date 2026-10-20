@@ -1,0 +1,12 @@
+{
+  "protected_files_unchanged_after_supplements": 42,
+  "python_syntax": "PASS",
+  "executed_recipe_hashes": "PASS",
+  "markdown_math_delimiters": "PASS",
+  "independent_source_forward_reference_disagreements": 0,
+  "historical_subject_query_disagreements": 0,
+  "etl_identity_or_time_discrepancies": 0,
+  "etl_adjacent_gap_discrepancies": 0,
+  "production_changes": "NONE; new audit scripts and new report artifacts only",
+  "new_training_runs": 0
+}

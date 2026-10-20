@@ -1,6 +1,6 @@
 # Server execution report convention
 
-This document defines how server execution evidence is saved. No actual report bundle is currently present. Published content follows [REPOSITORY_POLICY.md](../docs/REPOSITORY_POLICY.md). All repository reports and reusable agent prompts must be in English.
+This document defines how server execution evidence is saved. Dated report bundles and aggregate experiment reports are present under `server/`; each has its own execution evidence and scope. Published content follows [REPOSITORY_POLICY.md](../docs/REPOSITORY_POLICY.md). All repository reports and reusable agent prompts must be in English.
 
 ## Location
 
@@ -60,3 +60,15 @@ Synchronize reviewed code and aggregate summaries, not clinical text, raw media,
 ```
 
 See [REMOTE_WORKFLOW.md](../docs/REMOTE_WORKFLOW.md) for synchronization and [PROJECT_STATUS.md](../docs/PROJECT_STATUS.md) for current progress. Documentation describes the current state; Git retains version history.
+
+## Experiment manifests and scientific release
+
+Every future evaluation requires the structure in `configs/evaluation_manifest.template.json`, validated by `src/evaluation/contracts.py`. The template intentionally contains unresolved/null fields and cannot pass a gate. Record code commit and source artifact hash, architecture revision/module counts, checkpoint identity, dataset versions and mapping/cache manifests, encoder identities/recipe hashes, random seeds, patient split artifact, cutoff and next-gap/demographic policies, encounter/endpoint/horizon/censor definitions, availability handling, probe population/validation, private predictions, metric/uncertainty implementation and all approved assumptions/deviations.
+
+Two primary modes are supported: `paper_reproduction` and `strict_prospective`. The mode is not itself a conformance certificate. A paper profile may disclose true next-gap timing as a literal reconstruction/retrieval information condition; a strict prospective profile rejects it and requires observed source availability and cutoff-bound metadata. A full-record mean is never a landmark representation. Existing provenance-free shards do not acquire these properties by adding a mode string.
+
+Use `validate_experiment_release.py` before publishing a requested label. `write_validated_report` performs the same checks and refuses to overwrite an existing experiment report. Actual source/checkpoint/split/prediction files and check artifacts are hashed. Relevant required checks and methodology decisions must pass; unknown, skipped, absent, mismatched or pending evidence blocks the claim. Paper-faithful claims also reject deviations and the known candidate parameter mismatch. Report-to-checkpoint associations inferred from names remain unverified until execution lineage/prediction replay is established.
+
+Prediction records remain private. Landmark records include `representation_kind=single_landmark`, a `LandmarkRequest`, ordered per-token `EventEvidence` (including demographic evidence), finite label/prediction and their source identities. Release checks examine these records, not only a self-declared PASS flag. The reporting gate prevents unsupported label promotion; it does not prove a fabricated evidence file is an authentic execution. Preserve executable test output and the exact source snapshot that produced it.
+
+Historical pooled mortality/LOS metrics are exploratory retrospective subject-label diagnostics, not prospective or paper landmark results. Historical readmission/NEWS2 targets need correction before clinical endpoint interpretation. Posterior reconstruction remains a conditional reconstruction diagnostic with its exact masks/recipe/provenance, not free forecasting. See the [remediation matrix and historical metric classification](../docs/ARCHITECTURE_AUDIT.md#historical-metric-interpretation).

@@ -1,0 +1,1299 @@
+{
+  "date": "2026-10-19",
+  "baseline_commit": "1d21fd6f85d4fabbf6cdf0022e865db82cc52dc7",
+  "audit_script_sha256": "26cd931ce62905ff38ad6de36bcc8ab37b6b8cdd4d74bd4c856e941e85082949",
+  "host": "compute-b-16-177.o2.rc.hms.harvard.edu",
+  "slurm_job_id": "56795452",
+  "python": "3.12.15",
+  "duckdb": "1.5.6",
+  "pandas": "3.0.6",
+  "source_tables": {
+    "admissions": {
+      "path": "/home/wey371/rajpurkarlab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/admissions.csv",
+      "bytes": 73099499,
+      "sha256": "59a99ad5a5549f1ffe2e4995caafb8f727a1b726e595737f3aeb43eee6bb32ac"
+    },
+    "transfers": {
+      "path": "/home/wey371/rajpurkarlab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp/transfers.csv.gz",
+      "bytes": 36158338,
+      "sha256": "a5a7fba8ae20338462fecf3cf30a78f80d831c221a6d412af427577cded44be6"
+    },
+    "icustays": {
+      "path": "/home/wey371/rajpurkarlab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/icu/icustays.csv.gz",
+      "bytes": 2614571,
+      "sha256": "b7d37536d4ce6f68feb3c5a89068bec34c5f03a573162df02bd57aec53b87c7d"
+    },
+    "edstays": {
+      "path": "/home/wey371/rajpurkarlab/datasets/mimic-iv-ed/physionet.org/files/mimic-iv-ed/2.2/ed/edstays.csv",
+      "bytes": 39546845,
+      "sha256": "db736e03bd16dd4fe2e6f22d85360320dc27280e23dcc8629c6384da733d50fc"
+    }
+  },
+  "quality": {
+    "raw_rows": 431231,
+    "subjects": 180733,
+    "admissions": 431231,
+    "duplicate_hadm_rows": 0,
+    "missing_admit": 0,
+    "missing_discharge": 0,
+    "negative_own_stay": 139,
+    "zero_own_stay": 3,
+    "exact_duplicate_rows": 0,
+    "admission_time_tie_groups": 1,
+    "independent_forward_reference_disagreements": 0,
+    "literal_historical_vs_deterministic_subject_disagreements": 0
+  },
+  "populations": {
+    "all_mimic_iv_2_2_hospital": {
+      "subjects": 180733,
+      "distinct_hospital_admissions": 431231,
+      "adjacent_pairs": 250498,
+      "valid_discharge_index_stays": 431092,
+      "affected_subjects": {
+        "n": 59,
+        "denominator": 180733,
+        "percent": 0.032644840731908396
+      },
+      "admissions_involved_in_negative_pairs": {
+        "n": 118,
+        "denominator": 431231,
+        "percent": 0.027363524421945548
+      },
+      "negative_adjacent_pairs": {
+        "n": 59,
+        "denominator": 250498,
+        "percent": 0.023553082260137807
+      },
+      "potentially_misclassified_index_stays": {
+        "n": 59,
+        "denominator": 431092,
+        "percent": 0.013686173716979206
+      },
+      "negative_hours_quantiles": {
+        "0": -713.55,
+        "0.05": -117.105,
+        "0.25": -23.241666666666667,
+        "0.5": -11.566666666666666,
+        "0.75": -1.7999999999999998,
+        "0.95": -0.0650000000000001,
+        "1": -0.03333333333333333
+      },
+      "negative_magnitude_bins_hours": {
+        "(0,1]": 13,
+        "(1,6]": 10,
+        "(6,24]": 22,
+        "(24,72]": 8,
+        "(72,infinity)": 6
+      },
+      "negative_geometry": {
+        "crossing_overlap": 36,
+        "nested_successor": 22,
+        "same_admission_timestamp": 1
+      },
+      "negative_type_pairs": {
+        "DIRECT EMER. -> EU OBSERVATION": 1,
+        "DIRECT OBSERVATION -> EU OBSERVATION": 1,
+        "DIRECT OBSERVATION -> SURGICAL SAME DAY ADMISSION": 1,
+        "DIRECT OBSERVATION -> URGENT": 1,
+        "EU OBSERVATION -> DIRECT EMER.": 3,
+        "EU OBSERVATION -> EU OBSERVATION": 10,
+        "EU OBSERVATION -> EW EMER.": 4,
+        "EU OBSERVATION -> OBSERVATION ADMIT": 1,
+        "EW EMER. -> DIRECT EMER.": 8,
+        "EW EMER. -> ELECTIVE": 2,
+        "EW EMER. -> EU OBSERVATION": 3,
+        "EW EMER. -> EW EMER.": 9,
+        "EW EMER. -> URGENT": 4,
+        "OBSERVATION ADMIT -> DIRECT EMER.": 1,
+        "OBSERVATION ADMIT -> EU OBSERVATION": 1,
+        "OBSERVATION ADMIT -> EW EMER.": 1,
+        "SURGICAL SAME DAY ADMISSION -> EU OBSERVATION": 1,
+        "SURGICAL SAME DAY ADMISSION -> EW EMER.": 1,
+        "URGENT -> DIRECT EMER.": 1,
+        "URGENT -> DIRECT OBSERVATION": 1,
+        "URGENT -> EU OBSERVATION": 1,
+        "URGENT -> EW EMER.": 1,
+        "URGENT -> URGENT": 2
+      },
+      "legacy_vs_forward_all_valid_index": {
+        "n": 431092,
+        "old_positive": 87228,
+        "new_positive": 87183,
+        "old_prevalence_percent": 20.23419594889258,
+        "new_prevalence_percent": 20.22375734182031,
+        "false_positive_relative_to_diagnostic": 45,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 87183,
+        "true_negative": 343864,
+        "affected_subjects": 45
+      },
+      "legacy_vs_forward_live_index": {
+        "n": 422554,
+        "old_positive": 87126,
+        "new_positive": 87090,
+        "old_prevalence_percent": 20.61890314610677,
+        "new_prevalence_percent": 20.610383524945924,
+        "false_positive_relative_to_diagnostic": 36,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 87090,
+        "true_negative": 335428,
+        "affected_subjects": 36
+      },
+      "lower_bound_only_vs_forward_live_index": {
+        "n": 422554,
+        "old_positive": 87076,
+        "new_positive": 87090,
+        "old_prevalence_percent": 20.60707033893893,
+        "new_prevalence_percent": 20.610383524945924,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 14,
+        "true_positive": 87076,
+        "true_negative": 335464,
+        "affected_subjects": 14
+      },
+      "subject_any_legacy_vs_subject_any_forward": {
+        "n": 180733,
+        "old_positive": 40196,
+        "new_positive": 40161,
+        "old_prevalence_percent": 22.240542678979487,
+        "new_prevalence_percent": 22.22117709549446,
+        "false_positive_relative_to_diagnostic": 35,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 40161,
+        "true_negative": 140537,
+        "affected_subjects": 35
+      },
+      "subject_any_legacy_vs_subject_any_lower_bound": {
+        "n": 180733,
+        "old_positive": 40196,
+        "new_positive": 40164,
+        "old_prevalence_percent": 22.240542678979487,
+        "new_prevalence_percent": 22.22283700265032,
+        "false_positive_relative_to_diagnostic": 32,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 40164,
+        "true_negative": 140537,
+        "affected_subjects": 32
+      },
+      "broadcast_subject_any_vs_encounter_live": {
+        "n": 422554,
+        "old_positive": 220079,
+        "new_positive": 87090,
+        "old_prevalence_percent": 52.08304737382677,
+        "new_prevalence_percent": 20.610383524945924,
+        "false_positive_relative_to_diagnostic": 132989,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 87090,
+        "true_negative": 202475,
+        "affected_subjects": 39421
+      },
+      "subject_any_legacy_vs_last_live_index": {
+        "n": 172193,
+        "old_positive": 36999,
+        "new_positive": 0,
+        "old_prevalence_percent": 21.48693617045989,
+        "new_prevalence_percent": 0.0,
+        "false_positive_relative_to_diagnostic": 36999,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 0,
+        "true_negative": 135194,
+        "affected_subjects": 36999
+      },
+      "subjects_positive_only_due_to_negative_pairs": 32,
+      "zero_gap_pairs": 1736,
+      "same_calendar_day_positive_pairs": 6861,
+      "exact_30_day_adjacent_pairs": 0,
+      "index_expired_legacy_positive": 102,
+      "simple_fix_missed_later_positive": 14,
+      "positive_gap_index_in_active_overlap_episode": 1730,
+      "positive_gap_successor_with_planned_type": 6161,
+      "positive_gap_successor_observation_type": 31414,
+      "forward_vs_overlap_episode_sensitivity": {
+        "n": 422554,
+        "old_positive": 87090,
+        "new_positive": 85595,
+        "old_prevalence_percent": 20.610383524945924,
+        "new_prevalence_percent": 20.25658259062747,
+        "false_positive_relative_to_diagnostic": 1495,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 85595,
+        "true_negative": 335464,
+        "affected_subjects": 1391
+      },
+      "next_id_order_vs_admit_order_disagreement": 125006
+    },
+    "pilot_manifest_1000": {
+      "subjects": 1000,
+      "distinct_hospital_admissions": 4129,
+      "adjacent_pairs": 3129,
+      "valid_discharge_index_stays": 4127,
+      "affected_subjects": {
+        "n": 1,
+        "denominator": 1000,
+        "percent": 0.1
+      },
+      "admissions_involved_in_negative_pairs": {
+        "n": 2,
+        "denominator": 4129,
+        "percent": 0.048437878420925166
+      },
+      "negative_adjacent_pairs": {
+        "n": 1,
+        "denominator": 3129,
+        "percent": 0.03195909236177692
+      },
+      "potentially_misclassified_index_stays": {
+        "n": 1,
+        "denominator": 4127,
+        "percent": 0.0242306760358614
+      },
+      "negative_hours_quantiles": {
+        "0": -10.983333333333333,
+        "0.05": -10.983333333333333,
+        "0.25": -10.983333333333333,
+        "0.5": -10.983333333333333,
+        "0.75": -10.983333333333333,
+        "0.95": -10.983333333333333,
+        "1": -10.983333333333333
+      },
+      "negative_magnitude_bins_hours": {
+        "(0,1]": 0,
+        "(1,6]": 0,
+        "(6,24]": 1,
+        "(24,72]": 0,
+        "(72,infinity)": 0
+      },
+      "negative_geometry": {
+        "crossing_overlap": 1
+      },
+      "negative_type_pairs": {
+        "EU OBSERVATION -> DIRECT EMER.": 1
+      },
+      "legacy_vs_forward_all_valid_index": {
+        "n": 4127,
+        "old_positive": 1053,
+        "new_positive": 1053,
+        "old_prevalence_percent": 25.514901865762056,
+        "new_prevalence_percent": 25.514901865762056,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 1053,
+        "true_negative": 3074,
+        "affected_subjects": 0
+      },
+      "legacy_vs_forward_live_index": {
+        "n": 4068,
+        "old_positive": 1052,
+        "new_positive": 1052,
+        "old_prevalence_percent": 25.860373647984268,
+        "new_prevalence_percent": 25.860373647984268,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 1052,
+        "true_negative": 3016,
+        "affected_subjects": 0
+      },
+      "lower_bound_only_vs_forward_live_index": {
+        "n": 4068,
+        "old_positive": 1051,
+        "new_positive": 1052,
+        "old_prevalence_percent": 25.835791543756148,
+        "new_prevalence_percent": 25.860373647984268,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 1,
+        "true_positive": 1051,
+        "true_negative": 3016,
+        "affected_subjects": 1
+      },
+      "subject_any_legacy_vs_subject_any_forward": {
+        "n": 1000,
+        "old_positive": 347,
+        "new_positive": 347,
+        "old_prevalence_percent": 34.699999999999996,
+        "new_prevalence_percent": 34.699999999999996,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 347,
+        "true_negative": 653,
+        "affected_subjects": 0
+      },
+      "subject_any_legacy_vs_subject_any_lower_bound": {
+        "n": 1000,
+        "old_positive": 347,
+        "new_positive": 347,
+        "old_prevalence_percent": 34.699999999999996,
+        "new_prevalence_percent": 34.699999999999996,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 347,
+        "true_negative": 653,
+        "affected_subjects": 0
+      },
+      "broadcast_subject_any_vs_encounter_live": {
+        "n": 4068,
+        "old_positive": 2767,
+        "new_positive": 1052,
+        "old_prevalence_percent": 68.01868239921338,
+        "new_prevalence_percent": 25.860373647984268,
+        "false_positive_relative_to_diagnostic": 1715,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 1052,
+        "true_negative": 1301,
+        "affected_subjects": 343
+      },
+      "subject_any_legacy_vs_last_live_index": {
+        "n": 940,
+        "old_positive": 320,
+        "new_positive": 0,
+        "old_prevalence_percent": 34.04255319148936,
+        "new_prevalence_percent": 0.0,
+        "false_positive_relative_to_diagnostic": 320,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 0,
+        "true_negative": 620,
+        "affected_subjects": 320
+      },
+      "subjects_positive_only_due_to_negative_pairs": 0,
+      "zero_gap_pairs": 18,
+      "same_calendar_day_positive_pairs": 51,
+      "exact_30_day_adjacent_pairs": 0,
+      "index_expired_legacy_positive": 1,
+      "simple_fix_missed_later_positive": 1,
+      "positive_gap_index_in_active_overlap_episode": 18,
+      "positive_gap_successor_with_planned_type": 65,
+      "positive_gap_successor_observation_type": 410,
+      "forward_vs_overlap_episode_sensitivity": {
+        "n": 4068,
+        "old_positive": 1052,
+        "new_positive": 1043,
+        "old_prevalence_percent": 25.860373647984268,
+        "new_prevalence_percent": 25.63913470993117,
+        "false_positive_relative_to_diagnostic": 9,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 1043,
+        "true_negative": 3016,
+        "affected_subjects": 9
+      },
+      "next_id_order_vs_admit_order_disagreement": 1557
+    },
+    "pilot_manifest_train": {
+      "subjects": 700,
+      "distinct_hospital_admissions": 2995,
+      "adjacent_pairs": 2295,
+      "valid_discharge_index_stays": 2993,
+      "affected_subjects": {
+        "n": 0,
+        "denominator": 700,
+        "percent": 0.0
+      },
+      "admissions_involved_in_negative_pairs": {
+        "n": 0,
+        "denominator": 2995,
+        "percent": 0.0
+      },
+      "negative_adjacent_pairs": {
+        "n": 0,
+        "denominator": 2295,
+        "percent": 0.0
+      },
+      "potentially_misclassified_index_stays": {
+        "n": 0,
+        "denominator": 2993,
+        "percent": 0.0
+      },
+      "negative_hours_quantiles": {},
+      "negative_magnitude_bins_hours": {
+        "(0,1]": 0,
+        "(1,6]": 0,
+        "(6,24]": 0,
+        "(24,72]": 0,
+        "(72,infinity)": 0
+      },
+      "negative_geometry": {},
+      "negative_type_pairs": {},
+      "legacy_vs_forward_all_valid_index": {
+        "n": 2993,
+        "old_positive": 792,
+        "new_positive": 792,
+        "old_prevalence_percent": 26.46174406949549,
+        "new_prevalence_percent": 26.46174406949549,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 792,
+        "true_negative": 2201,
+        "affected_subjects": 0
+      },
+      "legacy_vs_forward_live_index": {
+        "n": 2948,
+        "old_positive": 791,
+        "new_positive": 791,
+        "old_prevalence_percent": 26.831750339213027,
+        "new_prevalence_percent": 26.831750339213027,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 791,
+        "true_negative": 2157,
+        "affected_subjects": 0
+      },
+      "lower_bound_only_vs_forward_live_index": {
+        "n": 2948,
+        "old_positive": 791,
+        "new_positive": 791,
+        "old_prevalence_percent": 26.831750339213027,
+        "new_prevalence_percent": 26.831750339213027,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 791,
+        "true_negative": 2157,
+        "affected_subjects": 0
+      },
+      "subject_any_legacy_vs_subject_any_forward": {
+        "n": 700,
+        "old_positive": 247,
+        "new_positive": 247,
+        "old_prevalence_percent": 35.285714285714285,
+        "new_prevalence_percent": 35.285714285714285,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 247,
+        "true_negative": 453,
+        "affected_subjects": 0
+      },
+      "subject_any_legacy_vs_subject_any_lower_bound": {
+        "n": 700,
+        "old_positive": 247,
+        "new_positive": 247,
+        "old_prevalence_percent": 35.285714285714285,
+        "new_prevalence_percent": 35.285714285714285,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 247,
+        "true_negative": 453,
+        "affected_subjects": 0
+      },
+      "broadcast_subject_any_vs_encounter_live": {
+        "n": 2948,
+        "old_positive": 2043,
+        "new_positive": 791,
+        "old_prevalence_percent": 69.30122116689282,
+        "new_prevalence_percent": 26.831750339213027,
+        "false_positive_relative_to_diagnostic": 1252,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 791,
+        "true_negative": 905,
+        "affected_subjects": 245
+      },
+      "subject_any_legacy_vs_last_live_index": {
+        "n": 654,
+        "old_positive": 225,
+        "new_positive": 0,
+        "old_prevalence_percent": 34.403669724770644,
+        "new_prevalence_percent": 0.0,
+        "false_positive_relative_to_diagnostic": 225,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 0,
+        "true_negative": 429,
+        "affected_subjects": 225
+      },
+      "subjects_positive_only_due_to_negative_pairs": 0,
+      "zero_gap_pairs": 13,
+      "same_calendar_day_positive_pairs": 35,
+      "exact_30_day_adjacent_pairs": 0,
+      "index_expired_legacy_positive": 1,
+      "simple_fix_missed_later_positive": 0,
+      "positive_gap_index_in_active_overlap_episode": 13,
+      "positive_gap_successor_with_planned_type": 52,
+      "positive_gap_successor_observation_type": 308,
+      "forward_vs_overlap_episode_sensitivity": {
+        "n": 2948,
+        "old_positive": 791,
+        "new_positive": 785,
+        "old_prevalence_percent": 26.831750339213027,
+        "new_prevalence_percent": 26.62822252374491,
+        "false_positive_relative_to_diagnostic": 6,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 785,
+        "true_negative": 2157,
+        "affected_subjects": 6
+      },
+      "next_id_order_vs_admit_order_disagreement": 1148
+    },
+    "pilot_manifest_val": {
+      "subjects": 150,
+      "distinct_hospital_admissions": 613,
+      "adjacent_pairs": 463,
+      "valid_discharge_index_stays": 613,
+      "affected_subjects": {
+        "n": 1,
+        "denominator": 150,
+        "percent": 0.6666666666666666
+      },
+      "admissions_involved_in_negative_pairs": {
+        "n": 2,
+        "denominator": 613,
+        "percent": 0.3262642740619902
+      },
+      "negative_adjacent_pairs": {
+        "n": 1,
+        "denominator": 463,
+        "percent": 0.2159827213822894
+      },
+      "potentially_misclassified_index_stays": {
+        "n": 1,
+        "denominator": 613,
+        "percent": 0.1631321370309951
+      },
+      "negative_hours_quantiles": {
+        "0": -10.983333333333333,
+        "0.05": -10.983333333333333,
+        "0.25": -10.983333333333333,
+        "0.5": -10.983333333333333,
+        "0.75": -10.983333333333333,
+        "0.95": -10.983333333333333,
+        "1": -10.983333333333333
+      },
+      "negative_magnitude_bins_hours": {
+        "(0,1]": 0,
+        "(1,6]": 0,
+        "(6,24]": 1,
+        "(24,72]": 0,
+        "(72,infinity)": 0
+      },
+      "negative_geometry": {
+        "crossing_overlap": 1
+      },
+      "negative_type_pairs": {
+        "EU OBSERVATION -> DIRECT EMER.": 1
+      },
+      "legacy_vs_forward_all_valid_index": {
+        "n": 613,
+        "old_positive": 153,
+        "new_positive": 153,
+        "old_prevalence_percent": 24.95921696574225,
+        "new_prevalence_percent": 24.95921696574225,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 153,
+        "true_negative": 460,
+        "affected_subjects": 0
+      },
+      "legacy_vs_forward_live_index": {
+        "n": 607,
+        "old_positive": 153,
+        "new_positive": 153,
+        "old_prevalence_percent": 25.205930807248766,
+        "new_prevalence_percent": 25.205930807248766,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 153,
+        "true_negative": 454,
+        "affected_subjects": 0
+      },
+      "lower_bound_only_vs_forward_live_index": {
+        "n": 607,
+        "old_positive": 152,
+        "new_positive": 153,
+        "old_prevalence_percent": 25.04118616144975,
+        "new_prevalence_percent": 25.205930807248766,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 1,
+        "true_positive": 152,
+        "true_negative": 454,
+        "affected_subjects": 1
+      },
+      "subject_any_legacy_vs_subject_any_forward": {
+        "n": 150,
+        "old_positive": 54,
+        "new_positive": 54,
+        "old_prevalence_percent": 36.0,
+        "new_prevalence_percent": 36.0,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 54,
+        "true_negative": 96,
+        "affected_subjects": 0
+      },
+      "subject_any_legacy_vs_subject_any_lower_bound": {
+        "n": 150,
+        "old_positive": 54,
+        "new_positive": 54,
+        "old_prevalence_percent": 36.0,
+        "new_prevalence_percent": 36.0,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 54,
+        "true_negative": 96,
+        "affected_subjects": 0
+      },
+      "broadcast_subject_any_vs_encounter_live": {
+        "n": 607,
+        "old_positive": 415,
+        "new_positive": 153,
+        "old_prevalence_percent": 68.36902800658979,
+        "new_prevalence_percent": 25.205930807248766,
+        "false_positive_relative_to_diagnostic": 262,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 153,
+        "true_negative": 192,
+        "affected_subjects": 53
+      },
+      "subject_any_legacy_vs_last_live_index": {
+        "n": 144,
+        "old_positive": 51,
+        "new_positive": 0,
+        "old_prevalence_percent": 35.41666666666667,
+        "new_prevalence_percent": 0.0,
+        "false_positive_relative_to_diagnostic": 51,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 0,
+        "true_negative": 93,
+        "affected_subjects": 51
+      },
+      "subjects_positive_only_due_to_negative_pairs": 0,
+      "zero_gap_pairs": 3,
+      "same_calendar_day_positive_pairs": 12,
+      "exact_30_day_adjacent_pairs": 0,
+      "index_expired_legacy_positive": 0,
+      "simple_fix_missed_later_positive": 1,
+      "positive_gap_index_in_active_overlap_episode": 3,
+      "positive_gap_successor_with_planned_type": 4,
+      "positive_gap_successor_observation_type": 55,
+      "forward_vs_overlap_episode_sensitivity": {
+        "n": 607,
+        "old_positive": 153,
+        "new_positive": 152,
+        "old_prevalence_percent": 25.205930807248766,
+        "new_prevalence_percent": 25.04118616144975,
+        "false_positive_relative_to_diagnostic": 1,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 152,
+        "true_negative": 454,
+        "affected_subjects": 1
+      },
+      "next_id_order_vs_admit_order_disagreement": 225
+    },
+    "pilot_manifest_test": {
+      "subjects": 150,
+      "distinct_hospital_admissions": 521,
+      "adjacent_pairs": 371,
+      "valid_discharge_index_stays": 521,
+      "affected_subjects": {
+        "n": 0,
+        "denominator": 150,
+        "percent": 0.0
+      },
+      "admissions_involved_in_negative_pairs": {
+        "n": 0,
+        "denominator": 521,
+        "percent": 0.0
+      },
+      "negative_adjacent_pairs": {
+        "n": 0,
+        "denominator": 371,
+        "percent": 0.0
+      },
+      "potentially_misclassified_index_stays": {
+        "n": 0,
+        "denominator": 521,
+        "percent": 0.0
+      },
+      "negative_hours_quantiles": {},
+      "negative_magnitude_bins_hours": {
+        "(0,1]": 0,
+        "(1,6]": 0,
+        "(6,24]": 0,
+        "(24,72]": 0,
+        "(72,infinity)": 0
+      },
+      "negative_geometry": {},
+      "negative_type_pairs": {},
+      "legacy_vs_forward_all_valid_index": {
+        "n": 521,
+        "old_positive": 108,
+        "new_positive": 108,
+        "old_prevalence_percent": 20.72936660268714,
+        "new_prevalence_percent": 20.72936660268714,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 413,
+        "affected_subjects": 0
+      },
+      "legacy_vs_forward_live_index": {
+        "n": 513,
+        "old_positive": 108,
+        "new_positive": 108,
+        "old_prevalence_percent": 21.052631578947366,
+        "new_prevalence_percent": 21.052631578947366,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 405,
+        "affected_subjects": 0
+      },
+      "lower_bound_only_vs_forward_live_index": {
+        "n": 513,
+        "old_positive": 108,
+        "new_positive": 108,
+        "old_prevalence_percent": 21.052631578947366,
+        "new_prevalence_percent": 21.052631578947366,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 405,
+        "affected_subjects": 0
+      },
+      "subject_any_legacy_vs_subject_any_forward": {
+        "n": 150,
+        "old_positive": 46,
+        "new_positive": 46,
+        "old_prevalence_percent": 30.666666666666664,
+        "new_prevalence_percent": 30.666666666666664,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 46,
+        "true_negative": 104,
+        "affected_subjects": 0
+      },
+      "subject_any_legacy_vs_subject_any_lower_bound": {
+        "n": 150,
+        "old_positive": 46,
+        "new_positive": 46,
+        "old_prevalence_percent": 30.666666666666664,
+        "new_prevalence_percent": 30.666666666666664,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 46,
+        "true_negative": 104,
+        "affected_subjects": 0
+      },
+      "broadcast_subject_any_vs_encounter_live": {
+        "n": 513,
+        "old_positive": 309,
+        "new_positive": 108,
+        "old_prevalence_percent": 60.23391812865497,
+        "new_prevalence_percent": 21.052631578947366,
+        "false_positive_relative_to_diagnostic": 201,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 204,
+        "affected_subjects": 45
+      },
+      "subject_any_legacy_vs_last_live_index": {
+        "n": 142,
+        "old_positive": 44,
+        "new_positive": 0,
+        "old_prevalence_percent": 30.985915492957744,
+        "new_prevalence_percent": 0.0,
+        "false_positive_relative_to_diagnostic": 44,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 0,
+        "true_negative": 98,
+        "affected_subjects": 44
+      },
+      "subjects_positive_only_due_to_negative_pairs": 0,
+      "zero_gap_pairs": 2,
+      "same_calendar_day_positive_pairs": 4,
+      "exact_30_day_adjacent_pairs": 0,
+      "index_expired_legacy_positive": 0,
+      "simple_fix_missed_later_positive": 0,
+      "positive_gap_index_in_active_overlap_episode": 2,
+      "positive_gap_successor_with_planned_type": 9,
+      "positive_gap_successor_observation_type": 47,
+      "forward_vs_overlap_episode_sensitivity": {
+        "n": 513,
+        "old_positive": 108,
+        "new_positive": 106,
+        "old_prevalence_percent": 21.052631578947366,
+        "new_prevalence_percent": 20.66276803118908,
+        "false_positive_relative_to_diagnostic": 2,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 106,
+        "true_negative": 405,
+        "affected_subjects": 2
+      },
+      "next_id_order_vs_admit_order_disagreement": 184
+    },
+    "processed_represented_test": {
+      "subjects": 146,
+      "distinct_hospital_admissions": 517,
+      "adjacent_pairs": 371,
+      "valid_discharge_index_stays": 517,
+      "affected_subjects": {
+        "n": 0,
+        "denominator": 146,
+        "percent": 0.0
+      },
+      "admissions_involved_in_negative_pairs": {
+        "n": 0,
+        "denominator": 517,
+        "percent": 0.0
+      },
+      "negative_adjacent_pairs": {
+        "n": 0,
+        "denominator": 371,
+        "percent": 0.0
+      },
+      "potentially_misclassified_index_stays": {
+        "n": 0,
+        "denominator": 517,
+        "percent": 0.0
+      },
+      "negative_hours_quantiles": {},
+      "negative_magnitude_bins_hours": {
+        "(0,1]": 0,
+        "(1,6]": 0,
+        "(6,24]": 0,
+        "(24,72]": 0,
+        "(72,infinity)": 0
+      },
+      "negative_geometry": {},
+      "negative_type_pairs": {},
+      "legacy_vs_forward_all_valid_index": {
+        "n": 517,
+        "old_positive": 108,
+        "new_positive": 108,
+        "old_prevalence_percent": 20.889748549323016,
+        "new_prevalence_percent": 20.889748549323016,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 409,
+        "affected_subjects": 0
+      },
+      "legacy_vs_forward_live_index": {
+        "n": 509,
+        "old_positive": 108,
+        "new_positive": 108,
+        "old_prevalence_percent": 21.218074656188605,
+        "new_prevalence_percent": 21.218074656188605,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 401,
+        "affected_subjects": 0
+      },
+      "lower_bound_only_vs_forward_live_index": {
+        "n": 509,
+        "old_positive": 108,
+        "new_positive": 108,
+        "old_prevalence_percent": 21.218074656188605,
+        "new_prevalence_percent": 21.218074656188605,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 401,
+        "affected_subjects": 0
+      },
+      "subject_any_legacy_vs_subject_any_forward": {
+        "n": 146,
+        "old_positive": 46,
+        "new_positive": 46,
+        "old_prevalence_percent": 31.506849315068493,
+        "new_prevalence_percent": 31.506849315068493,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 46,
+        "true_negative": 100,
+        "affected_subjects": 0
+      },
+      "subject_any_legacy_vs_subject_any_lower_bound": {
+        "n": 146,
+        "old_positive": 46,
+        "new_positive": 46,
+        "old_prevalence_percent": 31.506849315068493,
+        "new_prevalence_percent": 31.506849315068493,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 46,
+        "true_negative": 100,
+        "affected_subjects": 0
+      },
+      "broadcast_subject_any_vs_encounter_live": {
+        "n": 509,
+        "old_positive": 309,
+        "new_positive": 108,
+        "old_prevalence_percent": 60.70726915520629,
+        "new_prevalence_percent": 21.218074656188605,
+        "false_positive_relative_to_diagnostic": 201,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 200,
+        "affected_subjects": 45
+      },
+      "subject_any_legacy_vs_last_live_index": {
+        "n": 138,
+        "old_positive": 44,
+        "new_positive": 0,
+        "old_prevalence_percent": 31.88405797101449,
+        "new_prevalence_percent": 0.0,
+        "false_positive_relative_to_diagnostic": 44,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 0,
+        "true_negative": 94,
+        "affected_subjects": 44
+      },
+      "subjects_positive_only_due_to_negative_pairs": 0,
+      "zero_gap_pairs": 2,
+      "same_calendar_day_positive_pairs": 4,
+      "exact_30_day_adjacent_pairs": 0,
+      "index_expired_legacy_positive": 0,
+      "simple_fix_missed_later_positive": 0,
+      "positive_gap_index_in_active_overlap_episode": 2,
+      "positive_gap_successor_with_planned_type": 9,
+      "positive_gap_successor_observation_type": 47,
+      "forward_vs_overlap_episode_sensitivity": {
+        "n": 509,
+        "old_positive": 108,
+        "new_positive": 106,
+        "old_prevalence_percent": 21.218074656188605,
+        "new_prevalence_percent": 20.825147347740668,
+        "false_positive_relative_to_diagnostic": 2,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 106,
+        "true_negative": 401,
+        "affected_subjects": 2
+      },
+      "next_id_order_vs_admit_order_disagreement": 184
+    },
+    "processed_with_cxr_represented_test": {
+      "subjects": 146,
+      "distinct_hospital_admissions": 517,
+      "adjacent_pairs": 371,
+      "valid_discharge_index_stays": 517,
+      "affected_subjects": {
+        "n": 0,
+        "denominator": 146,
+        "percent": 0.0
+      },
+      "admissions_involved_in_negative_pairs": {
+        "n": 0,
+        "denominator": 517,
+        "percent": 0.0
+      },
+      "negative_adjacent_pairs": {
+        "n": 0,
+        "denominator": 371,
+        "percent": 0.0
+      },
+      "potentially_misclassified_index_stays": {
+        "n": 0,
+        "denominator": 517,
+        "percent": 0.0
+      },
+      "negative_hours_quantiles": {},
+      "negative_magnitude_bins_hours": {
+        "(0,1]": 0,
+        "(1,6]": 0,
+        "(6,24]": 0,
+        "(24,72]": 0,
+        "(72,infinity)": 0
+      },
+      "negative_geometry": {},
+      "negative_type_pairs": {},
+      "legacy_vs_forward_all_valid_index": {
+        "n": 517,
+        "old_positive": 108,
+        "new_positive": 108,
+        "old_prevalence_percent": 20.889748549323016,
+        "new_prevalence_percent": 20.889748549323016,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 409,
+        "affected_subjects": 0
+      },
+      "legacy_vs_forward_live_index": {
+        "n": 509,
+        "old_positive": 108,
+        "new_positive": 108,
+        "old_prevalence_percent": 21.218074656188605,
+        "new_prevalence_percent": 21.218074656188605,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 401,
+        "affected_subjects": 0
+      },
+      "lower_bound_only_vs_forward_live_index": {
+        "n": 509,
+        "old_positive": 108,
+        "new_positive": 108,
+        "old_prevalence_percent": 21.218074656188605,
+        "new_prevalence_percent": 21.218074656188605,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 401,
+        "affected_subjects": 0
+      },
+      "subject_any_legacy_vs_subject_any_forward": {
+        "n": 146,
+        "old_positive": 46,
+        "new_positive": 46,
+        "old_prevalence_percent": 31.506849315068493,
+        "new_prevalence_percent": 31.506849315068493,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 46,
+        "true_negative": 100,
+        "affected_subjects": 0
+      },
+      "subject_any_legacy_vs_subject_any_lower_bound": {
+        "n": 146,
+        "old_positive": 46,
+        "new_positive": 46,
+        "old_prevalence_percent": 31.506849315068493,
+        "new_prevalence_percent": 31.506849315068493,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 46,
+        "true_negative": 100,
+        "affected_subjects": 0
+      },
+      "broadcast_subject_any_vs_encounter_live": {
+        "n": 509,
+        "old_positive": 309,
+        "new_positive": 108,
+        "old_prevalence_percent": 60.70726915520629,
+        "new_prevalence_percent": 21.218074656188605,
+        "false_positive_relative_to_diagnostic": 201,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 200,
+        "affected_subjects": 45
+      },
+      "subject_any_legacy_vs_last_live_index": {
+        "n": 138,
+        "old_positive": 44,
+        "new_positive": 0,
+        "old_prevalence_percent": 31.88405797101449,
+        "new_prevalence_percent": 0.0,
+        "false_positive_relative_to_diagnostic": 44,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 0,
+        "true_negative": 94,
+        "affected_subjects": 44
+      },
+      "subjects_positive_only_due_to_negative_pairs": 0,
+      "zero_gap_pairs": 2,
+      "same_calendar_day_positive_pairs": 4,
+      "exact_30_day_adjacent_pairs": 0,
+      "index_expired_legacy_positive": 0,
+      "simple_fix_missed_later_positive": 0,
+      "positive_gap_index_in_active_overlap_episode": 2,
+      "positive_gap_successor_with_planned_type": 9,
+      "positive_gap_successor_observation_type": 47,
+      "forward_vs_overlap_episode_sensitivity": {
+        "n": 509,
+        "old_positive": 108,
+        "new_positive": 106,
+        "old_prevalence_percent": 21.218074656188605,
+        "new_prevalence_percent": 20.825147347740668,
+        "false_positive_relative_to_diagnostic": 2,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 106,
+        "true_negative": 401,
+        "affected_subjects": 2
+      },
+      "next_id_order_vs_admit_order_disagreement": 184
+    },
+    "processed_dynamic_demo_represented_test": {
+      "subjects": 146,
+      "distinct_hospital_admissions": 517,
+      "adjacent_pairs": 371,
+      "valid_discharge_index_stays": 517,
+      "affected_subjects": {
+        "n": 0,
+        "denominator": 146,
+        "percent": 0.0
+      },
+      "admissions_involved_in_negative_pairs": {
+        "n": 0,
+        "denominator": 517,
+        "percent": 0.0
+      },
+      "negative_adjacent_pairs": {
+        "n": 0,
+        "denominator": 371,
+        "percent": 0.0
+      },
+      "potentially_misclassified_index_stays": {
+        "n": 0,
+        "denominator": 517,
+        "percent": 0.0
+      },
+      "negative_hours_quantiles": {},
+      "negative_magnitude_bins_hours": {
+        "(0,1]": 0,
+        "(1,6]": 0,
+        "(6,24]": 0,
+        "(24,72]": 0,
+        "(72,infinity)": 0
+      },
+      "negative_geometry": {},
+      "negative_type_pairs": {},
+      "legacy_vs_forward_all_valid_index": {
+        "n": 517,
+        "old_positive": 108,
+        "new_positive": 108,
+        "old_prevalence_percent": 20.889748549323016,
+        "new_prevalence_percent": 20.889748549323016,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 409,
+        "affected_subjects": 0
+      },
+      "legacy_vs_forward_live_index": {
+        "n": 509,
+        "old_positive": 108,
+        "new_positive": 108,
+        "old_prevalence_percent": 21.218074656188605,
+        "new_prevalence_percent": 21.218074656188605,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 401,
+        "affected_subjects": 0
+      },
+      "lower_bound_only_vs_forward_live_index": {
+        "n": 509,
+        "old_positive": 108,
+        "new_positive": 108,
+        "old_prevalence_percent": 21.218074656188605,
+        "new_prevalence_percent": 21.218074656188605,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 401,
+        "affected_subjects": 0
+      },
+      "subject_any_legacy_vs_subject_any_forward": {
+        "n": 146,
+        "old_positive": 46,
+        "new_positive": 46,
+        "old_prevalence_percent": 31.506849315068493,
+        "new_prevalence_percent": 31.506849315068493,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 46,
+        "true_negative": 100,
+        "affected_subjects": 0
+      },
+      "subject_any_legacy_vs_subject_any_lower_bound": {
+        "n": 146,
+        "old_positive": 46,
+        "new_positive": 46,
+        "old_prevalence_percent": 31.506849315068493,
+        "new_prevalence_percent": 31.506849315068493,
+        "false_positive_relative_to_diagnostic": 0,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 46,
+        "true_negative": 100,
+        "affected_subjects": 0
+      },
+      "broadcast_subject_any_vs_encounter_live": {
+        "n": 509,
+        "old_positive": 309,
+        "new_positive": 108,
+        "old_prevalence_percent": 60.70726915520629,
+        "new_prevalence_percent": 21.218074656188605,
+        "false_positive_relative_to_diagnostic": 201,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 108,
+        "true_negative": 200,
+        "affected_subjects": 45
+      },
+      "subject_any_legacy_vs_last_live_index": {
+        "n": 138,
+        "old_positive": 44,
+        "new_positive": 0,
+        "old_prevalence_percent": 31.88405797101449,
+        "new_prevalence_percent": 0.0,
+        "false_positive_relative_to_diagnostic": 44,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 0,
+        "true_negative": 94,
+        "affected_subjects": 44
+      },
+      "subjects_positive_only_due_to_negative_pairs": 0,
+      "zero_gap_pairs": 2,
+      "same_calendar_day_positive_pairs": 4,
+      "exact_30_day_adjacent_pairs": 0,
+      "index_expired_legacy_positive": 0,
+      "simple_fix_missed_later_positive": 0,
+      "positive_gap_index_in_active_overlap_episode": 2,
+      "positive_gap_successor_with_planned_type": 9,
+      "positive_gap_successor_observation_type": 47,
+      "forward_vs_overlap_episode_sensitivity": {
+        "n": 509,
+        "old_positive": 108,
+        "new_positive": 106,
+        "old_prevalence_percent": 21.218074656188605,
+        "new_prevalence_percent": 20.825147347740668,
+        "false_positive_relative_to_diagnostic": 2,
+        "false_negative_relative_to_diagnostic": 0,
+        "true_positive": 106,
+        "true_negative": 401,
+        "affected_subjects": 2
+      },
+      "next_id_order_vs_admit_order_disagreement": 184
+    }
+  },
+  "etl": {
+    "scope": "current admission-specific method, all 1000 cohort subjects; not full ETL",
+    "admission_events": 4129,
+    "discharge_events": 4129,
+    "identity_timestamp_discrepancies": 0,
+    "adjacent_gap_discrepancies": 0,
+    "negative_pairs_raw": 1,
+    "historical_shard_hadm_provenance": "ModelWindow does not retain hospital encounter/source-row identity; exact historical event lineage cannot be reconstructed from shards alone"
+  },
+  "hierarchy": {
+    "edstays": {
+      "rows_linked_to_involved_hadm": 35,
+      "distinct_hadm_linked": 34,
+      "subject_hadm_disagreements": 0
+    },
+    "icustays": {
+      "rows_linked_to_involved_hadm": 19,
+      "distinct_hadm_linked": 18,
+      "subject_hadm_disagreements": 0
+    },
+    "transfers": {
+      "rows_linked_to_involved_hadm": 360,
+      "distinct_hadm_linked": 118,
+      "subject_hadm_disagreements": 0
+    }
+  },
+  "represented_test_sets": {
+    "processed": {
+      "subjects": 146
+    },
+    "processed_with_cxr": {
+      "subjects": 146
+    },
+    "processed_dynamic_demo": {
+      "subjects": 146
+    }
+  },
+  "private_cases": 41,
+  "definitions": {
+    "legacy": "immediate chronological next hospital admission; gap<=30d, including negative; then MAX over subject",
+    "lower_bound_only": "same immediate successor, 0<=gap<=30d",
+    "forward_observed": "for each valid index hadm_id, earliest subsequent distinct hospital admission with admittime>=index discharge, 0<=gap<=30d; all source admission types; no inferred transfer/planned exclusions",
+    "live_index": "nonmissing admit/discharge, discharge>=admit and hospital_expire_flag=0",
+    "negative_label_limitation": "zero means no qualifying admission recorded in this file; complete follow-up and outside-hospital outcomes are NOT established; not a clinical gold standard",
+    "episode_sensitivity": "merge overlap/touch-connected intervals using running maximum discharge; first new episode within30d of episode end, broadcast to its member indexes for comparison only; different estimand, NOT approved methodology"
+  },
+  "read_only_verification": {
+    "protected_sha256_before_equals_after": true,
+    "checkpoint_shard_size_mtime_unchanged": true,
+    "protected_files": 42,
+    "checkpoint_shard_files": 131
+  },
+  "private_artifacts": "output/readmission_audit/2026-10-19",
+  "elapsed_seconds": 166.81,
+  "training_runs": 0
+}

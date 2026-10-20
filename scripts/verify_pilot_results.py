@@ -202,6 +202,8 @@ def run_test_evaluation(model: NOAH, test_loader: DataLoader, device: str):
 
 def run_free_rollout_analysis(model: NOAH, test_windows: list, device: str, n_patients: int = 5, steps: int = 20):
     """Approach 3: Multi-step autoregressive free rollout evaluation."""
+    from src.evaluation.contracts import ContractError
+    raise ContractError("Duplicate legacy rollout is disabled; use the canonical engine only through an approved manifested evaluation")
     model.eval()
     rollout_results = []
     
@@ -317,6 +319,8 @@ def parse_args():
 
 def main():
     args = parse_args()
+    from src.evaluation.contracts import ContractError
+    raise ContractError("Legacy reporting is blocked: posterior reconstruction and the duplicate rollout cannot be released as prospective evaluation. Use validated experiment manifests and the release gate.")
     print("=" * 75)
     print("NOAH COMPREHENSIVE RESULT VERIFICATION & SCIENTIFIC AUDIT SUITE")
     print(f"Checkpoint: {args.checkpoint}")
@@ -363,7 +367,11 @@ def main():
         layer_scale_init=layer_scale_init,
     ).to(device)
 
-    model.load_state_dict(ckpt["model_state_dict"], strict=False)
+    model.load_state_dict(ckpt["model_state_dict"], strict=True)
+    for key in ("category_modality_support", "category_class_weights", "modality_class_weights", "specifics_presence_class_weights"):
+        if ckpt.get(key) is not None:
+            setattr(model, key, ckpt[key].to(args.device))
+
     model.eval()
     print("NOAH Model weights loaded successfully.")
 

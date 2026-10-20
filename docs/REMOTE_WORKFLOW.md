@@ -92,7 +92,7 @@ git rev-parse HEAD
 
 For Codex CLI, run `codex`; otherwise use the configured tool's command. The CLI operates in the machine/project environment where it starts. See [OpenAI CLI documentation](https://learn.chatgpt.com/docs/codex/cli).
 
-Request GPU allocations for encoder inference/training. Current `run_pilot_gpu.sh` has no actual training command; submitting it prepares an environment rather than completing the first training run.
+Request GPU allocations for encoder inference/training. Training entry points and earlier run reports exist. Inspect the actual batch script and current fidelity gates before submission; a script alone is not evidence of completed training.
 
 ## 6. Optional desktop remote project
 

@@ -1,6 +1,6 @@
 # NOAH data interface and preparation plan
 
-Updated: 2026-10-14. See [PROJECT_STATUS.md](PROJECT_STATUS.md) for progress and [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) for encoding steps. The 1,000-candidate manifest has 700/150/150 assignments; event readers are partially implemented. The near-term target is a five-modality small-scale training path. The full six-modality target also requires ECHO. Inventory statements below come from the researcher-provided server report; record actual reading and encoding results by source.
+Updated: 2026-10-19. Current evidence: [architecture audit](ARCHITECTURE_AUDIT.md). See [PROJECT_STATUS.md](PROJECT_STATUS.md) for progress and [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) for encoding steps. The 1,000-candidate manifest has 700/150/150 assignments; event readers are partially implemented. The near-term target is a five-modality small-scale training path. The full six-modality target also requires ECHO. Inventory statements below come from the researcher-provided server report; record actual reading and encoding results by source.
 
 ## 1. The paper's data interface
 
@@ -40,7 +40,7 @@ Reported dataset root:
 | MIMIC-IV-Note | 2.2 | About 6.3 GB, reported complete | Reported stored | Note tables, timestamps, actual text reads, version and authorization |
 | MIMIC-IV-ECG | 1.0 | 800,035 WFDB records, reported complete | Waveforms reported stored | Index-to-.hea/.dat pairing, file existence, sampled decoding and failures |
 | MIMIC-CXR-JPG | 2.0.0; paper calls it 2.0 | Images/metadata, reported complete | Images reported stored | Image/metadata correspondence, patient/study IDs, decoding and version |
-| MIMIC-IV-ECHO | 1.0 | Not found | Missing within reported scope | Other mounts/shared locations, authorization and actual video files |
+| MIMIC-IV-ECHO | 1.0 | Researcher supplied1.0.1 path | Directory exists; video decoding/encoding NOT_RUN | `/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-echo/1.0.1/`; verify version difference, mapping and DICOM pipeline |
 
 Capacity and directory names alone do not establish completeness. Index existence, media presence, decoding, user authorization and usable training inputs are separate checks. Mounts/free space, symlinks, ACL/group permissions, checksums and read-success rates remain to be recorded.
 
@@ -89,7 +89,7 @@ Public access-policy check date: 2026-10-13. These describe source policies, not
 |---|---|---|
 | MIMIC-IV / ED / Note / CXR-JPG | Restricted access; credentialing, required training and project DUA | Prepare an authorized readable copy; otherwise resolve access |
 | MIMIC-IV-ECG 1.0 waveforms | Open access under its license; not a blanket statement about text reports/other platforms | Verify pairing/decoding of reported files; obtain missing files for that version if needed |
-| MIMIC-IV-ECHO 1.0 | Restricted; reported missing | Check shared locations, then credentials/training/DUA and DICOM video/index acquisition |
+| MIMIC-IV-ECHO | Supplied1.0.1 directory exists; paper1.0 | Verify DICOM/video/index reads and preprocessing; record version difference |
 | BioLORD / RAD-DINO / OTIS / EchoPrime assets | Frozen encoders specified; server asset status not established | Inventory weights, versions, conditions and inference environment; these are model assets, not new patients |
 | Prepared events and embedding caches | Raw data reported; complete NOAH inputs not established | Preprocess, encode offline and validate |
 

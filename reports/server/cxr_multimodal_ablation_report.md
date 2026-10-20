@@ -1,5 +1,7 @@
 # Multimodal CXR Ablation Report: Impact of Chest Radiographs on NOAH Representation Learning
 
+Evidence classification: historical candidate-architecture experiments with whole-record pooled, subject-level retrospective probes. These metrics are invalid for prospective or paper landmark interpretation. Readmission and NEWS2 labels require correction before clinical endpoint use. Reconstruction metrics are conditional diagnostics with recipe/provenance limitations. Original reports and checkpoint bytes are preserved in the private remediation snapshot; see [the remediation matrix](../../docs/ARCHITECTURE_AUDIT.md#historical-metric-interpretation). No corrected clinical evaluation is reported here.
+
 **Project:** NOAH Reproduction (arXiv:2609.09140v1)  
 **Execution Environment:** Harvard Medical School O2 Cluster (NVIDIA L40S GPU, 48GB VRAM)  
 **Date:** October 16, 2026  
@@ -76,7 +78,7 @@ The table below presents the quantitative metrics evaluated on the identical hel
 ### A. Why Did Prolonged Length of Stay (LOS > 7d) Surge to 0.8994 AUROC / 0.8071 AUPRC?
 In clinical inpatient care, chest radiography is ordered predominantly when acute pulmonary, thoracic, or systemic cardiopulmonary deterioration is suspected (e.g., acute respiratory distress, acute decompensated heart failure, hospital-acquired pneumonia, pulmonary edema, pleural effusion, or surgical complication).
 - **Clinical Causal Anchor:** A patient with radiographic signs of pneumonia or cardiomegaly has a vastly higher likelihood of prolonged intravenous antibiotic therapy, ventilatory support, oxygen titration, and ICU/stepdown observation, naturally prolonging length of stay beyond 7 days.
-- **Multimodal Embedding Power:** When NOAH is provided with the frozen RAD-DINO CLS embedding (768-D representation fine-tuned on millions of chest radiographs), the temporal Transformer integrates these visual disease markers directly into the historical context vector $h_t$. The linear probing head easily extracts this consolidated visual-clinical state to predict extended hospitalization with exceptional discriminatory accuracy (**0.8994 AUROC**, nearing the 0.90 threshold, with a **+7.32 point gain in AUPRC**).
+- **Multimodal Embedding Power:** When NOAH is provided with the candidate frozen RAD-DINO CLS embedding (768-D, with exact encoder provenance still requiring verification), the temporal Transformer integrates these visual disease markers directly into the historical context vector $h_t$. The linear probing head easily extracts this consolidated visual-clinical state to predict extended hospitalization with exceptional discriminatory accuracy (**0.8994 AUROC**, nearing the 0.90 threshold, with a **+7.32 point gain in AUPRC**).
 
 ### B. Why Did Reconstruction Loss Experience a Minor Increase (1.3888 vs 1.4134)?
 In the baseline experiment, CXR events had empty embeddings, effectively turning the continuous reconstruction head for CXR into an unweighted zero-target. 
@@ -88,7 +90,7 @@ In the baseline experiment, CXR events had empty embeddings, effectively turning
 In our 1,000-patient pilot cohort, the held-out test split contains 146 patients, among whom only **8 patients experienced in-hospital mortality** (prevalence = 5.48%).
 - With only 8 positive events spread across 5 cross-validation folds (1 to 2 positive events per fold), AUROC calculations are subject to extreme variance: a single borderline prediction shift can swing the metric by $\pm 0.10$.
 - In the baseline run, the model over-indexed on acute laboratory/vital extremes. When image representations were introduced, the representations diversified, which improved generalizability on broad clinical outcomes (LOS balanced accuracy improved by 7.5%, 30-day readmission balanced accuracy improved by 4.26%) while altering the fine decision boundary on the tiny mortality tail.
-- Full manifest scaling (expanding from 1,000 to the complete MIMIC cohort of ~50,000 patients) will increase positive mortality cases to >2,500, eliminating sample variance.
+- Full manifest scaling (expanding from 1,000 to an intermediate cohort of50,000 patients (the paper reports299,712)) will increase positive mortality cases to >2,500, potentially changing uncertainty; a larger cohort does not eliminate sampling variance.
 
 ### D. Autoregressive Rollout Health
 The baseline run suffered from the known "zero-gap infinite loop" failure mode, outputting identical `LAB_TEST` events with 0 cumulative hours. 
@@ -98,7 +100,7 @@ The baseline run suffered from the known "zero-gap infinite loop" failure mode, 
 
 ## 4. Conclusion & Next Steps
 
-This ablation confirms that **incorporating Chest Radiographs delivers substantial clinical value to NOAH**, particularly for complex inpatient outcome forecasting (+4.92 AUROC and +7.32 AUPRC on Prolonged LOS) and generative multimodal representation learning.
+The recorded differences are exploratory whole-record retrospective label-retrieval observations. They do not establish prospective clinical value, causal benefit from CXR, or paper landmark forecasting performance.
 
 ### Recommended Next Steps for Full Manifest Expansion:
 1. **Scale Model Capacity:** Expand $d_{\text{model}}$ from 256 to 512 or 768 as specified in the NOAH architecture to alleviate the latent bottleneck observed with multimodal inputs.

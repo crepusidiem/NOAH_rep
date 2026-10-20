@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "run_id": null,
+  "mode": null,
+  "protocol": null,
+  "code": {"commit": null, "source_sha256": null, "path": null},
+  "architecture": {"revision": null, "parameter_count": null, "module_counts": {}},
+  "checkpoint": {"path": null, "sha256": null, "architecture_revision": null},
+  "datasets": [{"name": null, "version": null, "manifest_sha256": null, "encoder_recipe": null}],
+  "encoders": [],
+  "randomness": {"seeds": [], "policy": null},
+  "patient_splits": {"path": null, "sha256": null, "unit": "patient"},
+  "temporal_cutoff": {"definition": null, "boundary": null, "gap_policy": null, "metadata_policy": null},
+  "labels": {"endpoint_id": null, "definition": null, "index_encounter_rule": null, "horizon": null, "censoring": null},
+  "availability_rules": {"definition": null, "unknown_policy": null},
+  "probe_protocol": {"definition": null, "training_population": null, "validation": null, "seeds": []},
+  "predictions": {"path": null, "sha256": null},
+  "metric_protocol": {"definition": null, "code_sha256": null, "uncertainty": null},
+  "decisions": {},
+  "deviations": [],
+  "checks": {}
+}

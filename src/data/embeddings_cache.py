@@ -9,6 +9,8 @@ Handles offline feature extraction and local caching for:
 """
 
 import os
+import hashlib
+import json
 from pathlib import Path
 import sqlite3
 from typing import Dict, Iterable, List, Optional, Set, Tuple
@@ -316,57 +318,94 @@ class ECGEmbeddingCache:
         cache_dir: Path = Path("data/cache/ecg"),
         ecg_base_dir: Path = Path("/home/wey371/rajpurkarlab/datasets/mimic-iv-ecg/1.0"),
         device: str = "cpu",
+        checkpoint_path: Optional[Path] = None,
     ):
         self.cache_dir = Path(cache_dir)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.ecg_base_dir = Path(ecg_base_dir)
         self.device = device
         self._model = None
+        configured = checkpoint_path or os.environ.get("NOAH_OTIS_CHECKPOINT")
+        self.checkpoint_path = Path(configured) if configured else None
+        self._recipe_verified = False
+
+    def _verify_recipe(self):
+        if self._recipe_verified:
+            return
+        if self.checkpoint_path is None or not self.checkpoint_path.is_file():
+            raise RuntimeError("A pretrained 1x24 OTIS checkpoint is required; set NOAH_OTIS_CHECKPOINT. "
+                               "Legacy ECG caches have no verified weight provenance and cannot be reused.")
+        with self.checkpoint_path.open("rb") as stream:
+            checksum = hashlib.file_digest(stream, "sha256").hexdigest()
+        recipe = {"checkpoint_sha256": checksum, "patch_size": [1, 24],
+                  "pooling": "final_patch_mean_before_fc_norm", "mask_ratio": 0,
+                  "input": "12x5000_500Hz_finite_physical_values", "tail": "conv_truncate_8",
+                  "lead_order": ["I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6"],
+                  "adapter_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+        vendor = Path("vendor/otis/models_vit.py")
+        recipe["vendor_sha256"] = hashlib.sha256(vendor.read_bytes()).hexdigest()
+        digest = hashlib.sha256(json.dumps(recipe, sort_keys=True).encode()).hexdigest()
+        self.cache_dir = self.cache_dir / digest
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        (self.cache_dir / "recipe.json").write_text(json.dumps(recipe, indent=2) + "\n")
+        self._recipe_verified = True
 
     def _lazy_load_model(self):
         if self._model is None:
+            self._verify_recipe()
             import sys
             otis_path = str(Path("vendor/otis").resolve())
             if otis_path not in sys.path:
                 sys.path.insert(0, otis_path)
             from models_vit import vit_baseDeep_patchX
             domains = {"ecg": (1, 12, 5000)}
-            self._model = vit_baseDeep_patchX(
+            candidate = vit_baseDeep_patchX(
                 img_size=(1, 12, 5000),
                 domains=domains,
                 patch_size=(1, 24),
                 global_pool=True,
             ).to(self.device)
-            self._model.eval()
+            state = torch.load(self.checkpoint_path, map_location="cpu", weights_only=True)
+            if "model" in state:
+                state = state["model"]
+            # Every tensor must match, including pretrained patch and lead positions.
+            # Incompatible upstream checkpoints require a reviewed adapter, never random replacement.
+            candidate.load_state_dict(state, strict=True)
+            candidate.requires_grad_(False)
+            candidate.eval()
+            self._model = candidate
 
     def get_embedding(self, study_id: str, relative_path: str) -> Optional[np.ndarray]:
         """
         Retrieves cached 192-D ECG embedding or loads WFDB waveform and runs OTIS.
         """
-        cache_file = self.cache_dir / f"{study_id}.npy"
-        if cache_file.exists():
-            return np.load(cache_file)
-
-        # Remove extensions if any
+        self._verify_recipe()
         clean_rel = relative_path.replace(".hea", "").replace(".dat", "")
         wfdb_record_path = self.ecg_base_dir / clean_rel
-        if not (self.ecg_base_dir / f"{clean_rel}.hea").exists():
-            return None
+        source_hash = hashlib.sha256()
+        for suffix in (".hea", ".dat"):
+            source_file = self.ecg_base_dir / f"{clean_rel}{suffix}"
+            if not source_file.is_file():
+                return None
+            with source_file.open("rb") as stream:
+                source_hash.update(hashlib.file_digest(stream, "sha256").digest())
+        cache_file = self.cache_dir / f"{study_id}_{source_hash.hexdigest()}.npy"
+        if cache_file.exists():
+            embedding = np.load(cache_file)
+            if embedding.shape != (192,) or not np.isfinite(embedding).all():
+                raise ValueError("Invalid cached ECG embedding")
+            return embedding
 
         self._lazy_load_model()
         try:
             record = wfdb.rdrecord(str(wfdb_record_path))
             signal = record.p_signal  # [time=5000, leads=12]
+            expected_leads = ["I", "II", "III", "aVR", "aVL", "aVF", "V1", "V2", "V3", "V4", "V5", "V6"]
+            if list(record.sig_name) != expected_leads:
+                raise ValueError("ECG lead order differs from the declared recipe")
             
-            # Robust verification & padding/trimming to exactly 5000 samples and 12 leads
-            if signal.shape[0] < 5000:
-                pad_len = 5000 - signal.shape[0]
-                signal = np.pad(signal, ((0, pad_len), (0, 0)), mode="constant")
-            elif signal.shape[0] > 5000:
-                signal = signal[:5000, :]
-
-            # Clean NaNs or Infs
-            signal = np.nan_to_num(signal, nan=0.0, posinf=0.0, neginf=0.0)
+            if record.fs != 500 or signal.shape != (5000, 12) or not np.isfinite(signal).all():
+                raise ValueError("OTIS requires finite 12-lead, 500Hz, 10-second recordings")
 
             # Shape for OTIS: [B=1, C=1, V=12, T=5000]
             sig_tensor = torch.from_numpy(signal.T).unsqueeze(0).unsqueeze(0).float().to(self.device)
@@ -380,6 +419,8 @@ class ECGEmbeddingCache:
                 emb = self._model.forward_features(sig_tensor, pos_embed_y)
                 emb_np = emb.cpu().to(torch.float32).numpy().squeeze(0)
 
+            if emb_np.shape != (192,) or not np.isfinite(emb_np).all():
+                raise ValueError("OTIS must return a finite 192-D patch mean")
             np.save(cache_file, emb_np)
             return emb_np
         except Exception as e:

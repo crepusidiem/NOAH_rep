@@ -143,6 +143,8 @@ def main():
         for ev in j.events:
             if ev.has_specifics and ev.specifics_text:
                 all_texts.add(ev.specifics_text.strip())
+            if ev.modality_id == Modality.TEXT and ev.has_value and isinstance(ev.value_raw, str):
+                all_texts.add(ev.value_raw.strip())
 
     demo_texts: Set[str] = set()
     if args.encode_demographics:
@@ -215,6 +217,10 @@ def main():
                 if cleaned_text in text_vectors:
                     ev.specifics_vec = text_vectors[cleaned_text]
 
+            # Text content and optional type specifics are separate reconstruction targets.
+            if ev.modality_id == Modality.TEXT and ev.has_value and isinstance(ev.value_raw, str):
+                ev.value_vec = text_vectors.get(ev.value_raw.strip())
+
             # 2. CXR images
             if ev.modality_id == Modality.CXR and not args.skip_media_encoding:
                 dicom_id = ev.source_row_id.replace("cxr_", "")
@@ -232,6 +238,15 @@ def main():
                 if ecg_vec is not None:
                     ev.value_vec = ecg_vec
                     ecg_count += 1
+
+    # Encoding failures must not silently remove declared reconstruction targets.
+    missing_specifics = sum(ev.has_specifics and ev.specifics_vec is None
+                            for j in eligible_journeys.values() for ev in j.events)
+    missing_values = sum(ev.has_value and ev.value_vec is None
+                         for j in eligible_journeys.values() for ev in j.events)
+    if missing_specifics or (missing_values and not args.skip_media_encoding):
+        raise RuntimeError(f"Unresolved embedding targets: specifics={missing_specifics}, values={missing_values}. "
+                           "Repair extraction or declare and count explicit exclusions before building windows.")
 
     # 5. Build Rolling Context Windows & Masks
     print(f"\n[Step 4/5] Building rolling windows (L={args.max_seq_len}, Overlap={args.overlap_len})...")
@@ -277,7 +292,9 @@ def main():
     eligible_sids = list(eligible_journeys.keys())
     for sid in tqdm(eligible_sids, desc="Building & saving windows"):
         journey = eligible_journeys.pop(sid)
-        split = patient_splits.get(sid, "train")
+        if sid not in patient_splits or patient_splits[sid] not in buffers:
+            raise ValueError("Every patient must have an explicit valid split; no train fallback")
+        split = patient_splits[sid]
         pts_windows = builder.build_patient_windows(journey)
 
         for w in pts_windows:

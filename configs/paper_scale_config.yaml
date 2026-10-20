@@ -1,6 +1,6 @@
 # NOAH Paper-Scale Architecture Configuration (Phase 1)
-# Exact specifications conforming to NOAH paper (arXiv:2609.09140v1, Section 3.1 & Extended Data Table 1)
-# Total Trainable Parameters: ~152.65M (Paper reports 150,322,970)
+# Architecture candidate using Table 16 dimensions; unresolved choices remain in docs/ARCHITECTURE_AUDIT.md.
+# Candidate trainable parameters: 148,957,844; paper reports 150,322,970 (unresolved A-58).
 
 experiment:
   name: "noah_phase1_paper_scale_150m"
@@ -23,11 +23,12 @@ cohort:
     val: 150
     test: 150
   min_events_per_patient: 64 # EXPLICIT (p. 15)
-  max_window_length: 1024    # 1024 for pilot cohort windows; scales to 2048 in Phase 2
+  max_window_length: 2048    # EXPLICIT p.15; regenerate pilot windows before using this profile
   overlap_length: 256        # EXPLICIT (p. 15)
   prefix_length: 6           # 6 demographic tokens (birth year, race, gender, insurance, language, marital status)
 
 data_paths:
+  echo_root: "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-echo/1.0.1" # Path verified; version substitution and video pipeline pending
   mimic_root: "/home/wey371/rajpurkarlab/datasets"
   hosp_dir: "mimic-iv/physionet.org/files/mimiciv/2.2/hosp"
   icu_dir: "mimic-iv/physionet.org/files/mimiciv/2.2/icu"
@@ -65,13 +66,13 @@ encoders:
     output_pooling: "patch_mean"
 
 model:
-  profile: "paper_full"
-  d_model: 768               # EXPLICIT (Section 3.1 & Table 1): 768-D backbone
-  n_layers: 12               # EXPLICIT (Section 3.1): 12 causal decoder layers
-  n_heads: 12                # EXPLICIT (Section 3.1): 12 attention heads
+  profile: "paper_dimensions_candidate"
+  d_model: 768               # EXPLICIT (Supplementary Table 16, p.50): 768-D backbone
+  n_layers: 12               # EXPLICIT (Supplementary Table 16, p.50): 12 causal decoder layers
+  n_heads: 12                # EXPLICIT (Supplementary Table 16, p.50): 12 attention heads
   d_head: 64                 # DERIVED: 768 / 12 = 64
-  d_latent: 384              # EXPLICIT (Section 3.1 & LAT-01): 384-D bottleneck latent space
-  ffn_expansion: 8           # EXPLICIT (Section 3.1): FFN expansion ratio 8 (d_ffn = 6144)
+  d_latent: 384              # EXPLICIT (Supplementary Table 16, p.50): 384-D bottleneck latent space
+  ffn_expansion: 8           # EXPLICIT (Supplementary Table 16, p.50): FFN expansion ratio 8 (d_ffn = 6144)
   dropout: 0.1               # EXPLICIT (p. 50)
   drop_path: 0.1             # EXPLICIT (p. 50)
   attention_dropout: 0.1     # EXPLICIT (p. 50)
@@ -100,13 +101,15 @@ decoder:
   specifics_gate_threshold: 0.5
 
 training:
+  optimizer: "muon_adamw"
+  class_weighted_heads: true
   batch_size: 4              # Per-GPU batch size
   gradient_accumulation_steps: 2 # Effective batch size = 8
-  learning_rate: 3.0e-4      # Scaled for 150M parameter transformer
+  learning_rate: 6.0e-4      # EXPLICIT p.50
   weight_decay: 0.01         # EXPLICIT (p. 50)
-  lr_warmup_epochs: 2        # Linear LR warmup
-  kl_warmup_epochs: 5        # Linear beta annealing for KL divergence
-  grad_clip: 1.0             # Gradient clipping norm
+  lr_warmup_epochs: 6        # Linear LR warmup
+  kl_warmup_epochs: 10        # Linear beta annealing for KL divergence
+  gradient_clip_norm: 10.0             # Gradient clipping norm
   loss_weights:
     rec_posterior: 0.3       # EXPLICIT (p. 20)
     rec_prior: 0.1           # EXPLICIT (p. 20)

@@ -110,7 +110,10 @@ class NEWS2Scorer:
         pulse: Optional[float] = None,
         temp_c: Optional[float] = None,
     ) -> float:
-        """Calculates total NEWS2 score for available parameters."""
+        """Score the five observed components; complete paper NEWS2 evaluation is gated separately."""
+        values = (resp_rate, spo2, systolic_bp, pulse, temp_c)
+        if any(value is None or not np.isfinite(value) for value in values):
+            raise ValueError("Five finite observed vital measurements are required; missing NEWS2 is not zero")
         total = 0.0
         if resp_rate is not None:
             total += cls.score_respiration_rate(resp_rate)

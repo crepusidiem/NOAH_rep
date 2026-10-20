@@ -67,6 +67,11 @@ class NOAH(nn.Module):
         alpha_post: float = 0.3,
         gamma_prior: float = 0.1,
         category_class_weights: Optional[torch.Tensor] = None,
+        modality_class_weights: Optional[torch.Tensor] = None,
+        specifics_presence_class_weights: Optional[torch.Tensor] = None,
+        category_modality_support: Optional[torch.Tensor] = None,
+        drop_path: float = 0.0,
+
     ):
         super().__init__()
         self.d_model = d_model
@@ -74,6 +79,10 @@ class NOAH(nn.Module):
         self.alpha_post = alpha_post
         self.gamma_prior = gamma_prior
         self.register_buffer("category_class_weights", category_class_weights, persistent=False)
+
+        self.register_buffer("modality_class_weights", modality_class_weights, persistent=False)
+        self.register_buffer("specifics_presence_class_weights", specifics_presence_class_weights, persistent=False)
+        self.register_buffer("category_modality_support", category_modality_support, persistent=False)
 
         # 1. Modality Input Projector
         self.projector = ModalityInputProjector(
@@ -99,6 +108,7 @@ class NOAH(nn.Module):
             attn_dropout=attn_dropout,
             temporal_layers=temporal_layers,
             layer_scale_init=layer_scale_init,
+            drop_path=drop_path,
         )
 
         # 3. Variational Latent Module (LAT-01..05)
@@ -118,7 +128,7 @@ class NOAH(nn.Module):
         # 4. Hierarchical Multimodal Decoder (DEC-01..06)
         self.decoder = HierarchicalMultimodalDecoder(
             d_latent=d_latent,
-            hidden_dim=d_model,
+            hidden_dim=d_latent,
             num_categories=num_categories,
             num_modalities=num_modalities,
             text_dim=text_dim,
@@ -187,7 +197,7 @@ class NOAH(nn.Module):
         has_val_tgt = has_value[:, 1:]
         delta_tgt = delta_next[:, 1:]
         has_gap_tgt = has_next_gap[:, 1:]
-        mask_tgt = loss_mask[:, 1:]        # [B, L-1] bool loss ownership mask
+        mask_tgt = loss_mask[:, 1:] & attention_mask[:, 1:] & attention_mask[:, :-1]        # [B, L-1] bool loss ownership mask
 
         # 4. Variational Distributions
         # Context Prior: p(z_t | h_{t-1})
@@ -300,12 +310,15 @@ class NOAH(nn.Module):
         # 2. Modality NLL
         m_logits = dec_out.modality_logits[valid_mask]  # [N, num_mods]
         m_tgt = modality_targets[valid_mask]            # [N]
-        loss_mod = F.cross_entropy(m_logits, m_tgt) if valid_mask.any() else torch.tensor(0.0, device=loss_mask.device)
+        loss_mod = F.cross_entropy(m_logits, m_tgt, weight=self.modality_class_weights) if valid_mask.any() else torch.tensor(0.0, device=loss_mask.device)
 
         # 3. Specifics Presence BCE
         pres_logits = dec_out.specifics_presence_logits.squeeze(-1)[valid_mask]
         pres_tgt = has_specifics[valid_mask].float()
-        loss_pres = F.binary_cross_entropy_with_logits(pres_logits, pres_tgt) if valid_mask.any() else torch.tensor(0.0, device=loss_mask.device)
+        pres_weights = None
+        if self.specifics_presence_class_weights is not None:
+            pres_weights = self.specifics_presence_class_weights[pres_tgt.long()]
+        loss_pres = F.binary_cross_entropy_with_logits(pres_logits, pres_tgt, weight=pres_weights) if valid_mask.any() else torch.tensor(0.0, device=loss_mask.device)
 
         # 4. Specifics Vector Regression (only where has_specifics is True)
         spec_mask = valid_mask & has_specifics.bool()
@@ -347,6 +360,12 @@ class NOAH(nn.Module):
                 loss_val = loss_val + F.mse_loss(
                     dec_out.ecg_vec[ecg_mask],
                     value_targets[ecg_mask][:, :192]
+                )
+
+            echo_mask = val_mask & (modality_targets == Modality.ECHO)
+            if echo_mask.any():
+                loss_val = loss_val + F.mse_loss(
+                    dec_out.echo_vec[echo_mask], value_targets[echo_mask][:, :512]
                 )
 
         # 6. Time (Outgoing delta_next hurdle)

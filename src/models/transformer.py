@@ -14,7 +14,23 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from src.models.temporal import BidirectionalTemporalEmbedding
+from src.models.temporal import BidirectionalTemporalEmbedding, TemporalFeatureBank
+
+
+class DropPath(nn.Module):
+    """Per-example stochastic residual depth; constant rate is assumption A-18."""
+    def __init__(self, probability=0.0):
+        super().__init__()
+        if not 0 <= probability < 1:
+            raise ValueError("drop_path must be in [0, 1)")
+        self.probability = probability
+
+    def forward(self, x):
+        if not self.training or self.probability == 0:
+            return x
+        keep = 1 - self.probability
+        mask = x.new_empty((x.shape[0],) + (1,) * (x.ndim - 1)).bernoulli_(keep)
+        return x * mask / keep
 
 
 class TemporalAttentionLayer(nn.Module):
@@ -74,12 +90,14 @@ class TemporalAttentionLayer(nn.Module):
         # Scaled dot-product attention via PyTorch SDPA (FlashAttention / memory-efficient SDPA)
         dropout_p = self.attn_dropout.p if self.training else 0.0
 
-        if padding_mask is not None:
+        if padding_mask is not None or causal_mask is not None:
             # When padding mask is provided, combine causal tril mask and key padding mask
-            if causal_mask is not None:
+            if causal_mask is None:
+                causal_mask = torch.ones(L, L, device=x.device, dtype=torch.bool).tril()
+            if padding_mask is not None:
                 attn_mask = causal_mask.unsqueeze(0).unsqueeze(0) & padding_mask.unsqueeze(1).unsqueeze(2)
             else:
-                attn_mask = padding_mask.unsqueeze(1).unsqueeze(2)
+                attn_mask = causal_mask.unsqueeze(0).unsqueeze(0)
             out = F.scaled_dot_product_attention(q, k, v, attn_mask=attn_mask, dropout_p=dropout_p)
             out = torch.nan_to_num(out, nan=0.0)
         else:
@@ -107,8 +125,10 @@ class TransformerBlock(nn.Module):
         attn_dropout: float = 0.1,
         inject_temporal: bool = True,
         layer_scale_init: float = 1e-4,
+        drop_path: float = 0.0,
     ):
         super().__init__()
+        self.drop_path = DropPath(drop_path)
         self.ln1 = nn.LayerNorm(d_model)
         self.attn = TemporalAttentionLayer(
             d_model=d_model,
@@ -148,12 +168,12 @@ class TransformerBlock(nn.Module):
             causal_mask=causal_mask,
             padding_mask=padding_mask,
         )
-        x = x + attn_out
+        x = x + self.drop_path(attn_out)
 
         # Pre-LN Feed-Forward Network with residual connection
         normed2 = self.ln2(x)
         ffn_out = self.gamma_ffn * self.ffn(normed2)
-        x = x + ffn_out
+        x = x + self.drop_path(ffn_out)
         return x
 
 
@@ -173,8 +193,11 @@ class NOAHTransformerBackbone(nn.Module):
         attn_dropout: float = 0.1,
         temporal_layers: int = 4,  # Layers 0..3 have temporal additions (ARCH-02)
         layer_scale_init: float = 1e-4,
+        drop_path: float = 0.0,
+        input_temporal: bool = True,
     ):
         super().__init__()
+        self.input_time_bank = TemporalFeatureBank(4, d_model) if input_temporal else None
         self.d_model = d_model
         self.n_layers = n_layers
         self.temporal_layers = temporal_layers
@@ -193,6 +216,7 @@ class NOAHTransformerBackbone(nn.Module):
                 attn_dropout=attn_dropout,
                 inject_temporal=(i < temporal_layers),
                 layer_scale_init=layer_scale_init,
+                drop_path=drop_path,
             )
             for i in range(n_layers)
         ])
@@ -226,6 +250,11 @@ class NOAHTransformerBackbone(nn.Module):
         causal_mask = torch.tril(torch.ones(L, L, device=device, dtype=torch.bool))
 
         x = e
+        if self.input_time_bank is not None:
+            x = x + self.input_time_bank(torch.stack([
+                positions, ages, torch.log1p(delta_prev.clamp_min(0)),
+                torch.log1p(delta_next.clamp_min(0)),
+            ], dim=-1))
         for block in self.blocks:
             x = block(
                 x=x,
