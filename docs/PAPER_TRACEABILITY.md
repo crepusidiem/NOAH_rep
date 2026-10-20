@@ -190,3 +190,18 @@ The [controlled remediation matrix](ARCHITECTURE_AUDIT.md#controlled-remediation
 ## M1.5 candidate learning validation
 
 `m15.operations.LearningTrainer.update` preserves M1 loss/optimizer operations; `test_update_equivalent_to_m1_and_cap` and the real `tools/m15_verify.py` fixture compare full next-step states independently against M1. `m15.operations.evaluate` uses shifted prior history for category predictions, target-informed posterior only for reconstruction, all existing ownership/time masks, and both branches' component reductions. `m15.metrics` supplies train-only unigram/transition/numeric/time baselines and float64 event metrics. `m15.controller` pins M1 artifacts/source, quarantines test windows, saves bounded states and verifies recovery/prediction replay. The approved20-epoch schedule and validation protocol are ASSUMED engineering choices; the reduced model/data are DEVIATIONS from paper scale. Teacher-forced retained-gap conditioning is explicitly disclosed and supplies no unconditional/prospective/rollout evidence. See the [fixed M1.5 protocol](M15_EXECUTION_PROPOSAL.md) and dated execution evidence; no paper requirement is redefined by this feasibility experiment.
+
+## M2 execution bindings (2026-10-20)
+
+These are implementation-evidence links, not changes to paper requirements. Source/version/candidate details and executed counts are in the [M2 report](../reports/server/2026-10-20_m2/REPORT.md).
+
+| Requirement family | Active code | Concrete verification and current boundary |
+|---|---|---|
+| DATA-01–03, patient isolation/source identities | `m2/cohort.py:select_cohort`, `m2/inventory.py:run`, `m2/source_smoke.py:source_smoke` | Fixed 15,000-patient manifests, 26 table counts, seven new tests; canonical category frequencies/windows remain pending. |
+| Source times, information availability, numeric aggregation | `m2/events.py:Event`, `cutoff_view`, `aggregate_minmax` | Unknown/delayed/future, encounter, units and contributor fixtures; 14 genuine records. No full-cohort aggregation recipe selected. |
+| Frozen text/specifics and CXR encoders | `m2/encoders.py:smoke` | Genuine-source strict frozen BioLORD/RAD-DINO loads and bitwise inference on allocated L40S. Long text and CLS/processor recipes remain candidates. |
+| ECG/ECHO preprocessing and content spaces | `m2/encoders.py`, `m2/source_smoke.py`, source physical censuses | Genuine ECG waveform decode/ECHO file access only; reported local weights await precise path. No OTIS/EchoPrime output verification yet. |
+| Cache provenance and original content dimensions | `m2/events.py:EmbeddingCache` | Source/content/encoder/recipe hashes; reject collisions/tampering/zero fallback. Complete event-to-cache materialization is M2-C. |
+| Clinical uncertainty and paired comparisons | `evaluation/bootstrap.py:patient_cluster_bootstrap` | Synthetic/replay/independent Brier oracle; exact patient/encounter/landmark alignment and degenerate replicate reporting. No real clinical comparison run. |
+
+Paths above are relative to `packages/noah_baseline/`. The statistical utility and engineering cohort choices are ASSUMED, not evidence of author settings. No M2 change alters the frozen M1/M1.5 architecture, loss, weights, checkpoints or evaluation results.

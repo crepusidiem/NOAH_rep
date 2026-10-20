@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "phase": "M2-A and bounded M2-B",
+  "cohort": {
+    "total": 15000,
+    "train": 10500,
+    "val": 2250,
+    "test": 2250,
+    "seed": 20261020,
+    "universe": "distinct subjects in MIMIC-IV2.2 hospital admissions; no outcome, event-count or modality filter",
+    "preserve_pilot_splits": true,
+    "min_64_tokens_filter": "not applied at sampling; deferred dataset eligibility is separate from cohort membership"
+  },
+  "legacy_splits": "artifacts/reduced_pilot/runs/m1-real-20261019-02/patient_splits.csv",
+  "roots": {
+    "hosp": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/hosp",
+    "icu": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv/physionet.org/files/mimiciv/2.2/icu",
+    "ed": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-ed/physionet.org/files/mimic-iv-ed/2.2/ed",
+    "note": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-note/physionet.org/files/mimic-iv-note/2.2/note",
+    "cxr": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/cxr/MIMIC-CXR/2.0.0",
+    "ecg": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-ecg/1.0",
+    "echo": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-iv-echo/1.0.1"
+  },
+  "versions": {
+    "hosp": "2.2",
+    "icu": "2.2",
+    "ed": "2.2",
+    "note": "2.2",
+    "cxr": "2.0.0 original JPEG tree; record metadata reconciled separately; previous resized tree partial",
+    "ecg": "1.0",
+    "echo": "1.0.1; deviation from paper1.0"
+  },
+  "limits": {
+    "cpus": 2,
+    "memory_GiB": 16,
+    "elapsed_minutes": 20,
+    "per_query_seconds": 90,
+    "source_table_size_limit_bytes": 4294967296,
+    "output_GiB": 1
+  },
+  "assets": {
+    "biolord": "/home/wey371/rajpurkarlab/home/wey371/models/huggingface/hub/models--FremyCompany--BioLORD-2023/snapshots/167aab527b238a50ca65224e6319215d2ff4fc9f",
+    "rad_dino": "/home/wey371/rajpurkarlab/home/wey371/models/huggingface/hub/models--microsoft--rad-dino/snapshots/110cbc18d5133582e320b43d53bf5c44e410c936",
+    "otis_checkpoint": null,
+    "echoprime_checkpoint": null
+  },
+  "information_profiles": [
+    "paper_reproduction",
+    "occurrence_diagnostic",
+    "strict_prospective"
+  ],
+  "bulk_encoding_authorized": false,
+  "training_authorized": false,
+  "alpha_authorized": false,
+  "cxr_previous_derivative": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/mimic-cxr-resized/2.0.0"
+}

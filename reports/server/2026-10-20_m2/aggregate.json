@@ -1,0 +1,241 @@
+{
+  "stage": "M2-A complete bounded source inventory; M2-B partial; M2-C/D pending",
+  "source_commit": "0d30e7c95b0de571bc286cbfa86add078b1ed945",
+  "dirty_source_captured": true,
+  "cohort": {
+    "schema_version": 1,
+    "cohort": {
+      "total": 15000,
+      "train": 10500,
+      "val": 2250,
+      "test": 2250,
+      "seed": 20261020,
+      "universe": "distinct subjects in MIMIC-IV2.2 hospital admissions; no outcome, event-count or modality filter",
+      "preserve_pilot_splits": true,
+      "min_64_tokens_filter": "not applied at sampling; deferred dataset eligibility is separate from cohort membership"
+    },
+    "counts": {
+      "train": {
+        "patients": 10500,
+        "admissions": 25733,
+        "eligible_24h": 7693,
+        "eligible_24h_deaths": 193,
+        "exclusions": {
+          "not_in_encounter_at_24h": 2788,
+          "death_after_encounter_end": 7,
+          "invalid_encounter_interval": 7,
+          "contradictory_mortality_markers": 5
+        }
+      },
+      "val": {
+        "patients": 2250,
+        "admissions": 5316,
+        "eligible_24h": 1675,
+        "eligible_24h_deaths": 47,
+        "exclusions": {
+          "not_in_encounter_at_24h": 573,
+          "death_after_encounter_end": 1,
+          "contradictory_mortality_markers": 1
+        }
+      },
+      "test": {
+        "patients": 2250,
+        "admissions": 5520,
+        "eligible_24h": 1678,
+        "eligible_24h_deaths": 39,
+        "exclusions": {
+          "not_in_encounter_at_24h": 568,
+          "death_after_encounter_end": 3,
+          "contradictory_mortality_markers": 1
+        }
+      }
+    },
+    "source_universe_patients": 180733,
+    "admissions_sha256": "59a99ad5a5549f1ffe2e4995caafb8f727a1b726e595737f3aeb43eee6bb32ac",
+    "patients_sha256": "d6920a7f4efad739a4755ecb5e57b6447bd293a056cf18acb64f780c2df2aa89",
+    "protected_split_sha256": "0beadca1a4580c37abff93252c57b73ca5ea7dadabb26865f1e43b1d5f0cac7e",
+    "patient_splits_sha256": "5df6b9e96b1921b94867cdacd04440de25a42e84d33c4a6fbd9ad5e26277d869",
+    "index_sha256": "8c969db659332b9339849efb26f9ec868e42a29aac2501b220747f22aefe7208",
+    "source_config_sha256": "13e23f53d5154024b417f8f528aedbb22150b3d1c21b02f38650ec445a4dde7f",
+    "source_commit": "0d30e7c95b0de571bc286cbfa86add078b1ed945",
+    "source_dirty": true,
+    "training_token_eligibility": "not yet applied; no future-density-based cohort resampling",
+    "outcome_policy": "same M1 first-admission/+24h risk set; source counts only, no prediction or test tuning"
+  },
+  "source_tables": 26,
+  "source_rows_are_canonical_events": false,
+  "encoders": {
+    "source_dataset_inventory_sha256": "28fca8575e219a806bf2256dee806c2952a1021845e1c03f2ad1c28365e547bd",
+    "config_sha256": "ce3a88cca82c838ccdcdada8b46b48abb9761ca5f0cffb55ce35cf6eb87f0161",
+    "encoder_source_sha256": "e447e405d710c90c0f381284f2ae8eb3276f16772241c65a4fc06a3ddac5522e",
+    "source_commit": "0d30e7c95b0de571bc286cbfa86add078b1ed945",
+    "job_id": "56938773",
+    "gpu": "NVIDIA L40S",
+    "torch": "2.14.1+cu130",
+    "transformers": "5.19.0",
+    "modalities": {
+      "categorical": {
+        "status": "PARTIALLY VERIFIED",
+        "examples": 2,
+        "scope": "real item labels encoded; learned category lookup belongs to NOAH; full taxonomy adapters remain incomplete"
+      },
+      "text": {
+        "asset_revision": "167aab527b238a50ca65224e6319215d2ff4fc9f",
+        "weight_sha256": "f8c969586cc6b0fd393faa7d879de93d6cc532123956041fefd3474194322050",
+        "config_sha256": "11e8f12f4e21c3e98381d89f06f26444a7c8988ea69a05080bdd87cbf25bb67c",
+        "parameters": 109486464,
+        "status": "VERIFIED",
+        "scope": "frozen real-source candidate encoding; long-note truncation is an assumption",
+        "examples": 6
+      },
+      "cxr": {
+        "asset_revision": "110cbc18d5133582e320b43d53bf5c44e410c936",
+        "weight_sha256": "dbfb9f54459c38773505de64a6ab7807bdcb392610fe1e697166342e43fb91ae",
+        "config_sha256": "89daf9751d9576d586dedf9543c1083211611fa3a36908db7a799b3ce7c68ede",
+        "parameters": 86580480,
+        "status": "PARTIALLY VERIFIED",
+        "examples": 2,
+        "encoder_check": "VERIFIED",
+        "limitation": "candidate CLS/processor recipe, unique encounter/time integration and complete dataset remain to be validated"
+      },
+      "numeric": {
+        "status": "PARTIALLY VERIFIED",
+        "examples": 2,
+        "scope": "real heart-rate basis verified; aggregation span/stride and broader units remain explicit unset choices"
+      },
+      "ecg": {
+        "status": "BLOCKED",
+        "source_examples": 2,
+        "reason": "No configured verified pretrained OTIS192-D/1x24 checkpoint; no inference attempted"
+      },
+      "echo": {
+        "status": "BLOCKED",
+        "source_examples": 2,
+        "reason": "EchoPrime checkpoint absent from configured assets; DICOM decoder not installed",
+        "pydicom_available": false
+      }
+    },
+    "elapsed_seconds": 5.980650858022273,
+    "peak_gpu_memory_bytes": 482716672,
+    "training_launched": false,
+    "bulk_encoding_launched": false
+  },
+  "cxr_physical": {
+    "status": "PASS",
+    "counts": {
+      "train": {
+        "index_records": 22992,
+        "files_present": 22992,
+        "files_missing": 0,
+        "index_patients": 3438,
+        "available_patients": 3438,
+        "patients_with_missing_records": 0
+      },
+      "val": {
+        "index_records": 4546,
+        "files_present": 4546,
+        "files_missing": 0,
+        "index_patients": 733,
+        "available_patients": 733,
+        "patients_with_missing_records": 0
+      },
+      "test": {
+        "index_records": 4595,
+        "files_present": 4595,
+        "files_missing": 0,
+        "index_patients": 722,
+        "available_patients": 722,
+        "patients_with_missing_records": 0
+      }
+    },
+    "elapsed_seconds": 73.93277197889984,
+    "source_sha256": "3f0a68ce534768dd3009525d78682f9c2c2e7724555dd098492841fad38bde98",
+    "source_root": "/n/data1/hms/dbmi/rajpurkar/lab/datasets/cxr/MIMIC-CXR/2.0.0",
+    "scope": "original JPEG physical availability; pixels not bulk decoded"
+  },
+  "other_media_physical": {
+    "ecg": {
+      "train": {
+        "index_records": 45855,
+        "files_present": 45855,
+        "files_missing": 0,
+        "index_patients": 7549,
+        "available_patients": 7549,
+        "patients_with_missing_records": 0
+      },
+      "val": {
+        "index_records": 9554,
+        "files_present": 9554,
+        "files_missing": 0,
+        "index_patients": 1647,
+        "available_patients": 1647,
+        "patients_with_missing_records": 0
+      },
+      "test": {
+        "index_records": 9728,
+        "files_present": 9728,
+        "files_missing": 0,
+        "index_patients": 1628,
+        "available_patients": 1628,
+        "patients_with_missing_records": 0
+      }
+    },
+    "echo": {
+      "train": {
+        "index_records": 33341,
+        "files_present": 33341,
+        "files_missing": 0,
+        "index_patients": 253,
+        "available_patients": 253,
+        "patients_with_missing_records": 0
+      },
+      "val": {
+        "index_records": 8139,
+        "files_present": 8139,
+        "files_missing": 0,
+        "index_patients": 60,
+        "available_patients": 60,
+        "patients_with_missing_records": 0
+      },
+      "test": {
+        "index_records": 6650,
+        "files_present": 6650,
+        "files_missing": 0,
+        "index_patients": 45,
+        "available_patients": 45,
+        "patients_with_missing_records": 0
+      }
+    }
+  },
+  "source_smoke": {
+    "status": "PASS",
+    "events_by_modality": {
+      "cxr": 2,
+      "ecg": 2,
+      "echo": 2,
+      "categorical": 2,
+      "numeric": 2,
+      "text": 4
+    },
+    "encounter_links": {
+      "unlinked": 10,
+      "source": 4
+    },
+    "availability": {
+      "unknown": 10,
+      "storetime": 4
+    },
+    "numeric_cache_replay": "PASS",
+    "cxr_physical_decodes": 2,
+    "ecg_physical_decodes": 2,
+    "echo_files_present": 2,
+    "elapsed_seconds": 1.8141870182007551,
+    "encoders_run": false,
+    "source_sha256": "288d0cdae8b5abcc9db739c4372be85b1d060ea8da2d65380d90ee84fe16e01b"
+  },
+  "tests": {
+    "passed": 86,
+    "elapsed_seconds": 16.92,
+    "command": "python -I tools/run.py test -q"
+  }
+}

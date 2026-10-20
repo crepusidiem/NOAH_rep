@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "tests": 86,
+  "elapsed_seconds": 16.92,
+  "command": "python -I tools/run.py test -q",
+  "scope": "79 frozen checks plus seven M2 checks",
+  "source_smoke_replay": {
+    "first": "m2-source-smoke-20261020-03",
+    "second": "m2-source-smoke-20261020-04",
+    "event_file_sha256": "2674d30f0dc5b4f66bb557cfc589c69fe68796ab79b38f95a5b78f6c28984a9d",
+    "bitwise_event_identity": true
+  }
+}

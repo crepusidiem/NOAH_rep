@@ -1,0 +1,14 @@
+{
+  "M1": {
+    "status": "PASS",
+    "files": 32,
+    "inventory_sha256": "350b79a92d242033e8c15bc174477b05a383643eb18d45dab90bb6e89784b28b",
+    "read_only": true
+  },
+  "M1.5": {
+    "status": "PASS",
+    "files": 105,
+    "inventory_sha256": "722f6d66715c30508a05252b723b948bac98608519f75b482629713f3a2c2920",
+    "read_only": true
+  }
+}

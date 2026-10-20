@@ -4,6 +4,12 @@ Clean-worktree context: operational paths and results below describe the archive
 
 Checked: 2026-10-14. This guide connects paper requirements to preprocessing, feature extraction, data windows, the model and training. See [PROJECT_STATUS.md](PROJECT_STATUS.md) for current completion status.
 
+## Active M2 commands and boundaries
+
+Use `python -I tools/m2_run.py PHASE --output-name NEW_NAME`, optionally `--inventory-name EXISTING_INVENTORY`, inside a SLURM allocation. Phases: `inventory`, `source-smoke`, `encoder-smoke`, `lab-census`, `media-census`, `cxr-census`. `media-census` audits the explicitly configured previous CXR derivative; `cxr-census` checks the active original JPEG tree. Existing output directories fail rather than overwrite evidence. `sbatch/m2_inventory.sh` and `sbatch/m2_encoder_smoke.sh` provide bounded CPU and L40S allocations; create the ignored log directory before submission. No bulk or training command is provided.
+
+`packages/noah_baseline/m2/` contains deterministic protected cohort sampling, bounded source census, versioned event/cache contracts and genuine-record checks. `evaluation/bootstrap.py` provides patient-cluster and exactly aligned paired metric intervals. The [executed M2 report](../reports/server/2026-10-20_m2/REPORT.md) identifies actual source captures, config revisions, coverage and asset states. Text/CXR smoke success does not complete the ECG/ECHO pipelines or M2-C. New schemas have not replaced M1 datasets/checkpoints. Keep candidate text truncation, numeric aggregation and encounter-linkage rules explicit before any larger extraction.
+
 ## 1. Established requirements and unresolved settings
 
 The paper specifies ECG input dimensions, patches and final mean pooling; ECHO preprocessing and global CLS extraction; and the text and CXR encoders. Remaining details include exact checkpoint versions, some input-processing parameters, boundary policies and model/training settings.
