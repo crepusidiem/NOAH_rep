@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "purpose": "M1.5 proposal only; zero optimizer updates",
+  "code_commit": "f5e0f58c6f414c191385a1eb6e0e062d08387b93",
+  "preflight_source_sha256": "939a6634f2f1f793f1cc7a83be883c2ada70f37cee8eca2d009dd9a68defce8d",
+  "m1_run": "artifacts/reduced_pilot/runs/m1-real-20261019-02",
+  "verified_readonly_m1_files": 32,
+  "m1_artifact_inventory_sha256": "350b79a92d242033e8c15bc174477b05a383643eb18d45dab90bb6e89784b28b",
+  "pinned_inputs": {
+    "windows.pt": "29236fe450f464398593db0f9e5a025c48b132bed47721a329cf972b64924ce2",
+    "index_cohort.json": "bf5e6ad54903f61faa9871ae596fca7c127929ad7561cd6a76e1e0a89155eeb5",
+    "patient_splits.csv": "0beadca1a4580c37abff93252c57b73ca5ea7dadabb26865f1e43b1d5f0cac7e",
+    "source_manifest.json": "94a8d93137664494b6a9f6cfdfca08c99d7cee4e65a0be65aed36e5c65d5274c",
+    "source.tar": "872c530e3dae832192f5915bff80e9562fec857de425d8f78b29f7b3be7545a2",
+    "config.json": "ca2cd198d832db55a8a4035448a1bf43daaeee6f6101a76716b1859ad40c0e2f",
+    "model.pt": "204ed4c38b1e078191eec986bc7dd6cb0ef2076255fbd3573ecaa514b9869571",
+    "experiment_manifest.json": "f16afc98dc43486021acd8f2ea4b07d81d6742953298e15b9ec35324e7c97c78"
+  },
+  "model_parameters": 4760468,
+  "module_parameters": {
+    "projector": 792832,
+    "backbone": 3157504,
+    "prior": 131584,
+    "posterior": 197120,
+    "decoder": 481428
+  },
+  "development": {
+    "train": {
+      "patients": 526,
+      "windows": 526,
+      "owned_targets": 2335,
+      "category_counts": {
+        "Enter Hospitalization": 526,
+        "Leave ED": 287,
+        "Enter ED": 296,
+        "Vitals": 1226
+      },
+      "category_count_vector": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        526,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        287,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        296,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1226,
+        0,
+        0
+      ],
+      "numeric_targets": 1226,
+      "time_unknown": 526,
+      "time_observed_zero": 25,
+      "time_observed_positive": 1784,
+      "positive_gap_hours_quantiles": {
+        "min": 0.007500000298023224,
+        "p25": 0.2666666805744171,
+        "median": 0.7833333611488342,
+        "p75": 1.5833333730697632,
+        "p95": 3.914166748523711,
+        "max": 22.53333282470703
+      },
+      "positive_log1p_gap_mean": 0.6560061887138284,
+      "attention_lengths": {
+        "min": 7,
+        "median": 9.0,
+        "max": 28
+      },
+      "owned_target_ledger_sha256": "a128e72032852ee482cf8743e469b08ff102e1aaf7a0794ef7cd92e3442ccff9",
+      "transition_count_sha256": "30d0f06246579617170df7db06ddfefe94900cf5e3736c1b39fd08c0746e7e8d"
+    },
+    "validation": {
+      "patients": 102,
+      "windows": 102,
+      "owned_targets": 436,
+      "category_counts": {
+        "Enter Hospitalization": 102,
+        "Leave ED": 55,
+        "Enter ED": 56,
+        "Vitals": 223
+      },
+      "category_count_vector": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        102,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        55,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        56,
+        0,
+        0,
+        0,
+        0,
+        0,
+        223,
+        0,
+        0
+      ],
+      "numeric_targets": 223,
+      "time_unknown": 102,
+      "time_observed_zero": 4,
+      "time_observed_positive": 330,
+      "positive_gap_hours_quantiles": {
+        "min": 0.009166666306555271,
+        "p25": 0.30000001192092896,
+        "median": 0.8166666626930237,
+        "p75": 1.7125000357627869,
+        "p95": 4.668333411216736,
+        "max": 8.483333587646484
+      },
+      "positive_log1p_gap_mean": 0.6904319369998481,
+      "attention_lengths": {
+        "min": 7,
+        "median": 10.0,
+        "max": 22
+      },
+      "owned_target_ledger_sha256": "0ef9762617fce61a4377e78738136d81aaf7c9da05281ea1b8098f11dbccd170",
+      "transition_count_sha256": "e451ed578178ed583c4fb56a89b278324a4ae56618f72cc0b7a68968f5e6cb7d"
+    }
+  },
+  "test_target_inspection": false,
+  "optimizer_updates_executed": 0,
+  "inference_timing": {
+    "threads": 2,
+    "timed_windows": 64,
+    "median_seconds": 0.007117352448403835,
+    "mean_seconds": 0.007070444102282636,
+    "p95_seconds": 0.007436453271657229,
+    "peak_process_rss_MiB": 1002.7734375,
+    "caveat": "CPU inference only; not a measured training-throughput benchmark"
+  },
+  "environment": {
+    "python": "3.12.15",
+    "torch": "2.14.1+cu130",
+    "numpy": "2.5.4"
+  }
+}

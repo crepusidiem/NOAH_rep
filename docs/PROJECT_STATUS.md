@@ -1,6 +1,6 @@
 # NOAH clean baseline: M1 status
 
-Updated2026-10-19 (America/New_York). Branch: `development/clean-baseline`; B0 archive/baseline remain intact. Evidence: [executed M1 report](../reports/server/2026-10-19_m1/REPORT.md).
+Updated2026-10-20 (America/New_York). Branch: `development/clean-baseline`; B0 archive/baseline remain intact. Evidence: [executed M1 report](../reports/server/2026-10-19_m1/REPORT.md).
 
 M1's bounded real-MIMIC category/heart-rate pipeline is implemented and executed. All M1-01–08 acceptance groups pass on source-like fixtures and appropriate real cases. The clean suite passes74 tests with no failures/skips. The1000-patient source manifest and original splits are verified;743 selected first-admission indexes satisfy the24h mortality risk set (train526/9 deaths, validation102/1, test115/2). Four retained CPU optimizer updates connect events/windows, candidate model, exact checkpoint recovery, one landmark state, encounter labels, development-only probe, saved predictions and replayed metrics.
 
@@ -9,3 +9,5 @@ The successful private run is `artifacts/reduced_pilot/runs/m1-real-20261019-02/
 Use `configs/m1.json`, `tools/run.py m1-check`, and the explicit-input CPU-bounded `m1` command. Generic training/alpha launchers remain blocked. Candidate model/loss files preserve B0 migration hashes; the4760468-parameter pilot is separate from legacy checkpoints and the unresolved full-size author-count issue. No external encoders, old caches or historical artifacts are used.
 
 No blockers remain for the stated M1 engineering chain. Substantial training requires separate authorization. Later source/modality coverage, validated external encoders, full paper evaluation, strict prospective availability and alpha methodology remain outside this completed bounded scope. Read existing specification/assumptions/traceability/test-plan documents and the implementation guide; do not restart a broad audit or re-request the approved M1 scope.
+
+M1.5's [bounded protocol](M15_EXECUTION_PROPOSAL.md) and resource budget are approved2026-10-20. A separate controller, train-only baselines, component instrumentation and deterministic prediction replay are implemented in `noah_baseline.m15`. The isolated suite passes79 tests; a real-data one-update comparison matches M1 model/optimizer/RNG state bitwise, and evaluation preserves training state. The proposed candidate and M1 mathematical/data/training source files are unchanged. The one approved run is limited to5260 retained updates, two CPU cores/16GiB/60 minutes/2GiB new output, with no GPU or test-set evaluation. Its primary claim is teacher-forced, time-conditioned category prediction. Execution results will be reported only after the run completes or stops within its hard caps.

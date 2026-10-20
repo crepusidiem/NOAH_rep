@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "tests": 79,
+  "elapsed_seconds": 11.14,
+  "command": "python -I tools/run.py test -q",
+  "real_fixture": "real-operation-fixture.json",
+  "real_fixture_retained_updates": 0,
+  "real_fixture_reference_calls": 2,
+  "m1_model_data_training_modules_modified": false
+}

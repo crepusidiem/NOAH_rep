@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "m1_source_and_artifacts": "immutable hash/byte match",
+  "train_targets": 2335,
+  "validation_targets": 436,
+  "test_evaluated": false,
+  "real_reference_operation": "one update bitwise equal to M1 including optimizer/RNG",
+  "evaluation_state_invariance": "PASS",
+  "physical_fixture_optimizer_calls": 2,
+  "retained_experiment_updates": 0,
+  "source_sha256": "ebbc89614650094e0123f44591342145a2b9972799350d1ffccd38395f77a551",
+  "resolved_config_sha256": "0c8f96e8d937224e1c859e900bded3233c7ad006473bea72d7d3e62d066d4105"
+}
