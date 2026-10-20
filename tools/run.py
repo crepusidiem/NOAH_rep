@@ -1,4 +1,4 @@
-"""Run baseline checks through an isolated interpreter; never launch training."""
+"""Run isolated checks and explicitly authorized, CPU-bounded M1 integration."""
 from pathlib import Path
 import json
 import os
@@ -19,14 +19,23 @@ def main():
         os.environ['PYTEST_DISABLE_PLUGIN_AUTOLOAD'] = '1'
         import pytest
         result = pytest.main(['tests', *sys.argv[2:]])
+    elif command in {'m1','m1-check'}:
+        os.environ['PYTEST_DISABLE_PLUGIN_AUTOLOAD'] = '1'
+        if command == 'm1':
+            from noah_baseline.m1.pipeline import main as action
+        else:
+            import runpy
+            action=runpy.run_path(str(root/'tools/m1_fixture_checks.py'))['main']
+        sys.argv=[sys.argv[0],*sys.argv[2:]]
+        result=action()
     elif command == 'release':
         from noah_baseline.evaluation.cli import main as release
         sys.argv = [sys.argv[0], *sys.argv[2:]]
         result = release()
     elif command == 'status':
         print(json.dumps({'package_root':str(root/'packages/noah_baseline'),
-                          'clinical_pipeline':'NOT_IMPLEMENTED', 'training':'NOT_LAUNCHED',
-                          'alpha_sweep':'HOLD', 'methodology':'M01-M12 remain pending'}))
+                          'clinical_pipeline':'M1_BOUNDED_IMPLEMENTED', 'training':'M1_CPU_MAX16_STEPS',
+                          'alpha_sweep':'HOLD', 'methodology':'M1 authorized scope; later phases remain gated'}))
         result = 0
     else:
         print('BLOCKED: baseline supports test, release and status only; no training or alpha launcher',file=sys.stderr)

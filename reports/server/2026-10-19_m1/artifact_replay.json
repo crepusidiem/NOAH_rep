@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "artifact_files_verified": 32,
+  "metric_replay": "exact",
+  "eligible_predictions": 743,
+  "unsupported_claims_rejected": [
+    "prospective",
+    "paper_faithful"
+  ],
+  "real_window_ownership_stress": [
+    {
+      "outcome": 0,
+      "windows": 5,
+      "unique_owned_targets": 22,
+      "status": "PASS"
+    },
+    {
+      "outcome": 1,
+      "windows": 5,
+      "unique_owned_targets": 22,
+      "status": "PASS"
+    }
+  ],
+  "stress_scope": "ownership test only; original context64 training/metrics unchanged",
+  "manifest_sha256": "f16afc98dc43486021acd8f2ea4b07d81d6742953298e15b9ec35324e7c97c78",
+  "recipe_sha256": "7ce39d8dda17bf1e77bec220d980bb6fae25d4e507e3cb1cff5d681a5fb5c23b"
+}

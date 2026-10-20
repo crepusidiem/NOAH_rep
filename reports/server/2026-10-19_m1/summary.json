@@ -1,0 +1,229 @@
+{
+  "run_id": "m1-real-20261019-02",
+  "code": {
+    "commit": "ac25d36ab51de73dfa7b802bfc97701a1c3a00c1",
+    "path": "source.tar",
+    "source_sha256": "872c530e3dae832192f5915bff80e9562fec857de425d8f78b29f7b3be7545a2",
+    "tree_state": "dirty snapshot"
+  },
+  "architecture": {
+    "module_counts": {
+      "backbone": 3157504,
+      "decoder": 481428,
+      "posterior": 197120,
+      "prior": 131584,
+      "projector": 792832
+    },
+    "parameter_count": 4760468,
+    "revision": "clean-m1-candidate-v1"
+  },
+  "checkpoint": {
+    "architecture_revision": "clean-m1-candidate-v1",
+    "path": "model.pt",
+    "sha256": "204ed4c38b1e078191eec986bc7dd6cb0ef2076255fbd3573ecaa514b9869571"
+  },
+  "scope": "M1 reduced-modality occurrence-time engineering diagnostic; not paper-faithful or prospective",
+  "private_artifact_root": "artifacts/reduced_pilot/runs/m1-real-20261019-02",
+  "manifest_sha256": "f16afc98dc43486021acd8f2ea4b07d81d6742953298e15b9ec35324e7c97c78",
+  "acceptance": {
+    "availability_unknown": 25108,
+    "elapsed_seconds": 21.34,
+    "eligibility_exclusions": {
+      "contradictory_mortality_markers": 1,
+      "death_after_encounter_end": 1,
+      "not_in_encounter_at_24h": 255
+    },
+    "eligible": 743,
+    "events": 25108,
+    "executed_cases": {
+      "M1-01": {
+        "scope": "executed source-like pytest fixtures plus bounded real-data assertions",
+        "status": "PASS"
+      },
+      "M1-02": {
+        "scope": "executed source-like pytest fixtures plus bounded real-data assertions",
+        "status": "PASS"
+      },
+      "M1-03": {
+        "scope": "executed source-like pytest fixtures plus bounded real-data assertions",
+        "status": "PASS"
+      },
+      "M1-04": {
+        "scope": "executed source-like pytest fixtures plus bounded real-data assertions",
+        "status": "PASS"
+      },
+      "M1-05": {
+        "scope": "executed source-like pytest fixtures plus bounded real-data assertions",
+        "status": "PASS"
+      },
+      "M1-06": {
+        "scope": "executed source-like pytest fixtures plus bounded real-data assertions",
+        "status": "PASS"
+      },
+      "M1-07": {
+        "scope": "executed source-like pytest fixtures plus bounded real-data assertions",
+        "status": "PASS"
+      },
+      "M1-08": {
+        "scope": "executed source-like pytest fixtures plus bounded real-data assertions",
+        "status": "PASS"
+      }
+    },
+    "index_patients": 1000,
+    "objective_reference": {
+      "absolute_error": 0.0,
+      "actual": 3.800625801086426,
+      "alignment": "prior h[:-1], posterior target e[1:]",
+      "gaussian_reference": "torch.distributions.Normal KL",
+      "independent_reference": 3.800625801086426,
+      "owned_shifted_targets": 6,
+      "status": "PASS"
+    },
+    "real_suffix_checks": [
+      {
+        "outcome": 0,
+        "split": "test",
+        "status": "PASS"
+      },
+      {
+        "outcome": 1,
+        "split": "test",
+        "status": "PASS"
+      },
+      {
+        "outcome": 0,
+        "split": "train",
+        "status": "PASS"
+      },
+      {
+        "outcome": 1,
+        "split": "train",
+        "status": "PASS"
+      },
+      {
+        "outcome": 0,
+        "split": "val",
+        "status": "PASS"
+      },
+      {
+        "outcome": 1,
+        "split": "val",
+        "status": "PASS"
+      }
+    ],
+    "source_checks": {
+      "independent_admission_sql": "PASS",
+      "indexes_compared": 1000,
+      "numeric_rows_compared": 11,
+      "physical_csv_row_parity": "PASS",
+      "unknown_availability_preserved": true
+    },
+    "source_hospital_admissions": 4129,
+    "source_subjects_with_multiple_admissions": 666,
+    "split_counts": {
+      "test": {
+        "deaths": 2,
+        "n": 115
+      },
+      "train": {
+        "deaths": 9,
+        "n": 526
+      },
+      "val": {
+        "deaths": 1,
+        "n": 102
+      }
+    },
+    "steps": 4,
+    "test_tuning_invariance": "PASS",
+    "train_windows": 526,
+    "windows": 743
+  },
+  "metrics": {
+    "train": {
+      "n": 526,
+      "positive": 9,
+      "prevalence": 0.017110266159695818,
+      "auroc": 0.9797979797979798,
+      "auprc": 0.5224092485997248,
+      "brier": 0.012510007612282683,
+      "log_loss": 0.0473926121432782,
+      "accuracy": 0.9847908745247148,
+      "balanced_accuracy": 0.5555555555555556
+    },
+    "val": {
+      "n": 102,
+      "positive": 1,
+      "prevalence": 0.00980392156862745,
+      "auroc": 0.9504950495049505,
+      "auprc": 0.16666666666666666,
+      "brier": 0.009406473204009147,
+      "log_loss": 0.04151383099785914,
+      "accuracy": 0.9901960784313726,
+      "balanced_accuracy": 0.5
+    },
+    "test": {
+      "n": 115,
+      "positive": 2,
+      "prevalence": 0.017391304347826087,
+      "auroc": 0.9070796460176991,
+      "auprc": 0.175,
+      "brier": 0.016175234379346346,
+      "log_loss": 0.06839370925896036,
+      "accuracy": 0.9826086956521739,
+      "balanced_accuracy": 0.5
+    }
+  },
+  "selected_C": 0.1,
+  "tests": {
+    "fixture_groups": 8,
+    "fixture_passed": 8,
+    "fixture_seconds": 8.58,
+    "full_suite_passed": 74,
+    "full_suite_seconds": 20.45,
+    "failed": 0,
+    "skipped": 0
+  },
+  "artifact_verification": {
+    "status": "PASS",
+    "artifact_files_verified": 32,
+    "metric_replay": "exact",
+    "eligible_predictions": 743,
+    "unsupported_claims_rejected": [
+      "prospective",
+      "paper_faithful"
+    ],
+    "real_window_ownership_stress": [
+      {
+        "outcome": 0,
+        "windows": 5,
+        "unique_owned_targets": 22,
+        "status": "PASS"
+      },
+      {
+        "outcome": 1,
+        "windows": 5,
+        "unique_owned_targets": 22,
+        "status": "PASS"
+      }
+    ],
+    "stress_scope": "ownership test only; original context64 training/metrics unchanged",
+    "manifest_sha256": "f16afc98dc43486021acd8f2ea4b07d81d6742953298e15b9ec35324e7c97c78",
+    "recipe_sha256": "7ce39d8dda17bf1e77bec220d980bb6fae25d4e507e3cb1cff5d681a5fb5c23b"
+  },
+  "claim_gate": {
+    "retrospective_diagnostic": "PASS",
+    "prospective": "REJECTED",
+    "paper_faithful": "REJECTED"
+  },
+  "original_history_and_artifacts": "untouched; source/model files in legacy checkout unchanged",
+  "remaining_m1_blockers": [],
+  "interpretation": "engineering demonstration after four retained updates; two test deaths; no paper-exact/prospective or clinical-performance claim",
+  "limits": [
+    "all source availability unknown",
+    "heart-rate-only numeric coverage; no text specifics; five demographic slots unconditioned",
+    "minimum_events1/context64/overlap16 reduced pilot",
+    "one validation death and two test deaths",
+    "four retained optimizer steps, plus one duplicate recovery reference update"
+  ]
+}

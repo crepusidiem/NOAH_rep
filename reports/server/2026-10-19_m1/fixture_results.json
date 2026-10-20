@@ -1,0 +1,90 @@
+{
+  "exit_code": 0,
+  "cases": {
+    "M1-01": "PASS",
+    "M1-02": "PASS",
+    "M1-03": "PASS",
+    "M1-04": "PASS",
+    "M1-05": "PASS",
+    "M1-06": "PASS",
+    "M1-07": "PASS",
+    "M1-08": "PASS"
+  },
+  "nodes": [
+    {
+      "node": "tests/test_m1.py::test_m1_01_source",
+      "outcome": "passed",
+      "phase": "call"
+    },
+    {
+      "node": "tests/test_m1.py::test_m1_02_cutoff_suffix_delayed_and_unknown",
+      "outcome": "passed",
+      "phase": "call"
+    },
+    {
+      "node": "tests/test_m1.py::test_m1_03_patient_splits_and_index_before_eligibility",
+      "outcome": "passed",
+      "phase": "call"
+    },
+    {
+      "node": "tests/test_m1.py::test_m1_04_shifted_ownership_and_padding",
+      "outcome": "passed",
+      "phase": "call"
+    },
+    {
+      "node": "tests/test_m1.py::test_m1_05_independent_weighted_reductions_and_accumulation",
+      "outcome": "passed",
+      "phase": "call"
+    },
+    {
+      "node": "tests/test_m1.py::test_m1_06_checkpoint_rng_data_and_clock_recovery",
+      "outcome": "passed",
+      "phase": "call"
+    },
+    {
+      "node": "tests/test_m1.py::test_m1_07_encounter_mortality_exact_landmark_and_risk_set",
+      "outcome": "passed",
+      "phase": "call"
+    },
+    {
+      "node": "tests/test_m1.py::test_m1_08_probe_no_test_tuning_and_metric_replay",
+      "outcome": "passed",
+      "phase": "call"
+    }
+  ],
+  "source_files": {
+    "packages/noah_baseline/__init__.py": "934f93ff86db18837df3a8318214755b8c73bc7360dc8fb652ac8328fa4c6838",
+    "packages/noah_baseline/data/__init__.py": "934f93ff86db18837df3a8318214755b8c73bc7360dc8fb652ac8328fa4c6838",
+    "packages/noah_baseline/data/numeric.py": "b4e4132e8952acc333581dba30c7c2a7b25b7a6361d186444653040603164eec",
+    "packages/noah_baseline/data/schema.py": "65cc5c54d1a66fcc80b177c031e9b1904a268652981cd636e253ffd4f061f397",
+    "packages/noah_baseline/data/window_builder.py": "1054e639693e9699d2022eac1457fded80aaf539ad69dfb0b1a3c9472fcf26b4",
+    "packages/noah_baseline/evaluation/__init__.py": "934f93ff86db18837df3a8318214755b8c73bc7360dc8fb652ac8328fa4c6838",
+    "packages/noah_baseline/evaluation/cli.py": "f421c29efdb19bf17297633530a3ab15417ce2688be9779483bb719982187d9b",
+    "packages/noah_baseline/evaluation/contracts.py": "9e9d640bdf4d5f4f863cefa9b7ce6262387e3024793d5b722769d92cb47f8921",
+    "packages/noah_baseline/evaluation/landmarks.py": "5133a811fefc5f87e44862b941bfb4551b05350a0a7c5e71672e20ffe087c104",
+    "packages/noah_baseline/evaluation/outcomes.py": "23c2109d9c43f3c099a5d21f626fe954050d7a67eda5801a9916f455e19fa399",
+    "packages/noah_baseline/m1/__init__.py": "32fed34f82a482e19eed35c6e7e3869790dff11733024e08a351e8a33871e5e3",
+    "packages/noah_baseline/m1/data.py": "f4576ecdd5ac6307d46a5644804813c25a30bd8b31aaeec095a45f3ba861e7a9",
+    "packages/noah_baseline/m1/pipeline.py": "4f17eee8470a57ce5f17b78c987f305835233db126b86f9864f5c3ceb7490ced",
+    "packages/noah_baseline/m1/training.py": "28b46916fec93968b8e1f645c9a32c4daf00e38a84d922222951795a75a292fb",
+    "packages/noah_baseline/m1/verification.py": "d42210591812ab40af820788bffc7be99302418e7004bd47f0fe2f0b0ae21510",
+    "packages/noah_baseline/models/__init__.py": "f0fe18b7dcf925445f9f506ab81ce538e740f8b42a5d5a8d0e3e86ae1487cc51",
+    "packages/noah_baseline/models/decoder.py": "96ebdbbce7f3c9ac748389d9be3a4198474755af2d9d24929287709b46a6e4cd",
+    "packages/noah_baseline/models/noah.py": "20051e7b7f2f6f58f3e3ae007cac01383cb06422cb15f0bd49403dd2686eee28",
+    "packages/noah_baseline/models/optimization.py": "ea67f7d0e4ea169b75112b9d4205bf3702d3bec91570fc7e8a241edfd4a8d9de",
+    "packages/noah_baseline/models/projections.py": "cb5302045f3284e3fc555f092143ef98dd6cfa193e02bd95a75ac07d8d0eb68d",
+    "packages/noah_baseline/models/rollout.py": "8dadc7d783eefecbbd951371b35b14c36eadbb82629400cb41c47a665e19aa49",
+    "packages/noah_baseline/models/temporal.py": "fdba70f8cce68f9754c808239696c8650a1b84268db1dafd559684b4cd35d18d",
+    "packages/noah_baseline/models/transformer.py": "cf0b0fa61ad9decad2a5bc7a9530d60aa27402e3b33aae385ba1526223da8ae8",
+    "packages/noah_baseline/models/variational.py": "48c680e18b7c2d3fbb7c7be9b04b848920d63c54a11c66d3af36dc3d1df1e7f7",
+    "packages/noah_baseline/runtime.py": "bc7c716d61960ee5cfb5524941fa0181f97d50bdca33eda22c3934bdbb94943b",
+    "tests/test_architecture_audit.py": "949ba4435c3144d07b4476c32a08c5315a5b30cb86cab1089155e2833bb60407",
+    "tests/test_dynamic_demographics.py": "3bb08af5da02d30ca33c58aa67396fb3e11e5b068c3ea628590f13413a3b555e",
+    "tests/test_evaluation_contracts.py": "b6fe5e25ac4e053852730e30af4440bd816afb5b0712af3e064223baf4987fe9",
+    "tests/test_isolation.py": "3e0fd745f76fdb07c5eee5b003b0a473cd3766cd67c167b46497a0b372de5fd2",
+    "tests/test_m1.py": "3d7b90c4cd7b3feb2bd42312f757918fa1c042cb9d88cae54c7a9d4830dd4870",
+    "tests/test_temporal_oracle.py": "b0dc46090a50d325db04c662e729aa0aad9fe825c318c2dc60131d3e20d969cd",
+    "tests/test_variational_oracle.py": "dd54d4fcda82dc1bd72223d1241374181b6a41dfdada97893caeeb3e2a72787f",
+    "tests/test_window_builder.py": "77d10b603cec01a6735a26364c4752d86920e5c4a21ee6114864d0f7e2cc3fc7"
+  }
+}

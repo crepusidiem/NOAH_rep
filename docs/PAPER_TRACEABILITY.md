@@ -181,3 +181,8 @@ All proposed controls/tests/schedules are audit methodology, not paper requireme
 | Evidence/release engineering; G06/G13 | `evaluation.contracts`, `validate_experiment_release.py`, reporting and artifact-mutation tests | These are reproduction safeguards, not additional paper claims; pending/unknown required evidence blocks release |
 
 The [controlled remediation matrix](ARCHITECTURE_AUDIT.md#controlled-remediation-preserved-evidence-and-revision-separation) maps all fifteen findings to impacts, tests and experiment blockers. Existing paper facts and A-ID classifications remain unchanged.
+
+
+## M1 active implementation links
+
+`packages/noah_baseline/m1/data.py` links source/cohort identity and source timestamp/encounter provenance to model windows and shifted-target ownership. `m1/training.py` supplies the bounded candidate optimizer/checkpoint path; model, temporal, prior/posterior and loss implementations retain their migration hashes. `m1/verification.py` supplies independent source-index SQL, raw-row parity and objective/alignment references. `m1/pipeline.py` links exact event-state extraction, encounter mortality, development-only probing, prediction replay and existing release gates. `tests/test_m1.py::test_m1_01_source` through `test_m1_08_probe_no_test_tuning_and_metric_replay` implement the eight acceptance groups. The source-scope omissions and24h first-encounter probe are declared pilot choices, not newly asserted paper requirements. See `configs/m1.json` and the implementation guide for the operational contract.

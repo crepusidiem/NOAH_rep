@@ -1,0 +1,9 @@
+{
+  "final_package_test_hashes_match_executed_fixtures": true,
+  "python_syntax": "PASS",
+  "markdown_delimiters": "PASS",
+  "legacy_source_inventory_unchanged": true,
+  "model_loss_migration_hashes": "PASS via full suite",
+  "substantial_training": false,
+  "new_jobs": 0
+}

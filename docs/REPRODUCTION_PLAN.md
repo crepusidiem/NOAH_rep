@@ -222,3 +222,8 @@ For every subsequent run, store its safe execution report under [reports/](../re
 The current dependency order is preservation -> narrow guards -> approved clinical/methodology contracts -> source availability and cutoff views -> encounter labels and landmark state integration -> independent clinical label/metric verification -> frozen comparison recipe -> separately authorized experiments. The detailed G01–G15 matrix, M01–M12 recommendations and historical metric eligibility are in [ARCHITECTURE_AUDIT.md](ARCHITECTURE_AUDIT.md#controlled-remediation-preserved-evidence-and-revision-separation).
 
 The alpha launcher is on an explicit hold and exits before training. In particular, define whether alpha varies category only or all weighted heads, propagate alpha=0 explicitly, freeze loss reductions and one architecture/source/data/probe revision, and pass applicable real-data release checks before submitting an array. No existing historical headline AUROC closes these dependencies.
+
+
+## Current named M1 milestone
+
+The approved categorical/numeric24h encounter-mortality integration is implemented and executed: all eight acceptance groups passed, with74 clean-suite tests and a four-update real-data demonstration. See `docs/PROJECT_STATUS.md`, `configs/m1.json` and `reports/server/2026-10-19_m1/REPORT.md`. This closes the bounded engineering chain only. It does not authorize substantial pretraining, external modalities, full paper evaluation, prospective claims or alpha execution. Do not repeat a broad audit or treat the earlier B0 approval holds as a request to re-approve the same M1 scope.
