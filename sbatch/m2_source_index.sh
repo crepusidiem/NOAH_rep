@@ -1,6 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=noah_m2_source_index
 #SBATCH --partition=short
+#SBATCH --ntasks=1
+#SBATCH --no-requeue
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=16G
 #SBATCH --time=01:00:00

@@ -1,8 +1,10 @@
 {
   "schema_version": 1,
   "stage": "M2-C1 source-complete provenance index; not model-ready canonical events",
-  "execution_authorized": false,
-  "approval_reference": null,
+  "execution_authorized": true,
+  "approval_reference": "Researcher approval 2026-10-20: exactly one M2-C1 CPU source-index job; 2 CPUs,16GiB,60min,8GiB; no retries or follow-on stages",
+  "maximum_submissions": 1,
+  "readiness_after_execution": "HOLD",
   "inventory": "m2-a-20261020-01",
   "patient_splits_sha256": "5df6b9e96b1921b94867cdacd04440de25a42e84d33c4a6fbd9ad5e26277d869",
   "limits": {"cpus": 2, "memory_GiB": 16, "elapsed_seconds": 3530, "new_output_GiB": 8, "spill_GiB": 1},
