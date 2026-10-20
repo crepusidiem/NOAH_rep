@@ -1,0 +1,736 @@
+{
+  "claim": "teacher-forced, time-conditioned category prediction",
+  "run_id": "m15-real-20261020-01",
+  "executed_commit": "b7a848fcfdc6c7a3a12ebb6749e54ce5e4cf3e55",
+  "source_sha256": "e349f5d1a7293791f1f3898f65fd6060d8233557c2c10f984e723a38ea0cfeec",
+  "resolved_config_sha256": "8dc47ea43e77043e1c922e128ca897452c9f327ce2ea211fa34d81fb7cf5f7b3",
+  "training": {
+    "status": "TRAINING_COMPLETE_PENDING_REPLAY",
+    "reason": null,
+    "retained_optimizer_updates": 5260,
+    "physical_optimizer_calls": 5261,
+    "elapsed_seconds": 1035.3833563970402,
+    "peak_rss_MiB": 1189.50390625,
+    "cpu_seconds": 2014.667545,
+    "output_bytes": 773450078,
+    "test_evaluated": false,
+    "gpu_initialized": false
+  },
+  "completion": {
+    "status": "PASS",
+    "claim": "teacher-forced, time-conditioned category prediction",
+    "elapsed_seconds": 1066.0177985541523,
+    "selected_checkpoint_replay": "bitwise",
+    "metric_replay": "PASS",
+    "m1_preserved": true,
+    "recovery": {
+      "status": "PASS",
+      "checkpoint": "epoch01.pt",
+      "next_step": 264,
+      "model_optimizer_rng_clocks": "bitwise",
+      "evaluation_insertion": "PASS",
+      "duplicate_updates": 1
+    },
+    "total_new_bytes": 773450491,
+    "max_retained_updates": 5260,
+    "max_physical_calls": 5261,
+    "cpu_seconds_including_children": 2065.222678,
+    "peak_parent_rss_MiB": 1189.50390625,
+    "peak_child_rss_MiB": 1189.50390625
+  },
+  "selection": {
+    "epoch": 20,
+    "step": 5260,
+    "metric": 0.6116441760331746,
+    "definition": "teacher-forced, time-conditioned category prediction; validation prior NLL",
+    "checkpoint": "epoch20.pt",
+    "checkpoint_sha256": "bd359a16e4035a7dbc1abc8e76ba82c3542494fcf818faad442d47d1cd944e8c"
+  },
+  "initialization": {
+    "epoch": 0,
+    "step": 0,
+    "beta": 0.0,
+    "splits": {
+      "train": {
+        "metrics": {
+          "claim": "teacher-forced, time-conditioned category prediction",
+          "targets": 2335,
+          "category_nll": 3.416783159436653,
+          "category_accuracy": 0.0008565310492505353,
+          "macro_f1": 0.0008143322475570033,
+          "per_category": {
+            "5": {
+              "support": 526,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "14": {
+              "support": 287,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "22": {
+              "support": 296,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "28": {
+              "support": 1226,
+              "recall": 0.0016313213703099511,
+              "f1": 0.003257328990228013
+            }
+          },
+          "rare_category_score": null,
+          "rare_category_reason": "No category has1\u201399 owned training targets",
+          "gap_known": 1809,
+          "gap_positive": 1784,
+          "gap_zero": 25,
+          "gap_unknown": 526,
+          "time_gate_log_loss": 0.657689664092027,
+          "time_gate_brier": 0.23228237814476238,
+          "positive_log1p_hours_rmse": 0.7343546004486265,
+          "observed_gap_hours_mae": 1.1215976881001513,
+          "positive_gap_hours_mae": 1.1354705244863803,
+          "numeric_targets": 1226,
+          "numeric44_mse": 0.5216319791413344,
+          "posterior_reconstruction_category_nll": 3.4570482300627083
+        },
+        "objective": {
+          "total_loss": 2.6027214595120216,
+          "loss_rec_post": 6.537274473067019,
+          "loss_rec_prior": 6.415390223151378,
+          "loss_kl": 622.0145670959705,
+          "loss_category": 3.466637163561107,
+          "loss_modality": 1.8844781708354732,
+          "loss_specifics_presence": 0.028503220315895153,
+          "loss_specifics_vec": 0.0,
+          "loss_value": 0.43851620038199335,
+          "loss_time_gate": 0.3638921496759349,
+          "loss_time_reg": 0.35524756599840895,
+          "fixed_beta1_total": 624.6172884602057,
+          "posterior_category": 3.466637163561107,
+          "posterior_modality": 1.8844781708354732,
+          "posterior_specifics_presence": 0.028503220315895153,
+          "posterior_specifics_vec": 0.0,
+          "posterior_value": 0.43851620038199335,
+          "posterior_time_gate": 0.3638921496759349,
+          "posterior_time_reg": 0.35524756599840895,
+          "prior_category": 3.4266528199380795,
+          "prior_modality": 1.9591980508525109,
+          "prior_specifics_presence": 0.028744738425053797,
+          "prior_specifics_vec": 0.0,
+          "prior_value": 0.2754761676371324,
+          "prior_time_gate": 0.3682869787225252,
+          "prior_time_reg": 0.3570314679859638
+        },
+        "predictions": {
+          "path": "epoch00-train-predictions.npz",
+          "sha256": "b4e4177b0b1188b593ae3d6a0a42b131372dd7db086fbda97abda42a49b87eff",
+          "metric_replay": "PASS"
+        }
+      },
+      "val": {
+        "metrics": {
+          "claim": "teacher-forced, time-conditioned category prediction",
+          "targets": 436,
+          "category_nll": 3.419079434876852,
+          "category_accuracy": 0.0,
+          "macro_f1": 0.0,
+          "per_category": {
+            "5": {
+              "support": 102,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "14": {
+              "support": 55,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "22": {
+              "support": 56,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "28": {
+              "support": 223,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          },
+          "rare_category_score": null,
+          "rare_category_reason": "No category has1\u201399 owned training targets",
+          "gap_known": 334,
+          "gap_positive": 330,
+          "gap_zero": 4,
+          "gap_unknown": 102,
+          "time_gate_log_loss": 0.6562124413362221,
+          "time_gate_brier": 0.23154492329509854,
+          "positive_log1p_hours_rmse": 0.7716547123931865,
+          "observed_gap_hours_mae": 1.2102320742306303,
+          "positive_gap_hours_mae": 1.2233039359377562,
+          "numeric_targets": 223,
+          "numeric44_mse": 0.524092553285063,
+          "posterior_reconstruction_category_nll": 3.4637350222065524
+        },
+        "objective": {
+          "total_loss": 2.6075741087689117,
+          "loss_rec_post": 6.552681983685961,
+          "loss_rec_prior": 6.417694241392846,
+          "loss_kl": 624.0879594391467,
+          "loss_category": 3.4560214187584672,
+          "loss_modality": 1.8917766400412017,
+          "loss_specifics_presence": 0.028286017641863403,
+          "loss_specifics_vec": 0.0,
+          "loss_value": 0.4596944693841186,
+          "loss_time_gate": 0.3623025697820327,
+          "loss_time_reg": 0.35460089183613364,
+          "fixed_beta1_total": 626.6955334583918,
+          "posterior_category": 3.4560214187584672,
+          "posterior_modality": 1.8917766400412017,
+          "posterior_specifics_presence": 0.028286017641863403,
+          "posterior_specifics_vec": 0.0,
+          "posterior_value": 0.4596944693841186,
+          "posterior_time_gate": 0.3623025697820327,
+          "posterior_time_reg": 0.35460089183613364,
+          "prior_category": 3.4254535202886545,
+          "prior_modality": 1.96603697421504,
+          "prior_specifics_presence": 0.028777714910022185,
+          "prior_specifics_vec": 0.0,
+          "prior_value": 0.2862504869699478,
+          "prior_time_gate": 0.36124580689505037,
+          "prior_time_reg": 0.3499297508422066
+        },
+        "predictions": {
+          "path": "epoch00-val-predictions.npz",
+          "sha256": "14bca73b8002719fe3ad530ef0859e1c63c116609441b2f34a31a283cd57c433",
+          "metric_replay": "PASS"
+        }
+      }
+    },
+    "evaluation_state_invariance": "PASS",
+    "elapsed_seconds": 29.221967860125005
+  },
+  "selected": {
+    "epoch": 20,
+    "step": 5260,
+    "beta": 1.0,
+    "splits": {
+      "train": {
+        "metrics": {
+          "claim": "teacher-forced, time-conditioned category prediction",
+          "targets": 2335,
+          "category_nll": 0.570817621765271,
+          "category_accuracy": 0.6972162740899358,
+          "macro_f1": 0.5232406158104135,
+          "per_category": {
+            "5": {
+              "support": 526,
+              "recall": 0.6064638783269962,
+              "f1": 0.5429787234042553
+            },
+            "14": {
+              "support": 287,
+              "recall": 0.7073170731707317,
+              "f1": 0.7073170731707317
+            },
+            "22": {
+              "support": 296,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "28": {
+              "support": 1226,
+              "recall": 0.9021207177814029,
+              "f1": 0.8426666666666667
+            }
+          },
+          "rare_category_score": null,
+          "rare_category_reason": "No category has1\u201399 owned training targets",
+          "gap_known": 1809,
+          "gap_positive": 1784,
+          "gap_zero": 25,
+          "gap_unknown": 526,
+          "time_gate_log_loss": 0.06066930601913776,
+          "time_gate_brier": 0.013241388488212687,
+          "positive_log1p_hours_rmse": 0.49241025346866774,
+          "observed_gap_hours_mae": 0.9230698096736731,
+          "positive_gap_hours_mae": 0.9189838798943604,
+          "numeric_targets": 1226,
+          "numeric44_mse": 0.4405061801750755,
+          "posterior_reconstruction_category_nll": 0.5722155886417388
+        },
+        "objective": {
+          "total_loss": 0.501434508271997,
+          "loss_rec_post": 1.186527816628322,
+          "loss_rec_prior": 1.2233245064267189,
+          "loss_kl": 0.023143695716962162,
+          "loss_category": 0.5428580769794522,
+          "loss_modality": 0.24246329155193064,
+          "loss_specifics_presence": 1.7401881556172494e-05,
+          "loss_specifics_vec": 0.0,
+          "loss_value": 0.22003293722981282,
+          "loss_time_gate": 0.033905454658541986,
+          "loss_time_reg": 0.14725065128629877,
+          "fixed_beta1_total": 0.5014344913481307,
+          "posterior_category": 0.5428580769794522,
+          "posterior_modality": 0.24246329155193064,
+          "posterior_specifics_presence": 1.7401881556172494e-05,
+          "posterior_specifics_vec": 0.0,
+          "posterior_value": 0.22003293722981282,
+          "posterior_time_gate": 0.033905454658541986,
+          "posterior_time_reg": 0.14725065128629877,
+          "prior_category": 0.5590517284638982,
+          "prior_modality": 0.2632699892061358,
+          "prior_specifics_presence": 1.8132632247852954e-05,
+          "prior_specifics_vec": 0.0,
+          "prior_value": 0.22088988487938058,
+          "prior_time_gate": 0.03348651373189672,
+          "prior_time_reg": 0.14660825316719853
+        },
+        "predictions": {
+          "path": "epoch20-train-predictions.npz",
+          "sha256": "71ad0d5d1b13450d038504751e1447df3b3f2e527de7719f2eb25bd7a173dd2e",
+          "metric_replay": "PASS"
+        }
+      },
+      "val": {
+        "metrics": {
+          "claim": "teacher-forced, time-conditioned category prediction",
+          "targets": 436,
+          "category_nll": 0.6116441760331746,
+          "category_accuracy": 0.6811926605504587,
+          "macro_f1": 0.5191710758377426,
+          "per_category": {
+            "5": {
+              "support": 102,
+              "recall": 0.5588235294117647,
+              "f1": 0.5066666666666667
+            },
+            "14": {
+              "support": 55,
+              "recall": 0.7090909090909091,
+              "f1": 0.7428571428571429
+            },
+            "22": {
+              "support": 56,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "28": {
+              "support": 223,
+              "recall": 0.9013452914798207,
+              "f1": 0.8271604938271605
+            }
+          },
+          "rare_category_score": null,
+          "rare_category_reason": "No category has1\u201399 owned training targets",
+          "gap_known": 334,
+          "gap_positive": 330,
+          "gap_zero": 4,
+          "gap_unknown": 102,
+          "time_gate_log_loss": 0.0486063861185808,
+          "time_gate_brier": 0.01133456428049492,
+          "positive_log1p_hours_rmse": 0.5078837744713032,
+          "observed_gap_hours_mae": 0.9770451507379129,
+          "positive_gap_hours_mae": 0.9733275131714824,
+          "numeric_targets": 223,
+          "numeric44_mse": 0.43332657479286957,
+          "posterior_reconstruction_category_nll": 0.6249273175541722
+        },
+        "objective": {
+          "total_loss": 0.5096955436701868,
+          "loss_rec_post": 1.195710631123945,
+          "loss_rec_prior": 1.266614917592675,
+          "loss_kl": 0.024320843684322694,
+          "loss_category": 0.5423244210142716,
+          "loss_modality": 0.2540042687877419,
+          "loss_specifics_presence": 1.9513508103132967e-05,
+          "loss_specifics_vec": 0.0,
+          "loss_value": 0.22664236116643047,
+          "loss_time_gate": 0.022611581670193403,
+          "loss_time_reg": 0.15010847969382418,
+          "fixed_beta1_total": 0.5096955247807737,
+          "posterior_category": 0.5423244210142716,
+          "posterior_modality": 0.2540042687877419,
+          "posterior_specifics_presence": 1.9513508103132967e-05,
+          "posterior_specifics_vec": 0.0,
+          "posterior_value": 0.22664236116643047,
+          "posterior_time_gate": 0.022611581670193403,
+          "posterior_time_reg": 0.15010847969382418,
+          "prior_category": 0.5762567870757159,
+          "prior_modality": 0.28802389201568895,
+          "prior_specifics_presence": 1.8520637693697495e-05,
+          "prior_specifics_vec": 0.0,
+          "prior_value": 0.22664231441768945,
+          "prior_time_gate": 0.023759722887702724,
+          "prior_time_reg": 0.15191368230928978
+        },
+        "predictions": {
+          "path": "epoch20-val-predictions.npz",
+          "sha256": "2cd93efaad5fffde53a79da7cb14331818b39c071a20acb46c7a422cff128e71",
+          "metric_replay": "PASS"
+        }
+      }
+    },
+    "evaluation_state_invariance": "PASS",
+    "elapsed_seconds": 1035.284886000678
+  },
+  "final": {
+    "epoch": 20,
+    "step": 5260,
+    "beta": 1.0,
+    "splits": {
+      "train": {
+        "metrics": {
+          "claim": "teacher-forced, time-conditioned category prediction",
+          "targets": 2335,
+          "category_nll": 0.570817621765271,
+          "category_accuracy": 0.6972162740899358,
+          "macro_f1": 0.5232406158104135,
+          "per_category": {
+            "5": {
+              "support": 526,
+              "recall": 0.6064638783269962,
+              "f1": 0.5429787234042553
+            },
+            "14": {
+              "support": 287,
+              "recall": 0.7073170731707317,
+              "f1": 0.7073170731707317
+            },
+            "22": {
+              "support": 296,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "28": {
+              "support": 1226,
+              "recall": 0.9021207177814029,
+              "f1": 0.8426666666666667
+            }
+          },
+          "rare_category_score": null,
+          "rare_category_reason": "No category has1\u201399 owned training targets",
+          "gap_known": 1809,
+          "gap_positive": 1784,
+          "gap_zero": 25,
+          "gap_unknown": 526,
+          "time_gate_log_loss": 0.06066930601913776,
+          "time_gate_brier": 0.013241388488212687,
+          "positive_log1p_hours_rmse": 0.49241025346866774,
+          "observed_gap_hours_mae": 0.9230698096736731,
+          "positive_gap_hours_mae": 0.9189838798943604,
+          "numeric_targets": 1226,
+          "numeric44_mse": 0.4405061801750755,
+          "posterior_reconstruction_category_nll": 0.5722155886417388
+        },
+        "objective": {
+          "total_loss": 0.501434508271997,
+          "loss_rec_post": 1.186527816628322,
+          "loss_rec_prior": 1.2233245064267189,
+          "loss_kl": 0.023143695716962162,
+          "loss_category": 0.5428580769794522,
+          "loss_modality": 0.24246329155193064,
+          "loss_specifics_presence": 1.7401881556172494e-05,
+          "loss_specifics_vec": 0.0,
+          "loss_value": 0.22003293722981282,
+          "loss_time_gate": 0.033905454658541986,
+          "loss_time_reg": 0.14725065128629877,
+          "fixed_beta1_total": 0.5014344913481307,
+          "posterior_category": 0.5428580769794522,
+          "posterior_modality": 0.24246329155193064,
+          "posterior_specifics_presence": 1.7401881556172494e-05,
+          "posterior_specifics_vec": 0.0,
+          "posterior_value": 0.22003293722981282,
+          "posterior_time_gate": 0.033905454658541986,
+          "posterior_time_reg": 0.14725065128629877,
+          "prior_category": 0.5590517284638982,
+          "prior_modality": 0.2632699892061358,
+          "prior_specifics_presence": 1.8132632247852954e-05,
+          "prior_specifics_vec": 0.0,
+          "prior_value": 0.22088988487938058,
+          "prior_time_gate": 0.03348651373189672,
+          "prior_time_reg": 0.14660825316719853
+        },
+        "predictions": {
+          "path": "epoch20-train-predictions.npz",
+          "sha256": "71ad0d5d1b13450d038504751e1447df3b3f2e527de7719f2eb25bd7a173dd2e",
+          "metric_replay": "PASS"
+        }
+      },
+      "val": {
+        "metrics": {
+          "claim": "teacher-forced, time-conditioned category prediction",
+          "targets": 436,
+          "category_nll": 0.6116441760331746,
+          "category_accuracy": 0.6811926605504587,
+          "macro_f1": 0.5191710758377426,
+          "per_category": {
+            "5": {
+              "support": 102,
+              "recall": 0.5588235294117647,
+              "f1": 0.5066666666666667
+            },
+            "14": {
+              "support": 55,
+              "recall": 0.7090909090909091,
+              "f1": 0.7428571428571429
+            },
+            "22": {
+              "support": 56,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "28": {
+              "support": 223,
+              "recall": 0.9013452914798207,
+              "f1": 0.8271604938271605
+            }
+          },
+          "rare_category_score": null,
+          "rare_category_reason": "No category has1\u201399 owned training targets",
+          "gap_known": 334,
+          "gap_positive": 330,
+          "gap_zero": 4,
+          "gap_unknown": 102,
+          "time_gate_log_loss": 0.0486063861185808,
+          "time_gate_brier": 0.01133456428049492,
+          "positive_log1p_hours_rmse": 0.5078837744713032,
+          "observed_gap_hours_mae": 0.9770451507379129,
+          "positive_gap_hours_mae": 0.9733275131714824,
+          "numeric_targets": 223,
+          "numeric44_mse": 0.43332657479286957,
+          "posterior_reconstruction_category_nll": 0.6249273175541722
+        },
+        "objective": {
+          "total_loss": 0.5096955436701868,
+          "loss_rec_post": 1.195710631123945,
+          "loss_rec_prior": 1.266614917592675,
+          "loss_kl": 0.024320843684322694,
+          "loss_category": 0.5423244210142716,
+          "loss_modality": 0.2540042687877419,
+          "loss_specifics_presence": 1.9513508103132967e-05,
+          "loss_specifics_vec": 0.0,
+          "loss_value": 0.22664236116643047,
+          "loss_time_gate": 0.022611581670193403,
+          "loss_time_reg": 0.15010847969382418,
+          "fixed_beta1_total": 0.5096955247807737,
+          "posterior_category": 0.5423244210142716,
+          "posterior_modality": 0.2540042687877419,
+          "posterior_specifics_presence": 1.9513508103132967e-05,
+          "posterior_specifics_vec": 0.0,
+          "posterior_value": 0.22664236116643047,
+          "posterior_time_gate": 0.022611581670193403,
+          "posterior_time_reg": 0.15010847969382418,
+          "prior_category": 0.5762567870757159,
+          "prior_modality": 0.28802389201568895,
+          "prior_specifics_presence": 1.8520637693697495e-05,
+          "prior_specifics_vec": 0.0,
+          "prior_value": 0.22664231441768945,
+          "prior_time_gate": 0.023759722887702724,
+          "prior_time_reg": 0.15191368230928978
+        },
+        "predictions": {
+          "path": "epoch20-val-predictions.npz",
+          "sha256": "2cd93efaad5fffde53a79da7cb14331818b39c071a20acb46c7a422cff128e71",
+          "metric_replay": "PASS"
+        }
+      }
+    },
+    "evaluation_state_invariance": "PASS",
+    "elapsed_seconds": 1035.284886000678
+  },
+  "baselines": {
+    "train": {
+      "unigram": {
+        "claim": "teacher-forced, time-conditioned category prediction",
+        "targets": 2335,
+        "category_nll": 1.204983750477112,
+        "category_accuracy": 0.5250535331905781,
+        "macro_f1": 0.17214265655714686,
+        "per_category": {
+          "5": {
+            "support": 526,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "14": {
+            "support": 287,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "22": {
+            "support": 296,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "28": {
+            "support": 1226,
+            "recall": 1.0,
+            "f1": 0.6885706262285874
+          }
+        },
+        "rare_category_score": null,
+        "rare_category_reason": "No category has1\u201399 owned training targets",
+        "gap_known": 1809,
+        "gap_positive": 1784,
+        "gap_zero": 25,
+        "gap_unknown": 526,
+        "time_gate_log_loss": 0.07289540785887494,
+        "time_gate_brier": 0.013628803345229507,
+        "positive_log1p_hours_rmse": 0.5045898610188563,
+        "observed_gap_hours_mae": 0.9361827311529478,
+        "positive_gap_hours_mae": 0.9363102841553842,
+        "numeric_targets": 1226,
+        "numeric44_mse": 0.43623942391442594
+      },
+      "transition": {
+        "claim": "teacher-forced, time-conditioned category prediction",
+        "targets": 2335,
+        "category_nll": 0.7552815011138614,
+        "category_accuracy": 0.6492505353319058,
+        "macro_f1": 0.3788194903738621,
+        "per_category": {
+          "5": {
+            "support": 526,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "14": {
+            "support": 287,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "22": {
+            "support": 296,
+            "recall": 0.9831081081081081,
+            "f1": 0.708029197080292
+          },
+          "28": {
+            "support": 1226,
+            "recall": 0.9991843393148451,
+            "f1": 0.8072487644151565
+          }
+        },
+        "rare_category_score": null,
+        "rare_category_reason": "No category has1\u201399 owned training targets",
+        "gap_known": 1809,
+        "gap_positive": 1784,
+        "gap_zero": 25,
+        "gap_unknown": 526,
+        "time_gate_log_loss": 0.07289540785887494,
+        "time_gate_brier": 0.013628803345229507,
+        "positive_log1p_hours_rmse": 0.5045898610188563,
+        "observed_gap_hours_mae": 0.9361827311529478,
+        "positive_gap_hours_mae": 0.9363102841553842,
+        "numeric_targets": 1226,
+        "numeric44_mse": 0.43623942391442594
+      },
+      "positive_median_hours_mae": 0.9280558228492737
+    },
+    "val": {
+      "unigram": {
+        "claim": "teacher-forced, time-conditioned category prediction",
+        "targets": 436,
+        "category_nll": 1.219379663111313,
+        "category_accuracy": 0.5114678899082569,
+        "macro_f1": 0.16919575113808802,
+        "per_category": {
+          "5": {
+            "support": 102,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "14": {
+            "support": 55,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "22": {
+            "support": 56,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "28": {
+            "support": 223,
+            "recall": 1.0,
+            "f1": 0.6767830045523521
+          }
+        },
+        "rare_category_score": null,
+        "rare_category_reason": "No category has1\u201399 owned training targets",
+        "gap_known": 334,
+        "gap_positive": 330,
+        "gap_zero": 4,
+        "gap_unknown": 102,
+        "time_gate_log_loss": 0.06502680085739741,
+        "time_gate_brier": 0.011836021565479755,
+        "positive_log1p_hours_rmse": 0.5259084291089018,
+        "observed_gap_hours_mae": 0.9963029106862888,
+        "positive_gap_hours_mae": 0.9971419696170428,
+        "numeric_targets": 223,
+        "numeric44_mse": 0.4300925046029788
+      },
+      "transition": {
+        "claim": "teacher-forced, time-conditioned category prediction",
+        "targets": 436,
+        "category_nll": 0.7830765716915983,
+        "category_accuracy": 0.6353211009174312,
+        "macro_f1": 0.3733325000568143,
+        "per_category": {
+          "5": {
+            "support": 102,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "14": {
+            "support": 55,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "22": {
+            "support": 56,
+            "recall": 0.9821428571428571,
+            "f1": 0.6962025316455697
+          },
+          "28": {
+            "support": 223,
+            "recall": 0.9955156950672646,
+            "f1": 0.7971274685816876
+          }
+        },
+        "rare_category_score": null,
+        "rare_category_reason": "No category has1\u201399 owned training targets",
+        "gap_known": 334,
+        "gap_positive": 330,
+        "gap_zero": 4,
+        "gap_unknown": 102,
+        "time_gate_log_loss": 0.06502680085739741,
+        "time_gate_brier": 0.011836021565479755,
+        "positive_log1p_hours_rmse": 0.5259084291089018,
+        "observed_gap_hours_mae": 0.9963029106862888,
+        "positive_gap_hours_mae": 0.9971419696170428,
+        "numeric_targets": 223,
+        "numeric44_mse": 0.4300925046029788
+      },
+      "positive_median_hours_mae": 0.9918636679649353
+    }
+  },
+  "gradient": {
+    "min": 1.4573129415512085,
+    "median": 4.287397861480713,
+    "max": 58.64073181152344,
+    "clipped_updates": 289,
+    "updates": 5260
+  },
+  "prespecified_overfitting_flag_epochs": [],
+  "verified_run_artifacts": 105,
+  "report_source_sha256": "f72a92e2385f44dc5575bb33df0b521289319b74ffededa7d78e77829d5e0dca",
+  "claim_limitations": [
+    "teacher forcing and retained target arrival-time conditioning",
+    "unknown availability; no prospective validity",
+    "four observed categories; no rare-category support",
+    "small single-seed reduced-modality cohort; no efficacy or paper-fidelity claim"
+  ]
+}
