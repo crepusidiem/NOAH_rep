@@ -1,0 +1,89 @@
+{
+  "scope": "safe checkpoint metadata and strict EchoPrime architecture load; no inference",
+  "job_id": "56795452",
+  "torch": "2.14.1+cu130",
+  "assets": {
+    "otis": {
+      "unsafe_globals": [
+        "argparse.Namespace"
+      ],
+      "tensor_count": 292,
+      "selected_shapes": {
+        "cls_token": [
+          1,
+          1,
+          192
+        ],
+        "pos_embed_x": [
+          1,
+          43,
+          96
+        ],
+        "decoder_pos_embed_x": [
+          1,
+          43,
+          80
+        ],
+        "patch_embed.proj.weight": [
+          192,
+          1,
+          1,
+          24
+        ],
+        "pos_embed_y.weight": [
+          39,
+          96
+        ],
+        "decoder_pos_embed_y.weight": [
+          80,
+          96
+        ],
+        "decoder_pos_embed_y.bias": [
+          80
+        ]
+      },
+      "source_sha256": "e80a532ab83d9f8a4c4f080c4359d5b867aadc16a83a1d12882fefa6de876f55",
+      "training_arguments": {
+        "model": "otis_baseDeep_dec160d4b_patchX",
+        "input_channels": 1,
+        "time_steps": 1008,
+        "input_size": [
+          1,
+          12,
+          5000
+        ],
+        "patch_height": 1,
+        "patch_width": 24,
+        "patch_size": [
+          1,
+          24
+        ],
+        "norm_pix_loss": false
+      }
+    },
+    "echoprime": {
+      "unsafe_globals": [],
+      "tensor_count": 397,
+      "selected_shapes": {
+        "conv_proj.weight": [
+          96,
+          3,
+          3,
+          7,
+          7
+        ],
+        "head.1.weight": [
+          512,
+          768
+        ],
+        "head.1.bias": [
+          512
+        ]
+      },
+      "source_sha256": "7ca32e8bfde248bd6d8c7e46fdb7440385169af4dc2f416b5de840bdc2e64f3b",
+      "strict_load": "PASS",
+      "constructor": "torchvision.models.video.mvit_v2_s; final head Linear512",
+      "parameters": 34623872
+    }
+  }
+}

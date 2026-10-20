@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "tests": 86,
+  "elapsed_seconds": 17.71,
+  "command": "python -I tools/run.py test -q",
+  "acquired_weight_bytes": 246647396,
+  "asset_checksum_replay": "PASS: both EXISTING_HASH_VERIFIED; no redownload",
+  "preservation": {
+    "M1": {
+      "status": "PASS",
+      "files": 32,
+      "unchanged": true,
+      "read_only": true,
+      "inventory_sha256": "350b79a92d242033e8c15bc174477b05a383643eb18d45dab90bb6e89784b28b"
+    },
+    "M1.5": {
+      "status": "PASS",
+      "files": 105,
+      "unchanged": true,
+      "read_only": true,
+      "inventory_sha256": "722f6d66715c30508a05252b723b948bac98608519f75b482629713f3a2c2920"
+    }
+  },
+  "acquisition_script_sha256": "6825281dc58ce166e533eaf4efb6bd9f4e6c38243ffcf01158e053ef4dabd260",
+  "genuine_ecg_echo_inference_run": false,
+  "training_run": false,
+  "historical_artifacts_modified": false
+}

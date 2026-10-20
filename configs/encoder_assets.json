@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "profile": "public upstream candidates; no NOAH author checkpoint identity claimed",
+  "store": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/models",
+  "assets": {
+    "otis": {
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/models/otis/author-base-2024/otis_base.pth",
+      "weight_sha256": "e80a532ab83d9f8a4c4f080c4359d5b867aadc16a83a1d12882fefa6de876f55",
+      "bytes": 108005017,
+      "manifest_path": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/models/otis/author-base-2024/asset_manifest.json",
+      "author_repository": "https://github.com/oetu/otis",
+      "repository_revision": "30282e9e2fd98511f9e33d90c2b9d86d5ae874e0",
+      "status": "PATCH_WIDTH_AND_192D_VERIFIED_INFERENCE_PENDING"
+    },
+    "echoprime": {
+      "path": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/models/echoprime/v1.0.0/echo_prime_encoder.pt",
+      "weight_sha256": "7ca32e8bfde248bd6d8c7e46fdb7440385169af4dc2f416b5de840bdc2e64f3b",
+      "bytes": 138642379,
+      "manifest_path": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/models/echoprime/v1.0.0/asset_manifest.json",
+      "author_repository": "https://github.com/echonet/EchoPrime",
+      "repository_revision": "03874a5f203695f38968068c21584656d475b6b1",
+      "status": "STRICT_512D_ARCHITECTURE_LOAD_VERIFIED_VIDEO_PIPELINE_PENDING"
+    }
+  }
+}

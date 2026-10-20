@@ -41,8 +41,8 @@
   "assets": {
     "biolord": "/home/wey371/rajpurkarlab/home/wey371/models/huggingface/hub/models--FremyCompany--BioLORD-2023/snapshots/167aab527b238a50ca65224e6319215d2ff4fc9f",
     "rad_dino": "/home/wey371/rajpurkarlab/home/wey371/models/huggingface/hub/models--microsoft--rad-dino/snapshots/110cbc18d5133582e320b43d53bf5c44e410c936",
-    "otis_checkpoint": null,
-    "echoprime_checkpoint": null
+    "otis_checkpoint": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/models/otis/author-base-2024/otis_base.pth",
+    "echoprime_checkpoint": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/models/echoprime/v1.0.0/echo_prime_encoder.pt"
   },
   "information_profiles": [
     "paper_reproduction",

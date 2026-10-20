@@ -111,13 +111,13 @@ def smoke(root, *, out=None, source=None):
             ecg.append(dict(source=record,shape=list(waveform.shape),sample_rate=metadata['fs'],leads=metadata['sig_name'],units=metadata['units'],finite=bool(np.isfinite(waveform).all())))
         except Exception as exc:ecg.append(dict(source=record,error=type(exc).__name__))
     result['ecg_source_checks']=ecg
-    result['modalities']['ecg']=dict(status='BLOCKED',source_examples=len(ecg),reason='No configured verified pretrained OTIS192-D/1x24 checkpoint; no inference attempted')
+    result['modalities']['ecg']=dict(status='BLOCKED',source_examples=len(ecg),reason='OTIS checkpoint path configured; waveform-to-patch adapter and temporal/domain position handling not yet verified; no inference attempted' if config['assets'].get('otis_checkpoint') else 'No configured verified OTIS checkpoint; no inference attempted')
     echo=[]
     for record in [r for r in samples if r['dataset']=='echo']:
         path=Path(config['roots']['echo'])/record['row']['dicom_filepath']
         echo.append(dict(source=record,file_exists=path.is_file(),bytes=path.stat().st_size if path.is_file() else None))
     result['echo_source_checks']=echo
-    result['modalities']['echo']=dict(status='BLOCKED',source_examples=len(echo),reason='EchoPrime checkpoint absent from configured assets; DICOM decoder not installed',pydicom_available=bool(importlib.util.find_spec('pydicom')))
+    result['modalities']['echo']=dict(status='BLOCKED',source_examples=len(echo),reason='EchoPrime checkpoint path configured; DICOM decoder/preprocessing and video inference remain unverified' if config['assets'].get('echoprime_checkpoint') else 'No configured EchoPrime checkpoint; DICOM decoder/preprocessing unverified',pydicom_available=bool(importlib.util.find_spec('pydicom')))
     result.update(elapsed_seconds=time.monotonic()-start,peak_gpu_memory_bytes=torch.cuda.max_memory_allocated(),
         training_launched=False,bulk_encoding_launched=False)
     dump(out/'private_results.json',result)
