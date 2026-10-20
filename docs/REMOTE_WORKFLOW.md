@@ -12,6 +12,8 @@ Direct SSH or a remote project is useful for frequent directory inspection, erro
 
 ## 2. Minimal GitHub synchronization workflow
 
+The active default branch is `main`, aligned with `development/clean-baseline`. On the current server, the original directory `/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/NOAH_rep` is the preserved legacy checkout on `legacy/preserved-2026-10-19`; active clean development uses its `output/worktrees/clean-baseline` worktree. `archive/legacy-2026-10-19` is the frozen legacy snapshot. Check `git worktree list` and the branch before editing or pulling. A new clone of `main` contains the clean baseline; private server artifacts do not accompany a clone. Do not pull the clean branch into the legacy checkout.
+
 ### Server
 
 1. Read `AGENTS.md`, current status, the implementation guide and reproduction plan in the actual clone.

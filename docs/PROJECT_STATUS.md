@@ -1,4 +1,4 @@
-# NOAH clean baseline: M1 status
+# NOAH clean baseline: M1 and M1.5 status
 
 Updated2026-10-20 (America/New_York). Branch: `development/clean-baseline`; B0 archive/baseline remain intact. Evidence: [executed M1 report](../reports/server/2026-10-19_m1/REPORT.md).
 

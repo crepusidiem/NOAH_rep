@@ -1,6 +1,17 @@
 # Clean-baseline reporting context
 
-Reports copied from earlier dated audits are historical evidence about their recorded revisions. Their private source/artifact paths belong to the legacy checkout, not this worktree. Current initialization results are in `server/2026-10-19_clean_baseline/`. No historical clinical score is a new baseline result.
+Reports copied from earlier dated audits are historical evidence about their recorded revisions. Their private source/artifact paths belong to the legacy checkout, not this worktree. Current evidence is grouped by milestone:
+
+| Evidence | Report directory | Interpretation |
+|---|---|---|
+| Legacy architectural/validity audit | `server/2026-10-19_architecture_audit/`, `server/2026-10-19_controlled_remediation/` | Historical revision findings and preserved checkpoints |
+| Source readmission investigation | `server/2026-10-19_readmission_intervals/` | Read-only source/ETL/label investigation; clinical cases remain private |
+| B0 isolated initialization | `server/2026-10-19_clean_baseline/` | Preservation, isolation and component migration |
+| M1 real-data engineering chain | `server/2026-10-19_m1/` | Executed bounded pipeline and acceptance checks |
+| M1.5 preparation | `server/2026-10-20_m15_preflight/` | Read-only target inventory and resource proposal |
+| M1.5 bounded learning | `server/2026-10-20_m15_learning/` | Actual fixed-budget teacher-forced, time-conditioned category prediction |
+
+No historical clinical score is a new baseline result. The M1.5 report records executed source `b7a848f`; its results commit is `6435b3d`. Later documentation/synchronization commits do not replace either identity.
 
 # Server execution report convention
 
@@ -67,11 +78,11 @@ See [REMOTE_WORKFLOW.md](../docs/REMOTE_WORKFLOW.md) for synchronization and [PR
 
 ## Experiment manifests and scientific release
 
-Every future evaluation requires the structure in `configs/evaluation_manifest.template.json`, validated by `src/evaluation/contracts.py`. The template intentionally contains unresolved/null fields and cannot pass a gate. Record code commit and source artifact hash, architecture revision/module counts, checkpoint identity, dataset versions and mapping/cache manifests, encoder identities/recipe hashes, random seeds, patient split artifact, cutoff and next-gap/demographic policies, encounter/endpoint/horizon/censor definitions, availability handling, probe population/validation, private predictions, metric/uncertainty implementation and all approved assumptions/deviations.
+Every future evaluation requires an applicable experiment manifest. Clinical evaluations use the structure in `configs/evaluation_manifest.template.json`, validated by `packages/noah_baseline/evaluation/contracts.py`; the archived implementation used `src/evaluation/contracts.py`. The template intentionally contains unresolved/null fields and cannot pass a gate. Record code commit and source artifact hash, architecture revision/module counts, checkpoint identity, dataset versions and mapping/cache manifests, encoder identities/recipe hashes, random seeds, patient split artifact, cutoff and next-gap/demographic policies, encounter/endpoint/horizon/censor definitions, availability handling, probe population/validation, private predictions, metric/uncertainty implementation and all approved assumptions/deviations.
 
 Two primary modes are supported: `paper_reproduction` and `strict_prospective`. The mode is not itself a conformance certificate. A paper profile may disclose true next-gap timing as a literal reconstruction/retrieval information condition; a strict prospective profile rejects it and requires observed source availability and cutoff-bound metadata. A full-record mean is never a landmark representation. Existing provenance-free shards do not acquire these properties by adding a mode string.
 
-Use `validate_experiment_release.py` before publishing a requested label. `write_validated_report` performs the same checks and refuses to overwrite an existing experiment report. Actual source/checkpoint/split/prediction files and check artifacts are hashed. Relevant required checks and methodology decisions must pass; unknown, skipped, absent, mismatched or pending evidence blocks the claim. Paper-faithful claims also reject deviations and the known candidate parameter mismatch. Report-to-checkpoint associations inferred from names remain unverified until execution lineage/prediction replay is established.
+Use `python -I tools/run.py release` before publishing a requested clinical label. `write_validated_report` performs the same checks and refuses to overwrite an existing experiment report. Actual source/checkpoint/split/prediction files and check artifacts are hashed. Relevant required checks and methodology decisions must pass; unknown, skipped, absent, mismatched or pending evidence blocks the claim. Paper-faithful claims also reject deviations and the known candidate parameter mismatch. Report-to-checkpoint associations inferred from names remain unverified until execution lineage/prediction replay is established.
 
 Prediction records remain private. Landmark records include `representation_kind=single_landmark`, a `LandmarkRequest`, ordered per-token `EventEvidence` (including demographic evidence), finite label/prediction and their source identities. Release checks examine these records, not only a self-declared PASS flag. The reporting gate prevents unsupported label promotion; it does not prove a fabricated evidence file is an authentic execution. Preserve executable test output and the exact source snapshot that produced it.
 
