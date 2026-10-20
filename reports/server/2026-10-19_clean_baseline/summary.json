@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-19",
+  "legacy_head": "1d21fd6f85d4fabbf6cdf0022e865db82cc52dc7",
+  "archive_commit": "edf6a06267a571ce53a3d3718d091e106b7799dd",
+  "archive_tree": "df2f26cea7f23fc53969336fa961239a77562bdd",
+  "archive_source_inventory_sha256": "622166c2b8380e81ddf2829f42f807933dd360eaffb0829b71690ef19ef9f22c",
+  "legacy_checkout_unchanged_at_archive": true,
+  "development_branch": "development/clean-baseline",
+  "worktree": "/n/data1/hms/dbmi/rajpurkar/lab/home/wey371/NOAH_rep/output/worktrees/clean-baseline",
+  "package": "noah_baseline",
+  "clean_code_inventory_sha256": "832f0c8940430a91e74368ba06dbbcbd03b0d5f583dbfbbbaf605bd43b1ad96f",
+  "migration_inventory_sha256": "7818447aeebe08975b53c95ea69f5ef175a288e958141f8176e660c928ae0741",
+  "checkpoint_verification": {
+    "status": "PASS",
+    "snapshot_id": "2026-10-19_controlled_remediation_5b9bac05",
+    "checkpoint_files": 51,
+    "bytes": 55663961469,
+    "integrity_entries_verified": 8,
+    "elapsed_seconds": 111.24
+  },
+  "tests": {
+    "passed": 66,
+    "failed": 0,
+    "skipped": 0,
+    "elapsed_seconds": 54.74,
+    "command": "OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 PYTHONDONTWRITEBYTECODE=1 /home/wey371/rajpurkarlab/home/wey371/.venvs/noah/bin/python -I tools/run.py test -q -o cache_dir=/tmp/noah_clean_baseline_pytest_cache"
+  },
+  "candidate_parameter_count": 148957844,
+  "paper_parameter_count": 150322970,
+  "first_real_data_milestone": "NOT_IMPLEMENTED; acceptance defined in docs/MIGRATION_BASELINE.md",
+  "methodological_approval": "PENDING; existing M01-M12 not selected by initialization",
+  "training_runs": 0,
+  "new_slurm_jobs": 0,
+  "alpha_sweep": "HOLD",
+  "large_datasets_or_checkpoints_duplicated": false,
+  "runtime_environment": "Existing interpreter/package versions recorded; historical author environment not established"
+}

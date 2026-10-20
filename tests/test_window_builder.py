@@ -12,14 +12,14 @@ Verifies:
 import numpy as np
 import pytest
 
-from src.data.schema import (
+from noah_baseline.data.schema import (
     EventCategory,
     Modality,
     DemographicPrefix,
     EventRecord,
     PatientJourney,
 )
-from src.data.window_builder import WindowBuilder
+from noah_baseline.data.window_builder import WindowBuilder
 
 
 def create_mock_journey(subject_id: int, num_events: int) -> PatientJourney:

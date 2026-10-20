@@ -1,5 +1,7 @@
 # NOAH test and scientific validation plan
 
+Clean-worktree context: operational paths and results below describe the archived implementation unless mapped by [MIGRATION_BASELINE.md](MIGRATION_BASELINE.md). Active imports use `noah_baseline`; current stage and supported commands are in [PROJECT_STATUS.md](PROJECT_STATUS.md). Scientific requirements and paper citations are retained unchanged.
+
 Current code verification and selected implementation candidates (2026-10-19): [ARCHITECTURE_AUDIT.md](ARCHITECTURE_AUDIT.md). Paper requirements below remain distinct from implementation/test status.
 
 Updated 2026-10-14. This document specifies required tests. Temporal/numeric test definitions exist; execution results and coverage are recorded in project status and server reports. See [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) for the current snapshot and encoder-specific acceptance checks. Documentation consistency checks are separate from experimental validation.
@@ -269,3 +271,7 @@ python scripts/validate_experiment_release.py /private/run/manifest.json --claim
 ```
 
 The validator exits nonzero on unmet prerequisites and performs no model execution. A check artifact must identify its check name, PASS status, source SHA-256 and predictions SHA-256; the manifest also records and verifies the artifact's own checksum. Source snapshots, checkpoints, patient-split files and private prediction files must exist and match the manifest. Clinical evidence must come from executed checks; copying the synthetic fixture's PASS files is not valid execution evidence.
+
+## Clean-worktree B0 verification
+
+The isolated clean suite passed66 tests with no skips. Its active paths use `noah_baseline`; exact copied-test changes and legacy-only exclusions are in `migration_inventory.json`. Additional tests in `tests/test_isolation.py` reject ambient/legacy imports, nonisolated execution, external/symlink/cross-profile cache paths, unresolved profile activation and migration hash drift; meta-device module counts bind the unchanged candidate architecture. See the dated initialization report for execution evidence. M1-01–08 in `MIGRATION_BASELINE.md` are required real-data acceptance tests and remain unexecuted; B0 synthetic checks do not satisfy them.

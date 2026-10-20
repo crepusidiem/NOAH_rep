@@ -1,0 +1,16 @@
+{
+  "interpreter": "/home/wey371/rajpurkarlab/home/wey371/.venvs/noah/bin/python",
+  "python_requirement": ">=3.12",
+  "tested_package_versions": {
+    "torch": "2.14.1",
+    "numpy": "2.5.4",
+    "pytest": "9.1.1",
+    "duckdb": "1.5.6",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1",
+    "scikit-learn": "1.9.1",
+    "PyYAML": "6.0.3"
+  },
+  "scope": "Existing CPU test environment; not the authors environment or a complete portable legacy training lock",
+  "external_encoders": "not installed or loaded by baseline checks"
+}

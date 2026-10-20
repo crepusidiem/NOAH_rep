@@ -1,0 +1,16 @@
+{
+  "profile": "paper_reproduction",
+  "evaluation_mode": "paper_reproduction",
+  "scale": "paper",
+  "status": "PENDING_METHOD_APPROVAL",
+  "execution_enabled": false,
+  "decisions": {},
+  "scientific_specification": "docs/REPRODUCTION_SPEC.md",
+  "assumptions": "docs/ASSUMPTIONS.md",
+  "output_namespace": "artifacts/paper_reproduction",
+  "legacy_artifacts_allowed": false,
+  "encoder_cache_recipe": null,
+  "checkpoint_revision": null,
+  "dataset_manifest": null,
+  "experiment_manifest_template": "configs/evaluation_manifest.template.json"
+}

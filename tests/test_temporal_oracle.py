@@ -15,12 +15,12 @@ import numpy as np
 import pytest
 import torch
 
-from src.models.temporal import (
+from noah_baseline.models.temporal import (
     compute_temporal_frequencies,
     TemporalFeatureBank,
     BidirectionalTemporalEmbedding,
 )
-from src.data.numeric import DyadicFourierEncoder
+from noah_baseline.data.numeric import DyadicFourierEncoder
 
 
 def test_time_01_geometric_frequency_decay():

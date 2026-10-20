@@ -4,11 +4,11 @@ from unittest.mock import patch
 import numpy as np
 import pytest
 import torch
-from src.data.schema import Modality
-from src.models.noah import NOAH
-from src.models.optimization import NOAHOptimizer, partition_parameters
-from src.models.rollout import generate_autoregressive_rollout
-from src.models.transformer import TemporalAttentionLayer, DropPath
+from noah_baseline.data.schema import Modality
+from noah_baseline.models.noah import NOAH
+from noah_baseline.models.optimization import NOAHOptimizer, partition_parameters
+from noah_baseline.models.rollout import generate_autoregressive_rollout
+from noah_baseline.models.transformer import TemporalAttentionLayer, DropPath
 
 
 def tiny_model():
@@ -150,25 +150,5 @@ def test_drop_path_is_per_example_and_disabled_at_eval():
     torch.testing.assert_close(layer(x), x)
 
 
-def test_ecg_rejects_legacy_cache_without_checkpoint(tmp_path, monkeypatch):
-    from src.data.embeddings_cache import ECGEmbeddingCache
-    monkeypatch.delenv('NOAH_OTIS_CHECKPOINT', raising=False)
-    np.save(tmp_path / 'synthetic.npy', np.zeros(192))
-    cache = ECGEmbeddingCache(cache_dir=tmp_path)
-    with pytest.raises(RuntimeError, match='pretrained 1x24 OTIS checkpoint'):
-        cache.get_embedding('synthetic', 'missing')
 
 
-def test_failed_ecg_checkpoint_cannot_leave_random_encoder_active(tmp_path, monkeypatch):
-    import sys
-    from types import SimpleNamespace
-    from src.data.embeddings_cache import ECGEmbeddingCache
-    checkpoint = tmp_path / 'invalid.pt'
-    torch.save({'bad': torch.zeros(1)}, checkpoint)
-    monkeypatch.setitem(sys.modules, 'models_vit', SimpleNamespace(
-        vit_baseDeep_patchX=lambda **kwargs: torch.nn.Linear(2, 2)))
-    cache = ECGEmbeddingCache(cache_dir=tmp_path / 'cache', checkpoint_path=checkpoint)
-    for _ in range(2):
-        with pytest.raises(RuntimeError):
-            cache._lazy_load_model()
-        assert cache._model is None

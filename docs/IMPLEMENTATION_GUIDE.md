@@ -1,5 +1,7 @@
 # NOAH technical implementation guide
 
+Clean-worktree context: operational paths and results below describe the archived implementation unless mapped by [MIGRATION_BASELINE.md](MIGRATION_BASELINE.md). Active imports use `noah_baseline`; current stage and supported commands are in [PROJECT_STATUS.md](PROJECT_STATUS.md). Scientific requirements and paper citations are retained unchanged.
+
 Checked: 2026-10-14. This guide connects paper requirements to preprocessing, feature extraction, data windows, the model and training. See [PROJECT_STATUS.md](PROJECT_STATUS.md) for current completion status.
 
 ## 1. Established requirements and unresolved settings

@@ -5,7 +5,7 @@ Unit Tests for Dynamic Demographic Prefix Updating & Embedding Injection.
 import numpy as np
 import pytest
 
-from src.data.schema import (
+from noah_baseline.data.schema import (
     EventCategory,
     Modality,
     DemographicPrefix,
@@ -13,7 +13,7 @@ from src.data.schema import (
     PatientJourney,
     ModelWindow,
 )
-from src.data.window_builder import WindowBuilder
+from noah_baseline.data.window_builder import WindowBuilder
 
 
 def test_journey_dynamic_demographics_lookup():

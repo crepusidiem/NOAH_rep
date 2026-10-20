@@ -9,9 +9,9 @@ import sys
 import pytest
 import torch
 
-from src.evaluation.contracts import ContractError, sha256_file, validate_manifest, validate_release, assert_comparable
-from src.evaluation.landmarks import EventEvidence, LandmarkRequest, extract_landmark_state, validate_context
-from src.evaluation.outcomes import Encounter, encounter_labels, readmission_label
+from noah_baseline.evaluation.contracts import ContractError, sha256_file, validate_manifest, validate_release, assert_comparable
+from noah_baseline.evaluation.landmarks import EventEvidence, LandmarkRequest, extract_landmark_state, validate_context
+from noah_baseline.evaluation.outcomes import Encounter, encounter_labels, readmission_label
 
 
 def request(mode="strict_prospective"):
@@ -151,16 +151,6 @@ def test_readmission_rejects_overlap_and_preserves_censoring():
     assert readmission_label(10., [730.], horizon_hours=720., include_horizon=True, allow_zero_gap=False, observation_end=730.) is True
 
 
-def test_no_missing_news2_imputation_or_availability_fabrication():
-    from src.evaluation.probes import NEWS2Scorer
-    from src.data.vitals import RawVitalMeasurement, aggregate_vitals_sliding_window
-    with pytest.raises(ValueError, match="Five finite"):
-        NEWS2Scorer.calculate()
-    out = aggregate_vitals_sliding_window([RawVitalMeasurement(0., None, "fixture", 1., "a"),
-                                          RawVitalMeasurement(1., None, "fixture", 2., "b")], 1)
-    assert all(e.storetime is None for e in out)
-    with pytest.raises(ValueError, match="positive"):
-        aggregate_vitals_sliding_window([], 1, window_stride_hours=0)
 
 
 def test_architecture_artifact_and_evidence_mixing_rejected(tmp_path):
@@ -175,21 +165,12 @@ def test_architecture_artifact_and_evidence_mixing_rejected(tmp_path):
         validate_release(m, "prospective", base=tmp_path)
 
 
-def test_legacy_evaluator_and_alpha_launch_fail_closed():
-    from scripts.evaluate_clinical_probes import extract_patient_labels, extract_patient_representations_and_news2
-    with pytest.raises(ContractError, match="Full-record pooling"):
-        extract_patient_representations_and_news2(None, Path("unused"), "cpu")
-    with pytest.raises(ContractError, match="Subject-wide"):
-        extract_patient_labels("unused", "unused", "unused", [])
-    proc = subprocess.run(["bash", "sbatch/run_alpha_ablation_grid.sh"], text=True, capture_output=True)
-    assert proc.returncode == 78
-    assert "BLOCKED" in proc.stderr
 
 
 def test_release_cli_rejects_unmanifested_metrics(tmp_path):
     path = tmp_path / "old_metrics.json"
     path.write_text('{"mortality": {"auroc": 0.8}}')
-    result = subprocess.run([sys.executable, "scripts/validate_experiment_release.py", str(path), "--claim", "prospective"], capture_output=True, text=True)
+    result = subprocess.run([sys.executable, "-I", "tools/run.py", "release", str(path), "--claim", "prospective"], capture_output=True, text=True)
     assert result.returncode == 2
     assert "RELEASE BLOCKED" in result.stderr
 
@@ -237,7 +218,7 @@ def test_paper_claim_rejects_candidate_parameter_count(tmp_path):
 
 
 def test_reporting_cannot_promote_retrieval_or_overwrite_a_run(tmp_path):
-    from src.evaluation.contracts import write_validated_report
+    from noah_baseline.evaluation.contracts import write_validated_report
     m = manifest_fixture(tmp_path, "paper_reproduction", "landmark_retrieval")
     path = tmp_path / "report.json"
     with pytest.raises(ContractError, match="prospective reporting"):
@@ -249,15 +230,6 @@ def test_reporting_cannot_promote_retrieval_or_overwrite_a_run(tmp_path):
         write_validated_report(m, "retrospective", {"auroc": .9}, base=tmp_path, output=path)
 
 
-def test_loader_rejects_unversioned_and_conflicting_architectures(tmp_path):
-    from scripts.evaluate_clinical_probes import load_model
-    path = tmp_path / "legacy.pt"
-    torch.save({"config": {"d_model": 768}, "model_state_dict": {}}, path)
-    with pytest.raises(ContractError, match="legacy checkpoint"):
-        load_model(path, {}, "cpu")
-    torch.save({"config": {"architecture_revision": "2026-10-19", "d_model": 32}, "model_state_dict": {}}, path)
-    with pytest.raises(ContractError, match="override checkpoint"):
-        load_model(path, {"model": {"d_model": 768}}, "cpu")
 
 
 def test_pending_methodology_blocks_release_despite_passing_component_checks(tmp_path):
@@ -294,7 +266,7 @@ def test_news2_cannot_be_released_with_only_generic_component_tests(tmp_path):
 
 
 def test_padding_is_excluded_before_projection():
-    from src.models.noah import NOAH
+    from noah_baseline.models.noah import NOAH
     model = NOAH(d_model=32, d_latent=16, n_layers=1, n_heads=2, head_dim=16, dropout=0, attn_dropout=0)
     batch = dict(category_ids=torch.zeros(1, 3, dtype=torch.long), modality_ids=torch.zeros(1, 3, dtype=torch.long),
                  positions=torch.tensor([[0., 1., 2.]]), ages=torch.ones(1, 3),
@@ -313,7 +285,3 @@ def test_padding_is_excluded_before_projection():
     torch.testing.assert_close(actual, expected)
 
 
-def test_duplicate_legacy_rollout_cannot_run_directly():
-    from scripts.verify_pilot_results import run_free_rollout_analysis
-    with pytest.raises(ContractError, match="Duplicate legacy rollout"):
-        run_free_rollout_analysis(None, [], "cpu")

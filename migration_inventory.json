@@ -1,0 +1,178 @@
+[
+  {
+    "legacy_path": "src/models/__init__.py",
+    "clean_path": "packages/noah_baseline/models/__init__.py",
+    "legacy_sha256": "412a3a948dcf94e926da0613d7840e5ff7d13ce5f6d324586f2272d3bc18193b",
+    "clean_sha256": "f0fe18b7dcf925445f9f506ab81ce538e740f8b42a5d5a8d0e3e86ae1487cc51",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/models/decoder.py",
+    "clean_path": "packages/noah_baseline/models/decoder.py",
+    "legacy_sha256": "a60e70e0feaa392fbcfe5a29dbaa5b15f132353fbfe887a6c70517ab2e3e3464",
+    "clean_sha256": "96ebdbbce7f3c9ac748389d9be3a4198474755af2d9d24929287709b46a6e4cd",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/models/noah.py",
+    "clean_path": "packages/noah_baseline/models/noah.py",
+    "legacy_sha256": "05e4dbd34d0064bf9212f142ea39b2c62530cd989145c57497a7d3f11f49ec1d",
+    "clean_sha256": "20051e7b7f2f6f58f3e3ae007cac01383cb06422cb15f0bd49403dd2686eee28",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/models/optimization.py",
+    "clean_path": "packages/noah_baseline/models/optimization.py",
+    "legacy_sha256": "ea67f7d0e4ea169b75112b9d4205bf3702d3bec91570fc7e8a241edfd4a8d9de",
+    "clean_sha256": "ea67f7d0e4ea169b75112b9d4205bf3702d3bec91570fc7e8a241edfd4a8d9de",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/models/projections.py",
+    "clean_path": "packages/noah_baseline/models/projections.py",
+    "legacy_sha256": "8a35bf76e2a9fab017c00108613e25fe6d51e4085e2b4a5355a24fae8f2ffd68",
+    "clean_sha256": "cb5302045f3284e3fc555f092143ef98dd6cfa193e02bd95a75ac07d8d0eb68d",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/models/rollout.py",
+    "clean_path": "packages/noah_baseline/models/rollout.py",
+    "legacy_sha256": "bccd4beabed08719d587fc022dd006a324f8c4fe96fdb2999b5b0de313616e2c",
+    "clean_sha256": "8dadc7d783eefecbbd951371b35b14c36eadbb82629400cb41c47a665e19aa49",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/models/temporal.py",
+    "clean_path": "packages/noah_baseline/models/temporal.py",
+    "legacy_sha256": "fdba70f8cce68f9754c808239696c8650a1b84268db1dafd559684b4cd35d18d",
+    "clean_sha256": "fdba70f8cce68f9754c808239696c8650a1b84268db1dafd559684b4cd35d18d",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/models/transformer.py",
+    "clean_path": "packages/noah_baseline/models/transformer.py",
+    "legacy_sha256": "3d4354fb247d42231f81456296edfac928ecc57d4889d03ac692a59496f34cab",
+    "clean_sha256": "cf0b0fa61ad9decad2a5bc7a9530d60aa27402e3b33aae385ba1526223da8ae8",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/models/variational.py",
+    "clean_path": "packages/noah_baseline/models/variational.py",
+    "legacy_sha256": "48c680e18b7c2d3fbb7c7be9b04b848920d63c54a11c66d3af36dc3d1df1e7f7",
+    "clean_sha256": "48c680e18b7c2d3fbb7c7be9b04b848920d63c54a11c66d3af36dc3d1df1e7f7",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/data/schema.py",
+    "clean_path": "packages/noah_baseline/data/schema.py",
+    "legacy_sha256": "65cc5c54d1a66fcc80b177c031e9b1904a268652981cd636e253ffd4f061f397",
+    "clean_sha256": "65cc5c54d1a66fcc80b177c031e9b1904a268652981cd636e253ffd4f061f397",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/data/numeric.py",
+    "clean_path": "packages/noah_baseline/data/numeric.py",
+    "legacy_sha256": "b4e4132e8952acc333581dba30c7c2a7b25b7a6361d186444653040603164eec",
+    "clean_sha256": "b4e4132e8952acc333581dba30c7c2a7b25b7a6361d186444653040603164eec",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/data/window_builder.py",
+    "clean_path": "packages/noah_baseline/data/window_builder.py",
+    "legacy_sha256": "272aa8c0a333e9cd5df0e8c00e057bad3a68b2961dcacd394e379c1030bc212a",
+    "clean_sha256": "1054e639693e9699d2022eac1457fded80aaf539ad69dfb0b1a3c9472fcf26b4",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/evaluation/contracts.py",
+    "clean_path": "packages/noah_baseline/evaluation/contracts.py",
+    "legacy_sha256": "fa650e6f027ca9d990801167d804ec9ee73ef6723f04f48e3c325bf01b5e1085",
+    "clean_sha256": "9e9d640bdf4d5f4f863cefa9b7ce6262387e3024793d5b722769d92cb47f8921",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/evaluation/landmarks.py",
+    "clean_path": "packages/noah_baseline/evaluation/landmarks.py",
+    "legacy_sha256": "6516ca040266f4fb51140654e86e4c2c6f00e0be0eb80e19b55d5658af10b47a",
+    "clean_sha256": "5133a811fefc5f87e44862b941bfb4551b05350a0a7c5e71672e20ffe087c104",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "src/evaluation/outcomes.py",
+    "clean_path": "packages/noah_baseline/evaluation/outcomes.py",
+    "legacy_sha256": "37b37111fbf3fc2fbf262e5617f0aa16c4253a367f543d284cf567357302f6c3",
+    "clean_sha256": "23c2109d9c43f3c099a5d21f626fe954050d7a67eda5801a9916f455e19fa399",
+    "change": "namespace replacement only; normalized text identical",
+    "validation": "pending clean-worktree tests; not proof of paper fidelity"
+  },
+  {
+    "legacy_path": "tests/test_temporal_oracle.py",
+    "clean_path": "tests/test_temporal_oracle.py",
+    "legacy_sha256": "14773763101b7fc7429096943143e3955f3bc51988980a7fac1c53a530347da6",
+    "clean_sha256": "b0dc46090a50d325db04c662e729aa0aad9fe825c318c2dc60131d3e20d969cd",
+    "excluded_nodes": [],
+    "change": "namespace; release CLI uses isolated runner; legacy-only loaders/launchers/encoder-cache tests excluded because those modules are not migrated"
+  },
+  {
+    "legacy_path": "tests/test_variational_oracle.py",
+    "clean_path": "tests/test_variational_oracle.py",
+    "legacy_sha256": "75ae5d98c4cbc93134c61c42275ffb6ed5a20a612d55a7956da5df2542403cea",
+    "clean_sha256": "dd54d4fcda82dc1bd72223d1241374181b6a41dfdada97893caeeb3e2a72787f",
+    "excluded_nodes": [],
+    "change": "namespace; release CLI uses isolated runner; legacy-only loaders/launchers/encoder-cache tests excluded because those modules are not migrated"
+  },
+  {
+    "legacy_path": "tests/test_window_builder.py",
+    "clean_path": "tests/test_window_builder.py",
+    "legacy_sha256": "fab8d24657d39fecf44d6c8668bed56034bca439e9af40691100dd8b46853322",
+    "clean_sha256": "77d10b603cec01a6735a26364c4752d86920e5c4a21ee6114864d0f7e2cc3fc7",
+    "excluded_nodes": [],
+    "change": "namespace; release CLI uses isolated runner; legacy-only loaders/launchers/encoder-cache tests excluded because those modules are not migrated"
+  },
+  {
+    "legacy_path": "tests/test_dynamic_demographics.py",
+    "clean_path": "tests/test_dynamic_demographics.py",
+    "legacy_sha256": "48618f04f250357ed3c3b434fd1f47088adc87b2588878ead4550f6600f176f1",
+    "clean_sha256": "3bb08af5da02d30ca33c58aa67396fb3e11e5b068c3ea628590f13413a3b555e",
+    "excluded_nodes": [],
+    "change": "namespace; release CLI uses isolated runner; legacy-only loaders/launchers/encoder-cache tests excluded because those modules are not migrated"
+  },
+  {
+    "legacy_path": "tests/test_architecture_audit.py",
+    "clean_path": "tests/test_architecture_audit.py",
+    "legacy_sha256": "3d56e511a8772943dda0152ea43574778622fc6bdc977055d3fc12f03eddeb7c",
+    "clean_sha256": "949ba4435c3144d07b4476c32a08c5315a5b30cb86cab1089155e2833bb60407",
+    "excluded_nodes": [
+      "test_ecg_rejects_legacy_cache_without_checkpoint",
+      "test_failed_ecg_checkpoint_cannot_leave_random_encoder_active"
+    ],
+    "change": "namespace; release CLI uses isolated runner; legacy-only loaders/launchers/encoder-cache tests excluded because those modules are not migrated"
+  },
+  {
+    "legacy_path": "tests/test_evaluation_contracts.py",
+    "clean_path": "tests/test_evaluation_contracts.py",
+    "legacy_sha256": "82a3c5f4c5efd912003b1af3e5e3cdc4107f8162539e1b38eb817b5078c53844",
+    "clean_sha256": "b6fe5e25ac4e053852730e30af4440bd816afb5b0712af3e064223baf4987fe9",
+    "excluded_nodes": [
+      "test_legacy_evaluator_and_alpha_launch_fail_closed",
+      "test_loader_rejects_unversioned_and_conflicting_architectures",
+      "test_duplicate_legacy_rollout_cannot_run_directly",
+      "test_no_missing_news2_imputation_or_availability_fabrication"
+    ],
+    "change": "namespace; release CLI uses isolated runner; legacy-only loaders/launchers/encoder-cache tests excluded because those modules are not migrated; legacy NEWS2/vital-helper test is not migrated because neither implementation is in clean runtime; unknown-availability and NEWS2-release gate tests remain"
+  }
+]

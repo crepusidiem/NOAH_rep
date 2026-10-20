@@ -1,5 +1,7 @@
 # NOAH paper-to-requirement traceability
 
+Clean-worktree context: operational paths and results below describe the archived implementation unless mapped by [MIGRATION_BASELINE.md](MIGRATION_BASELINE.md). Active imports use `noah_baseline`; current stage and supported commands are in [PROJECT_STATUS.md](PROJECT_STATUS.md). Scientific requirements and paper citations are retained unchanged.
+
 Current code verification and selected implementation candidates (2026-10-19): [ARCHITECTURE_AUDIT.md](ARCHITECTURE_AUDIT.md). Paper requirements below remain distinct from implementation/test status.
 
 Updated 2026-10-14. Authority: [supplied PDF](../paper/NOAH.pdf), arXiv:2609.09140v1, SHA-256 0f3a7bb049d6f7eb6cdf61c2aa9692d0695037851f95b73711a26ed803576730. Every page below is both the PDF page and the printed page. Specification: [REPRODUCTION_SPEC.md](REPRODUCTION_SPEC.md); decision register: [ASSUMPTIONS.md](ASSUMPTIONS.md); tests: [TEST_PLAN.md](TEST_PLAN.md).

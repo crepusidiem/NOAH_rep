@@ -1,3 +1,7 @@
+# Clean-baseline reporting context
+
+Reports copied from earlier dated audits are historical evidence about their recorded revisions. Their private source/artifact paths belong to the legacy checkout, not this worktree. Current initialization results are in `server/2026-10-19_clean_baseline/`. No historical clinical score is a new baseline result.
+
 # Server execution report convention
 
 This document defines how server execution evidence is saved. Dated report bundles and aggregate experiment reports are present under `server/`; each has its own execution evidence and scope. Published content follows [REPOSITORY_POLICY.md](../docs/REPOSITORY_POLICY.md). All repository reports and reusable agent prompts must be in English.

@@ -66,3 +66,7 @@ Write documentation about the current state, technical requirements and next act
 Evaluation and reporting must use the experiment manifest and release contracts in `src/evaluation/contracts.py`. Landmark extraction must reject future events, unavailable prospective evidence and full-record pooling. Do not relabel retrospective, posterior-reconstruction or oracle-time metrics as prospective. Preserve architecture-specific checkpoints/results before modifications, and obtain explicit approval for unresolved clinical methodology. The alpha-sweep remains on hold until its documented dependencies and authorization are satisfied.
 
 Update source traceability, chosen assumptions and execution status when changing behavior. Keep documentation-only tasks documentation-only. Preserve existing user work and do not claim results for work that has not run.
+
+## Clean development worktree
+
+Use `python -I tools/run.py test` from the recorded interpreter. Runtime imports use `noah_baseline`, never `src` or legacy launchers. No embedding caches or clinical data are inherited. Read `docs/MIGRATION_BASELINE.md` and the current `docs/PROJECT_STATUS.md` first. Canonical paper requirements remain in the existing specification, assumptions and traceability documents. Migrated model code is a declared candidate, not exact paper fidelity. M01–M12 remain pending; no training or alpha launcher is available.

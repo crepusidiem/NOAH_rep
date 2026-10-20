@@ -1,5 +1,7 @@
 # NOAH dependency-aware reproduction plan
 
+Clean-worktree context: operational paths and results below describe the archived implementation unless mapped by [MIGRATION_BASELINE.md](MIGRATION_BASELINE.md). Active imports use `noah_baseline`; current stage and supported commands are in [PROJECT_STATUS.md](PROJECT_STATUS.md). Scientific requirements and paper citations are retained unchanged.
+
 Current code verification and selected implementation candidates (2026-10-19): [ARCHITECTURE_AUDIT.md](ARCHITECTURE_AUDIT.md). Paper requirements below remain distinct from implementation/test status.
 
 Updated 2026-10-14. This is the action plan for the current pilot and the later paper-scale reproduction. See [current progress](PROJECT_STATUS.md), [operational implementation guide](IMPLEMENTATION_GUIDE.md), [specification](REPRODUCTION_SPEC.md), [traceability](PAPER_TRACEABILITY.md), [decision register](ASSUMPTIONS.md), and [test plan](TEST_PLAN.md).

@@ -1,21 +1,14 @@
-# NOAH_rep
-This project aims to replicate the code structure and the results specified in NOAH
+# NOAH clean development baseline
 
-## Start here
+This isolated worktree preserves reusable candidate mathematics and evaluation guards while the legacy checkout remains intact. It is not a completed real-data pipeline or a claim of exact paper reproduction. Read [migration decisions and milestones](docs/MIGRATION_BASELINE.md) and [current status](docs/PROJECT_STATUS.md).
 
-For coding agents, read [AGENTS.md](AGENTS.md) before changing the repository.
+The authoritative documents remain [the paper](paper/NOAH.pdf), [reproduction specification](docs/REPRODUCTION_SPEC.md), [assumptions](docs/ASSUMPTIONS.md), [traceability](docs/PAPER_TRACEABILITY.md) and [test plan](docs/TEST_PLAN.md). No parallel scientific specification is introduced.
 
-Repository documentation, code annotations and execution reports are maintained in English for collaborators. The [MIMIC data guide](docs/MIMIC_DATA_GUIDE.md) introduces the source data and preparation workflow.
+Use the recorded interpreter with Python isolation:
 
-Read [current project status and next actions](docs/PROJECT_STATUS.md) first to distinguish completed artifacts, code in progress and pending execution. The [reproduction plan](docs/REPRODUCTION_PLAN.md) defines the current 1,000-patient pilot milestones and the later paper-scale target. For work on O2, follow the [remote workflow](docs/REMOTE_WORKFLOW.md) and [server report convention](reports/README.md).
+```bash
+/home/wey371/rajpurkarlab/home/wey371/.venvs/noah/bin/python -I tools/run.py test -q
+/home/wey371/rajpurkarlab/home/wey371/.venvs/noah/bin/python -I tools/run.py status
+```
 
-The [technical implementation guide](docs/IMPLEMENTATION_GUIDE.md) explains the actual reproduction steps, paper-specified feature extraction, verified upstream encoder interfaces, outstanding configuration choices and acceptance checks. It complements the [full specification](docs/REPRODUCTION_SPEC.md), [paper traceability](docs/PAPER_TRACEABILITY.md), [assumption register](docs/ASSUMPTIONS.md), [test plan](docs/TEST_PLAN.md) and [implementation schedule](docs/REPRODUCTION_PLAN.md).
-
-The [architecture audit](docs/ARCHITECTURE_AUDIT.md) connects paper requirements to current code, fixes, tests and unresolved fidelity gates.
-
-The supplied paper is [paper/NOAH.pdf](paper/NOAH.pdf). Existing pilot experiments do not establish exact reproduction. Follow the current fidelity and integration gates in project status before expansion. Implementation and execution follow the researcher's active task; paper-scale training is a separate scope and resource decision.
-
-Repository contents, ignored outputs and publishing checks follow [REPOSITORY_POLICY.md](docs/REPOSITORY_POLICY.md). Documentation describes the current state; Git retains version history.
-
-
-Controlled remediation: [all15 findings, methodology decisions and execution order](docs/ARCHITECTURE_AUDIT.md#controlled-remediation-preserved-evidence-and-revision-separation). Historical/current checkpoint families are preserved separately; the alpha-sweep and legacy pooled clinical reporting are on hold. New experiment manifests and release gates are defined in [reports/README.md](reports/README.md#experiment-manifests-and-scientific-release).
+Runtime uses `noah_baseline`; legacy `src`/`scripts` imports are blocked. There is no legacy cache loader, inherited dataset path, training CLI or alpha launcher. New artifacts belong under ignored `artifacts/<profile>/`; raw sources will be read in place only after an explicit source manifest and methodology contract exist. Profiles are disabled templates, with evaluation mode and experiment scale recorded separately. The migration inventory records exact source identities and the namespace-only changes.

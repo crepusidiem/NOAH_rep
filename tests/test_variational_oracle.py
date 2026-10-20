@@ -15,7 +15,7 @@ import pytest
 import torch
 import torch.nn as nn
 
-from src.models.variational import (
+from noah_baseline.models.variational import (
     smooth_squash_sigma,
     compute_gaussian_kl,
     ConditionalPrior,
