@@ -14,6 +14,7 @@ import duckdb
 import pyarrow as pa
 
 from noah_baseline.m2.stream_index import atomic_json,digest_file,stream_source
+from noah_baseline.m2.csv_reference import source_counts
 
 
 def recovery_plan(root, config):
@@ -70,7 +71,8 @@ def recover(root, out):
     out.mkdir(exist_ok=config['resume_directory'] is not None)
     attempt=out/('attempt-'+uuid.uuid4().hex);attempt.mkdir()
     source_files=['configs/m2_c1_recovery.json','configs/m2.json','packages/noah_baseline/m2/stream_index.py',
-        'packages/noah_baseline/m2/c1_recovery.py','tools/m2_recover.py','sbatch/m2_c1_recovery.sh']
+        'packages/noah_baseline/m2/c1_recovery.py','packages/noah_baseline/m2/csv_reference.py',
+        'tools/m2_recover.py','sbatch/m2_c1_recovery.sh']
     capture={}
     for name in source_files:
         p=attempt/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes((root/name).read_bytes());capture[name]=digest_file(p)
@@ -127,12 +129,10 @@ def recover(root, out):
                 independent=references
                 if item['dataset']=='cxr' and item['table']=='mimic-cxr-2.0.0-metadata':
                     # This small auxiliary table was not in the original26-table census.
-                    c=duckdb.connect();c.execute('SET threads=2');c.execute("SET memory_limit='256MB'");c.execute("SET max_temp_directory_size='0B'")
-                    c.register('cohort',pa.table({'subject_id':list(splits),'split':list(splits.values())}))
-                    values=c.execute('''SELECT c.split,count(*),count(DISTINCT t.subject_id)
-                        FROM read_csv(?,header=true,all_varchar=true,parallel=false) t
-                        JOIN cohort c ON CAST(t.subject_id AS BIGINT)=c.subject_id GROUP BY c.split''',[str(path)]).fetchall();c.close()
-                    independent=[dict(dataset=item['dataset'],table=item['table'],split=s,source_rows=n,contributing_patients=p) for s,n,p in values]
+                    values=source_counts(path,splits)
+                    independent=[dict(dataset=item['dataset'],table=item['table'],split=s,
+                        source_rows=values['split_rows'].get(s,0),contributing_patients=values['split_patients'].get(s,0))
+                        for s in ['train','val','test']]
                     if digest_file(path,check)!=result['source_identity']['source_sha256']:raise ValueError('CXR metadata changed during reference')
                 validate_reference(result,independent,item['dataset'],item['table'])
                 # Independent bounded SQL check of the first committed chunk.

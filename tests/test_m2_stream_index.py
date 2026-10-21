@@ -149,7 +149,8 @@ def test_recovery_controller_finishes_small_sources_before_icu_failure(tmp_path,
     report=tmp_path/'reports/server/2026-10-20_m2_c1';report.mkdir(parents=True);(report/'failure.json').write_text(json.dumps({'source_status':statuses}))
     census=tmp_path/'reports/server/2026-10-20_m2';census.mkdir()
     (census/'source_counts.csv').write_text('dataset,table,split,source_rows,contributing_patients\ncxr,cxr-record-list,train,1,1\ncxr,cxr-record-list,val,1,1\n')
-    for name in ['packages/noah_baseline/m2/stream_index.py','packages/noah_baseline/m2/c1_recovery.py','tools/m2_recover.py','sbatch/m2_c1_recovery.sh']:
+    for name in ['packages/noah_baseline/m2/stream_index.py','packages/noah_baseline/m2/c1_recovery.py',
+            'packages/noah_baseline/m2/csv_reference.py','tools/m2_recover.py','sbatch/m2_c1_recovery.sh']:
         p=tmp_path/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes((repo/name).read_bytes())
     monkeypatch.setattr(controller.subprocess,'check_output',lambda args,**kw:'' if '--porcelain' in args else 'fictional-commit')
     old={s:signal.getsignal(s) for s in [signal.SIGTERM,signal.SIGXFSZ]}

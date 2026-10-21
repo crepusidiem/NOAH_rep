@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "execution_authorized": true,
+  "execution_authorized": false,
   "approval_reference": "Researcher revised authoritative instruction2026-10-20; attachment_sha256=ae833a881d2830be15ef8480d2564c80d9bb96a667f7b64a34829a9d07706dba; exactly one CPU recovery job at2CPU/8GiB/60min/8GiB,256MB validation; no retry/requeue/escalation/additional job",
   "maximum_submissions": 1,
   "inventory": "m2-a-20261020-01",
@@ -33,5 +33,7 @@
   "readiness": "HOLD",
   "training_authorized": false,
   "bulk_media_encoding_authorized": false,
-  "alpha_authorized": false
+  "alpha_authorized": false,
+  "authorization_consumed_by_job_id": "57044273",
+  "authorization_status": "CONSUMED_INCOMPLETE_NO_RETRY"
 }
