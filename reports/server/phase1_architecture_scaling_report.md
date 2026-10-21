@@ -90,7 +90,7 @@ The evaluation was performed across **355 held-out patient windows** containing 
 
 | Modality & Embedding Space | 5.4M Baseline Cos Sim | 152.6M Paper-Scale Cos Sim | Absolute $\Delta$ | Notes |
 |---|---|---|---|---|
-| **ECG (OTIS 192-D)** | **0.9808** | **0.9534** | -0.0274 | Consistently high alignment ($>0.95$) |
+| **ECG (OTIS 192-D)** | 0.9808 | 0.9534 | -0.0274 | Consistently high alignment ($>0.95$) |
 | **Text (BioLORD 768-D)** | 0.4054 | 0.3167 | -0.0887 | 768-D space projection on 700 pts |
 | **Numeric (Dyadic Fourier 44-D)** | 0.3217 | 0.3106 | -0.0111 | Preserved Fourier dynamics |
 | **CXR (RAD-DINO 768-D)** | 0.2048 | 0.1859 | -0.0189 | Sparse visual representation |
