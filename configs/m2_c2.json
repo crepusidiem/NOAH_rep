@@ -1,0 +1,222 @@
+{
+  "schema_version": "m2-c2-candidate-v1",
+  "classification": "ASSUMED conservative occurrence-time engineering recipe; incomplete author ontology, not prospective",
+  "execution_authorized": true,
+  "maximum_submissions": 1,
+  "approval_attachment_sha256": "214c70ae25d207f1cc91c95428da81db3c4de2a33b4f27305f814e4e55c6c1b7",
+  "source_manifest": "artifacts/reduced_pilot/m2/m2-c1-verified-source-manifest-20261020-01/manifest.json",
+  "source_manifest_sha256": "474b8f31758f22c12af99ed6bd92fcb36e40d45782cb6b7a62abf753c51d89dd",
+  "patient_splits": "artifacts/reduced_pilot/m2/m2-a-20261020-01/patient_splits.csv",
+  "patient_splits_sha256": "5df6b9e96b1921b94867cdacd04440de25a42e84d33c4a6fbd9ad5e26277d869",
+  "limits": {
+    "cpus": 4,
+    "memory_GiB": 32,
+    "elapsed_seconds": 7110,
+    "output_GiB": 48,
+    "duckdb_memory": "1GB",
+    "spill_GiB": 8
+  },
+  "batch_rows": 8192,
+  "parquet_chunk_rows": 20000,
+  "minimum_scored_targets": 64,
+  "windows": {
+    "length": 64,
+    "prefix": 6,
+    "overlap": 16,
+    "information_profile": "occurrence_diagnostic",
+    "terminal_gap": "unknown_masked",
+    "future_gap_at_landmark": "forbidden"
+  },
+  "identity": "full source SHA256 + global CSV record ordinal + category/clock/item; aggregates use group/window/extremum with complete contributor edges",
+  "encounters": "preserve verified source hadm_id; ED stay-to-hadm same-patient join only; missing stays/media/labs remain patient-longitudinal; no interval or nearest-stay guessing",
+  "time": {
+    "unit": "hours since naive deidentified ISO epoch interpreted as UTC, no actual timezone claim",
+    "order": [
+      "subject_id",
+      "occurred_at",
+      "event_id"
+    ],
+    "ties": "lexical stable identity only, not clinical causal order",
+    "cross_dataset": "preserve supplied patient/clocks; no inferred shift correction; alignment remains an assumption",
+    "availability": "observed storetime separate; unknown stays unknown; interval totals no earlier than end; aggregate max observed availability and final contributor only if all known",
+    "imprecise": "retain as deferred with original precision, no admission/midnight proxy"
+  },
+  "source_mappings": {
+    "hosp.admissions": {
+      "admittime": 5,
+      "dischtime": 12,
+      "deathtime": 4
+    },
+    "ed.edstays": {
+      "intime": 22,
+      "outtime": 14
+    },
+    "icu.icustays": {
+      "intime": 7,
+      "outtime": 8
+    },
+    "hosp.transfers": {
+      "intime": 16,
+      "outtime": 11,
+      "specifics": "careunit"
+    },
+    "hosp.services": {
+      "transfertime": 10,
+      "specifics": "curr_service"
+    },
+    "hosp.labevents": {
+      "charttime": 29,
+      "specifics": "d_labitems.label",
+      "value": "finite valuenum else parseable value with nonempty source unit"
+    },
+    "hosp.microbiologyevents": {
+      "charttime": 9,
+      "specifics": "test_name",
+      "text": "interpretation else org_name; defer empty/imprecise"
+    },
+    "icu.chartevents": {
+      "charttime": 28,
+      "specifics": "explicit vital whitelist + d_items.label",
+      "other_items": "deferred, not mislabeled Other Event"
+    },
+    "icu.inputevents": {
+      "starttime": 19,
+      "endtime": 30,
+      "specifics": "d_items.label",
+      "value": "finite amount/amountuom; interval-total semantics, not instantaneous dose"
+    },
+    "icu.outputevents": {
+      "charttime": 15,
+      "specifics": "d_items.label",
+      "value": "finite value/valueuom"
+    },
+    "icu.procedureevents": {
+      "starttime": 24,
+      "endtime": 13,
+      "specifics": "d_items.label"
+    },
+    "ed.vitalsign": {
+      "charttime": 28,
+      "specifics": "field name",
+      "units": {
+        "heartrate": "bpm",
+        "resprate": "breaths/min",
+        "o2sat": "%",
+        "sbp": "mmHg",
+        "dbp": "mmHg",
+        "temperature": "degF"
+      }
+    },
+    "hosp.emar": {
+      "charttime": "18 for administered/started/restarted;21 for stopped/stop",
+      "specifics": "medication",
+      "meaning": "observed administration/start/stop action, not proof of continuous-therapy initiation"
+    },
+    "ed.medrecon": {
+      "charttime": 23,
+      "specifics": "name",
+      "meaning": "recorded medication history, not administration"
+    },
+    "ed.pyxis": {
+      "policy": "defer dispensing; no verified mapping to administration/start"
+    },
+    "hosp.prescriptions": {
+      "policy": "defer unresolved scheduled/order semantics; source retained separately"
+    },
+    "hosp.pharmacy": {
+      "policy": "defer unresolved order/reconciliation; no cross-source dedup assumption"
+    },
+    "hosp.diagnoses_icd": {
+      "policy": "defer retrospective/untimed diagnosis; never admission proxy"
+    },
+    "ed.diagnosis": {
+      "policy": "defer retrospective/untimed diagnosis"
+    },
+    "hosp.procedures_icd": {
+      "policy": "defer date-only occurrence"
+    },
+    "ed.triage": {
+      "policy": "defer no precise triage occurrence; no stay-start proxy"
+    },
+    "hosp.patients": {
+      "policy": "cohort metadata only; not an event"
+    },
+    "note.discharge": {
+      "charttime": 6,
+      "text": "source UTF8 hash + source ordinal locator",
+      "specifics": "note_type",
+      "restriction": "retrospective documentation, never move to admission"
+    },
+    "note.radiology": {
+      "charttime": 3,
+      "text": "source UTF8 hash + source ordinal locator",
+      "specifics": "note_type"
+    },
+    "cxr.cxr-record-list": {
+      "category": 1,
+      "clock": "unique same-patient/study/dicom metadata StudyDate+StudyTime; preserve precision; no midnight fallback",
+      "unit": "image"
+    },
+    "cxr.mimic-cxr-2.0.0-metadata": {
+      "policy": "linkage auxiliary only; not a second image event"
+    },
+    "ecg.record_list": {
+      "category": 0,
+      "clock": "ecg_time",
+      "unit": "recording"
+    },
+    "echo.echo-record-list": {
+      "category": 2,
+      "clock": "acquisition_datetime",
+      "unit": "DICOM video candidate; unsupported clips remain explicit failures later"
+    }
+  },
+  "numeric": {
+    "recipe": "existing DyadicFourierEncoder(kappa=1,normalize=False), concatenate sin then cos, float32 44-D; reject nonfinite basis",
+    "unit_policy": "retain exact stripped source units; no cross-unit conversion or population fit; ED field-unit declarations are explicit candidates",
+    "qualitative": "defer; never coerce to a number",
+    "icu_vital_itemids": [
+      "220045",
+      "220050",
+      "220051",
+      "220052",
+      "220179",
+      "220180",
+      "220181",
+      "220210",
+      "220277",
+      "223761",
+      "223762"
+    ],
+    "aggregation": {
+      "scope": "supported ICU vitals only",
+      "span_hours": 2,
+      "stride_hours": 1,
+      "origin": "floor(first occurrence in each patient/hadm/stay/item/unit group to hour)",
+      "interval": "left closed/right open",
+      "outputs": "minimum and maximum even if equal, timestamp contributor mean; separate extrema identities",
+      "provenance": "all contributor source identities retained in edge shards",
+      "classification": "ASSUMED span/stride/origin; paper-inspired extrema, not exact author ETL"
+    },
+    "specifics": "ASSUMED: source dictionary/field label followed by [exact stripped native unit], so unit identity reaches the model; no physical conversion or train/validation fit"
+  },
+  "embedding_queues": {
+    "dedup": "kind + exact content SHA256 + recipe SHA256; distinct source/event bindings retained",
+    "text": "C1 exact UTF8 source text hash; retrieve original content later and recheck",
+    "specifics": "exact UTF8 item string",
+    "cxr_echo": "full actual file hash with stable before/after stat",
+    "ecg": "SHA256(concat(hex SHA256(header),hex SHA256(waveform)))",
+    "no_placeholders": true
+  },
+  "encoder_candidates": {
+    "text": "existing pinned BioLORD128 masked-mean/L2, explicit truncation",
+    "cxr": "existing pinned RAD-DINO original JPEG RGB/one processor rescale/CLS",
+    "ecg": "existing strict pretrained1x24 OTIS; upstream_linear positions, robust normalization, tail discard, patch mean192",
+    "echo": "existing metadata-first B-mode candidate/FFV1/first16 stride2/512-D; fail unsupported clips"
+  },
+  "eligibility": "all assigned patients retained; candidate >=64 separate from completed features; full trainable windows require all context/target encodings; downstream landmark cohorts must not require future full-record density",
+  "gpu_encoding_authorized": false,
+  "training_authorized": false,
+  "alpha_authorized": false,
+  "readiness": "HOLD"
+}

@@ -9,10 +9,11 @@ This is a compact exception register, not a specification or execution ledger. [
 | **1. Which events belong to a patient versus an encounter?** SCI-01 | Preserve explicit hospital IDs; keep missing/ambiguous attribution unknown and retain patient-level records. | A separate, validated episode/interval attribution with declared ambiguity rules. | Missing-ID labs/media must not acquire a fabricated encounter or disappear from longitudinal learning. | Yes: source indexing and unambiguous patient-level event/embedding work. Only encounter-dependent use of unresolved records waits. |
 | **2. How should imprecise clocks enter the sequence?** SCI-02/03 | Keep occurrence and raw storage clocks separate; retain date-only/untimed records outside precise timelines; do not invent midnight. | An explicitly retrospective date/encounter ordering proxy, or a coarse-time representation. | Ordering changes next-event targets and gaps; storage is not necessarily clinical availability. | Yes: precise occurrence-time engineering data and encodings. Do not claim strict prospective validity or silently time unresolved records. |
 | **3. Which medication actions and source mappings define the event vocabulary?** SCI-04/05 | Preserve source actions separately; the implemented adapters retain ambiguous prescriptions/actions for reconciliation. | Prescriptions-primary with reconciled pharmacy support, versus distinct order/dispensing/administration events. | Counting two records as two doses or an order as administration changes learned trajectories. | Yes: indexing, content encodings and mappings supported by source semantics. Ambiguous canonical identities remain explicitly deferred. |
-| **4. Which numeric/ICU aggregation candidate should be frozen?** SCI-06 | Implemented 44-D Fourier candidate; no production span/stride is selected. A 2h span/1h stride is a proposal, not an executed rule. | Other declared spans/strides and per-item unit-normalization policies. | Changes extrema, event density, eligible patients and class statistics. | Yes: retain source values/units and encode verified compatible values. Aggregated outputs need a versioned candidate before generation; no PI decision is needed for an evidence-backed unit lookup. |
+| **4. Which numeric/ICU aggregation candidate should be frozen?** SCI-06 | Implemented 44-D Fourier candidate; C2 freezes a 2h span/1h stride as a declared candidate; bulk execution is pending, and this is not an author setting. | Other declared spans/strides and per-item unit-normalization policies. | Changes extrema, event density, eligible patients and class statistics. | Yes: retain source values/units and encode verified compatible values. Aggregated outputs need a versioned candidate before generation; no PI decision is needed for an evidence-backed unit lookup. |
 | **5. Should full notes use the tested 128-token candidate or content-preserving chunks?** SCI-08 | Implemented BioLORD 128-token masked mean/L2; all four tested notes truncate. | Chunk and combine all note content with a declared aggregation. | Truncation discards clinical content; chunking changes embeddings and cost. | Yes: cache validation and recipe-specific preparation. Either clearly declared candidate can be proposed for a bounded bulk run; a later change rebuilds note embeddings. |
-| **6. Freeze existing media recipes provisionally, or compare a specific alternative first?** SCI-07/09/10 | Pinned public encoders; tested CXR recipe, both separately cached OTIS position variants, and a tested B-mode ECHO recipe. Production choices remain unselected. | OTIS analytic versus upstream interpolation; a broader validated ECHO mask/clip policy; exact author settings if obtainable. | The two OTIS choices produce materially different embeddings; unsupported ECHO content must be reported, not silently replaced. | Yes: verified existing components/caches and source alignment work. Routine identity checks continue; only incompatible or unsupported inputs wait. Bulk recipes must be declared in the proposed job. |
+| **6. Freeze existing media recipes provisionally, or compare a specific alternative first?** SCI-07/09/10 | Pinned public encoders; tested CXR recipe, both separately cached OTIS position variants, and a tested B-mode ECHO recipe. The C2 queue recipe selects existing candidates explicitly; bulk GPU execution remains unapproved. | OTIS analytic versus upstream interpolation; a broader validated ECHO mask/clip policy; exact author settings if obtainable. | The two OTIS choices produce materially different embeddings; unsupported ECHO content must be reported, not silently replaced. | Yes: verified existing components/caches and source alignment work. Routine identity checks continue; only incompatible or unsupported inputs wait. Bulk recipes must be declared in the proposed job. |
 | **7. Which interpretation is intended for the next training result?** SCI-11/12/13 | Existing reduced candidate and declared loss, teacher-forced time-conditioned prediction; no new training authorized. | A separately configured free-forecasting or paper-dimension experiment. | True next-gap timing, unresolved architecture totals and loss scaling prevent paper-exact or unconditional claims. | Yes: event/embedding preparation. Freeze one architecture/loss/information condition in the separately authorized training protocol; do not restart encoder feasibility. |
+| **8. Which population will later clinical claims represent?** SCI-19/20 | Keep all 15,000 fixed members and natural modality absence. Distinguish assigned, canonical, fully encoded/owned-target eligible, and landmark-eligible populations. | Separately reported landmark-defined and full-trajectory-density-conditioned estimands; modality-stratified analyses without complete-case resampling. | Future record density can select on survival/follow-up;48,130 ECHO records represent only 358 patients. | Yes: C2 preserves the cohort and reports actual supports. Do not use future full-record eligibility to define an early prediction risk set or infer population-wide ECHO performance. |
 
 Nonblocking uncertainty is documented rather than converted into a blanket stop. A dataset may be an explicitly provisional occurrence-time engineering dataset while prospective or paper-fidelity claims remain unavailable. The freeze priorities below identify decisions to record before declaring an affected artifact final; they do not require stopping unrelated work. Routine checks of hashes, deterministic joins and authoritative dictionary fields are engineering work, not PI questions.
 
@@ -28,7 +29,7 @@ Nonblocking uncertainty is documented rather than converted into a blanket stop.
 
 **Example:** A genuine outpatient lab between admissions belongs to the patient but not automatically to either hospital stay.
 
-**Current provisional handling:** IMPLEMENTED: raw missing IDs remain unknown; explicit source IDs are preserved. Bounded adapters can label a supported unique interval match as inferred. PROPOSED: retain longitudinal-only events without nearest-stay fallback in the cohort dataset.
+**Current provisional handling:** IMPLEMENTED: raw missing IDs remain unknown; explicit source IDs are preserved. Bounded adapters can label a supported unique interval match as inferred. IMPLEMENTED C2 candidate, execution pending: retain longitudinal-only events without nearest-stay or interval-attribution fallback; use only same-patient explicit ED stay links.
 
 **Scientific consequence:** Encounter labels, landmark eligibility and modality support differ if unlinked events are dropped or guessed.
 
@@ -44,9 +45,9 @@ Nonblocking uncertainty is documented rather than converted into a blanket stop.
 
 **What is actually known:** Paper p.15 describes event chronology and window-end metadata. Source occurrence/store/verification clocks differ;148,894 lab rows lack storetime. Strict M2 windows reject unknown demographic availability. [A-02/05/35](ASSUMPTIONS.md), [integration evidence](../reports/server/2026-10-20_m2_integration/REPORT.md).
 
-**What remains uncertain or different:** Whether a recorded clock establishes actual clinical availability; when source-derived age/demographic attributes were knowable. Literal window-end prefixes differ from cutoff-safe prediction.
+**What remains uncertain or different:** Whether a recorded clock establishes actual clinical availability; when source-derived age/demographic attributes were knowable. Discharge summaries and retrospectively assigned diagnoses can reveal an encounter outcome despite an earlier associated clinical date. Literal window-end prefixes differ from cutoff-safe prediction.
 
-**Example:** A sample collected before 24h but stored after 24h cannot automatically enter a 24h prospective representation.
+**Example:** A sample collected before 24h but stored after 24h cannot automatically enter a 24h prospective representation. A discharge summary sharing a hospital ID must never be moved to admission, and its content is not evidence of earlier availability.
 
 **Current provisional handling:** IMPLEMENTED: preserve raw clocks/unknowns, occurrence diagnostics and strict guards separately; M1 uses static birth year with five Unknown slots. PROPOSED: clearly labeled occurrence-time pretraining, not strict prospective certification.
 
@@ -58,23 +59,23 @@ Nonblocking uncertainty is documented rather than converted into a blanket stop.
 
 **Affected artifacts:** Temporal/demographic event views, windows, representations and prospective metrics; raw content embeddings usually remain reusable.
 
-### SCI-03 — Date-only and untimed event ordering
+### SCI-03 — Imprecise clocks, simultaneous events and cross-dataset alignment
 
 **Category:** PAPER_UNSPECIFIED. **Priority:** MUST_DECIDE_BEFORE_DATA_FREEZE.
 
 **What is actually known:** All 57,381 indexed hospital procedure rows have date-only syntax; diagnoses lack a precise event clock. DATE-named fields can contain midnight-formatted strings without subday precision. Paper does not provide executable tie/proxy rules. A-01/02; [C1 evidence](../reports/server/2026-10-20_m2_c1/REPORT.md).
 
-**What remains uncertain or different:** How these records enter a precise next-event sequence without fabricating event times or future-derived ordering.
+**What remains uncertain or different:** How imprecise records enter a precise sequence; how equal-time observations should be ordered; and whether all linked datasets preserve identical patient-specific deidentification shifts/time conventions. Deterministic serialization does not establish a clinical causal order.
 
-**Example:** A diagnosis associated with an entire admission cannot be treated as known at admission merely because its stay ID is known.
+**Example:** A retrospective diagnosis cannot be treated as known at admission merely because its stay ID is known. Two measurements with the same timestamp can be serialized lexically while their actual clinical order remains unknown; a shared subject ID alone does not independently verify cross-dataset clock alignment.
 
-**Current provisional handling:** IMPLEMENTED: raw precision is explicit and ambiguous clocks remain deferred. PROPOSED retrospective ordering proxies have not been implemented or approved.
+**Current provisional handling:** IMPLEMENTED C1: raw precision and source identities are preserved. IMPLEMENTED C2 candidate, execution pending: retain date-only/untimed records in explicit deferrals; sort precise events by subject, occurrence hour and stable event ID; retain supplied cross-dataset clocks without a guessed shift correction. Retrospective ordering proxies remain unimplemented. Equal-time order is a serialization convention, not causal evidence.
 
-**Scientific consequence:** Category coverage, adjacency and gap targets change; excluding imprecise records makes the timed stream incomplete relative to the paper.
+**Scientific consequence:** Category coverage, adjacency, zero-gap transitions and temporal attention change. Excluding imprecise records makes the timed stream incomplete relative to the paper; incorrect cross-dataset clock alignment could corrupt multimodal sequence order. Prospective use also requires availability, not just a deterministic ordering.
 
-**Alternative choices:** Separate coarse/untimed records; a declared retrospective proxy with distinct observed/proxy fields; a new coarse-time modeling scheme.
+**Alternative choices:** Separate coarse/untimed records; documented stable ties versus evidence-backed source precedence; separately verified dataset alignment; a declared retrospective proxy or coarse-time scheme in a different dataset revision.
 
-**Question for the PI:** Should imprecise records remain separate, or should a distinct retrospective proxy be authorized for a later dataset version?
+**Question for the PI:** For later fidelity comparisons, should unresolved within-time order and cross-dataset clock alignment be tested as explicit sensitivities while imprecise records remain separate?
 
 **Affected artifacts:** Event ordering/shards, target counts, windows and trained checkpoints; source-linked content embeddings can generally be reused.
 
@@ -88,7 +89,7 @@ Nonblocking uncertainty is documented rather than converted into a blanket stop.
 
 **Example:** A planned prescription stop is not an observed infusion stop; dispensing is not proof of administration.
 
-**Current provisional handling:** IMPLEMENTED: separate source identities, not-given actions rejected as administration, unresolved primary Rx source deferred. PROPOSED prescriptions-primary with pharmacy reconciliation is not a frozen production decision.
+**Current provisional handling:** IMPLEMENTED: separate source identities, not-given actions rejected as administration, unresolved primary Rx source deferred. IMPLEMENTED C2 candidate: prescriptions/pharmacy remain separately deferred; pyxis dispensing is not mislabeled administration. Prescriptions-primary reconciliation remains an unselected alternative.
 
 **Scientific consequence:** Drug frequencies, dose/action identities, event transitions and downstream simulations can be misleading.
 
@@ -108,7 +109,7 @@ Nonblocking uncertainty is documented rather than converted into a blanket stop.
 
 **Example:** A microbiology organism/result should not silently be encoded as a numeric laboratory measurement.
 
-**Current provisional handling:** IMPLEMENTED: dictionary labels required and unclassified/qualitative cases explicitly deferred. PROPOSED: version evidence-backed mappings and record unresolved counts without resampling the cohort.
+**Current provisional handling:** IMPLEMENTED: dictionary labels required and unclassified/qualitative cases explicitly deferred. IMPLEMENTED C2 candidate: version existing source-backed adapters, an explicit 11-item ICU vital whitelist, and deferred reasons; no density or modality resampling. Unmapped categories remain unsupported rather than fabricated.
 
 **Scientific consequence:** Different ontology choices change category/modality targets and meaningful patient eligibility.
 
@@ -128,7 +129,7 @@ Nonblocking uncertainty is documented rather than converted into a blanket stop.
 
 **Example:** The same physiological quantity in two units yields different Fourier values unless its representation recipe explicitly harmonizes units.
 
-**Current provisional handling:** IMPLEMENTED: source values/units retained, numeric zero preserved, unknown/nonfinite units/results deferred by adapters;44-D candidate retained. PROPOSED2h/1h vital windows and alternatives are not a selected production recipe. Strict views must apply cutoff safety before aggregation or use verified closed-window outputs.
+**Current provisional handling:** IMPLEMENTED: source values/units retained, numeric zero preserved, unknown/nonfinite units/results deferred by adapters;44-D candidate retained. IMPLEMENTED C2 candidate, execution pending:2h span/1h stride, per-patient/hospital/stay/item/unit grouping, hour-floored first-observation origin, left-closed/right-open windows, two extrema at contributor-mean time, and complete contributor edges. The whitelist is explicit in `configs/m2_c2.json`; unsupported chart items are deferred, not relabeled. Source units remain separate, with no population-fitted conversion. Numeric specifics append the exact native unit to the source label, so differing units are not hidden from model inputs; this is a declared candidate lexical change, not an author setting. Strict views must apply cutoff safety before aggregation or use verified closed-window outputs.
 
 **Scientific consequence:** Changes numeric embeddings, event density, missingness, class statistics and ≥64-target support; future contributors can leak through aggregates.
 
@@ -164,11 +165,11 @@ Nonblocking uncertainty is documented rather than converted into a blanket stop.
 
 **What is actually known:** Public BioLORD sentence settings use 128 tokens and masked mean; local candidate applies L2. All four actual note examples truncate, with 436–1,802 original tokens. Paper long-note handling is not executable from its text. A-09; [resource evidence](../reports/server/2026-10-20_m2_integration/resources.json).
 
-**What remains uncertain or different:** How much note content NOAH retained and which aggregation produced one note representation.
+**What remains uncertain or different:** How much note content NOAH retained and which aggregation produced one note representation; whether retrospective content was masked or excluded at earlier paper landmarks. Truncation is not a protection against outcome information in discharge summaries.
 
-**Example:** A discharge outcome mentioned late in a note may be absent from the first 128 tokens; retaining the whole note still does not make it prospectively available earlier.
+**Example:** A discharge outcome can occur in the first 128 tokens or later in a summary. Neither truncation nor a shared admission ID establishes availability at admission or 24h. Retaining all content requires the same availability boundary as truncation.
 
-**Current provisional handling:** IMPLEMENTED:128-token masked mean/L2 with truncation metadata. PROPOSED: retain this as a clearly labeled first bulk candidate, or version chunk aggregation separately; neither production alternative has run.
+**Current provisional handling:** IMPLEMENTED:128-token masked mean/L2 with truncation metadata. The C2 candidate retains source chart/store clocks and exact note-content hashes, labels discharge documentation retrospective, and never substitutes admission time; unknown availability remains unknown. IMPLEMENTED C2 queue recipe retains this tested candidate with explicit truncation. Chunk aggregation remains an alternative; no cohort-scale note encoding has run.
 
 **Scientific consequence:** Content coverage, note retrieval and training targets change; this is distinct from availability leakage.
 
@@ -188,7 +189,7 @@ Nonblocking uncertainty is documented rather than converted into a blanket stop.
 
 **Example:** The same recording yields different embeddings under linear interpolation and analytic extension despite unchanged learned weights.
 
-**Current provisional handling:** IMPLEMENTED: canonical lead order, robust normalization, explicit tail discard and separate caches for both position policies. PROPOSED upstream interpolation is recommended but not silently selected for production.
+**Current provisional handling:** IMPLEMENTED: canonical lead order, robust normalization, explicit tail discard and separate caches for both position policies. IMPLEMENTED C2 queue recipe: upstream interpolation is explicitly selected as the first candidate; analytic extension remains a separate tested sensitivity. No cohort-scale ECG encoding has run.
 
 **Scientific consequence:** All ECG content targets depend on this recipe; smoke evidence does not prove population-wide validity.
 
@@ -208,7 +209,7 @@ Nonblocking uncertainty is documented rather than converted into a blanket stop.
 
 **Example:** A color-flow clip may lose clinically meaningful color if treated as a static colored annotation.
 
-**Current provisional handling:** IMPLEMENTED: declared 1.0.1 source, metadata crop required, explicit unsupported-content failure, no fallback zeros/raw-frame substitution. PROPOSED: reuse the tested recipe and report actual coverage/failures; exact-version fidelity remains unavailable without comparison.
+**Current provisional handling:** IMPLEMENTED: declared 1.0.1 source, metadata crop required, explicit unsupported-content failure, no fallback zeros/raw-frame substitution. IMPLEMENTED C2 queue recipe reuses the tested candidate; later GPU processing must report actual supported/failed clips. Exact-version fidelity remains unavailable without comparison.
 
 **Scientific consequence:** Selected ECHO population and retained visual information may differ from NOAH.
 
@@ -377,3 +378,44 @@ Nonblocking uncertainty is documented rather than converted into a blanket stop.
 **Question for the PI:** Should NEWS2 remain deferred until an independently verified paper-style label protocol is ready?
 
 **Affected artifacts:** NEWS2 labels/windows/probes/metrics; general encoder caches and clinical source indexes need no automatic rebuild.
+
+
+### SCI-19 — Cohort density, pretraining eligibility and early-evaluation selection
+
+**Category:** UNVERIFIED_ASSUMPTION. **Priority:** BEFORE_PAPER_FIDELITY_CLAIM.
+
+**What is actually known:** The fixed cohort has 15,000 source patients and 10,500 train members, selected without new outcome/density inputs while preserving the enriched historical pilot. Paper minimum 64-target eligibility, actual canonical coverage and endpoint-specific eligibility are distinct. [Cohort evidence](../reports/server/2026-10-20_m2/REPORT.md), [C1 supports](../reports/server/2026-10-20_m2_c1_recovery_execution/source_counts.csv), A-01/48/49.
+
+**What remains uncertain or different:** The author's exact density denominator and whether full longitudinal eligibility preceded early-landmark cohort selection. Final canonical/fully encoded/owned-target counts are not implied by cohort assignment; downstream risk sets also require index encounter, survival, follow-up and cutoff-specific evidence.
+
+**Example:** Requiring 64 events over a full future trajectory can preferentially retain long survivors, recurrent admissions or intensively observed patients in an admission+24h analysis.
+
+**Current provisional handling:** IMPLEMENTED cohort: patient-disjoint memberships remain fixed. IMPLEMENTED C2 candidate, execution pending: count assigned, canonical, ≥64-candidate, feature-complete and ≥64-valid-owned-target patients separately; retain patients with zero outputs. PROPOSED future clinical evaluation: define eligibility using information available at its landmark, and disclose any paper-style full-record-conditioned comparator separately. Accepted M1 eligibility is not reopened.
+
+**Scientific consequence:** Selection on survival/future observation affects risk, apparent discrimination, calibration and comparability to the paper or a deployment population.
+
+**Alternative choices:** Pretraining density eligibility plus an independent landmark risk set; a separately labeled density-conditioned retrospective comparison with coverage/selection reporting.
+
+**Question for the PI:** Which estimand should a later paper comparison report alongside the independently landmark-eligible clinical population?
+
+**Affected artifacts:** Eligibility/support/window manifests and later clinical cohorts, labels, probes and metrics; fixed splits and content embeddings need no automatic rebuilding.
+
+### SCI-20 — Uneven modality support and generalization
+
+**Category:** DATA_LIMITATION. **Priority:** BEFORE_PAPER_FIDELITY_CLAIM.
+
+**What is actually known:** C1 has 48,130 ECHO DICOM records from 358 patients (253/60/45 train/validation/test), versus 65,137 ECG records from 10,824 patients and 32,133 CXR images from 4,893 patients. These are source supports, not successful encoding or canonical-event supports. [Executed split/table supports](../reports/server/2026-10-20_m2_c1_recovery_execution/source_counts.csv).
+
+**What remains uncertain or different:** How successful encodings, clinical selection and repeated-record density concentrate representation learning; whether subsequent performance generalizes beyond the modality-observed subgroup.
+
+**Example:** Many clips from one ECHO study can yield many targets without adding independent patients; a complete-case six-modality cohort would select a different clinical population.
+
+**Current provisional handling:** IMPLEMENTED cohort: preserve all members and natural modality absence. IMPLEMENTED C2 candidate, execution pending: count events and contributing patients by split/category/modality, deduplicate content work without erasing event bindings, and inventory failures. No complete-case requirement, implicit modality balancing or replacement of missing content with zeros is permitted.
+
+**Scientific consequence:** Effective support and uncertainty can be overstated by record totals; modality-rich patients can dominate and complete-case analysis can change the estimand.
+
+**Alternative choices:** Natural-coverage learning with conditional support reporting; later authorized patient/modality-balanced sensitivity under a separate protocol, without changing the primary fixed cohort.
+
+**Question for the PI:** Should later claims report modality-observed subgroup performance and natural-cohort performance separately, with patient-level uncertainty?
+
+**Affected artifacts:** Support/encoding manifests, sampling/weighting protocols and later metric populations; existing source indexes remain unchanged, and only separately approved weighting changes require new training.
