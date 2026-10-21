@@ -1,0 +1,58 @@
+{
+  "status": "BLOCKED_INCOMPLETE_C2_CONDITIONAL_BUDGET_ONLY",
+  "execution_authorized": false,
+  "submissions": 0,
+  "source_job": "57053580",
+  "partial_queue_tasks": {
+    "cxr": 27145,
+    "ecg": 65137,
+    "echo": 48130,
+    "specifics": 8001,
+    "text": 259
+  },
+  "clinical_note_queue": "NOT_PREPARED; 259 text tasks do not represent discharge/radiology note coverage",
+  "full_queue_manifests": "NOT_EXPORTED",
+  "proposed_hard_caps": {
+    "jobs": 1,
+    "gpus": 1,
+    "gpu_type": "L40S",
+    "gpu_memory_GiB": 48,
+    "cpus": 16,
+    "memory_GiB": 64,
+    "wall_hours": 24,
+    "new_output_GiB": 48,
+    "temporary_staging_included_GiB": 8,
+    "retry": false,
+    "requeue": false,
+    "training": false,
+    "alpha": false
+  },
+  "phase_caps_hours": {
+    "text_and_specifics": 3,
+    "cxr": 3,
+    "ecg": 3,
+    "echo": 14,
+    "verification": 1
+  },
+  "batch_sizes": {
+    "text": 64,
+    "specifics": 64,
+    "cxr": 8,
+    "ecg": 4,
+    "echo": 4
+  },
+  "cpu_preprocessing_workers": 8,
+  "per_worker_threads": 1,
+  "conditional_echo_cpu_preprocessing_serial_hours": [
+    66.86993562138329,
+    89.62323504926171
+  ],
+  "throughput_caveat": "Two actual B-mode clips from one patient only; no full-population guarantee. Other bulk throughput unmeasured. Caps are not a completion estimate.",
+  "required_before_submission": [
+    "New authorization and successful targeted CPU C2 recovery",
+    "Complete hashed queues and dataset identities",
+    "Verify unchanged checkpoint/preprocessing recipes and exact compatible clean-cache identities",
+    "Resource approval for GPU job"
+  ],
+  "readiness": "HOLD"
+}

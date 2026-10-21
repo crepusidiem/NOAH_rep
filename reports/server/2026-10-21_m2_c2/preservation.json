@@ -1,0 +1,22 @@
+{
+  "M1": {
+    "files": 32,
+    "status": "PASS_ALL_CONTENT_HASHES",
+    "inventory_sha256": "350b79a92d242033e8c15bc174477b05a383643eb18d45dab90bb6e89784b28b"
+  },
+  "M1.5": {
+    "files": 105,
+    "status": "PASS_ALL_CONTENT_HASHES",
+    "inventory_sha256": "722f6d66715c30508a05252b723b948bac98608519f75b482629713f3a2c2920"
+  },
+  "original_C1": {
+    "files": 37,
+    "status": "PASS_ALL_CONTENT_HASHES",
+    "inventory_sha256": "21dc5303e7f1e8221e203806d2f77b3f585120fb3e76f667a279ed52961018c7"
+  },
+  "failed_C2": {
+    "files": 970,
+    "status": "FROZEN_WITH_ORIGINAL_FAILED_RECEIPT",
+    "inventory_sha256": "186252021626fe87fecebc4473e831784d6921192da3e6eea258537343a87b09"
+  }
+}

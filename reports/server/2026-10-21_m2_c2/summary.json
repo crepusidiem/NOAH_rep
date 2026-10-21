@@ -1,0 +1,135 @@
+{
+  "actual_preserved_queue_tasks": {
+    "cxr": 27145,
+    "ecg": 65137,
+    "echo": 48130,
+    "specifics": 8001,
+    "text": 259
+  },
+  "collector_source_sha256": "d7e6a01444b70f10e3f529838512c39d43edd687f978e3679cd9bff3afe323c8",
+  "complete_source_rows": 7370315,
+  "complete_source_tables": 22,
+  "config_sha256": "1ba6f6dffb3c0b953975cd9aff3d266db42d04508e84e57eda0969d675f750d0",
+  "cxr_fractional_clock_parser_deferrals": 4977,
+  "deferred_entries": 4039138,
+  "deferred_reason_groups": {
+    "dispensing_has_no_verified_administration_category": 118349,
+    "emar_action_not_a_verified_start_or_stop": 702172,
+    "mapping_or_content_parser_or_linkage": 4977,
+    "missing_occurrence_timestamp": 20263,
+    "missing_required_specific_item": 92545,
+    "rx_primary_source_or_duplicate_reconciliation_pending": 2517147,
+    "source_has_no_precise_occurrence_clock; retain_untimed": 581246,
+    "source_row_has_no_supported_action": 2439
+  },
+  "elapsed_seconds": 34.18639923911542,
+  "execution_status": "INCOMPLETE",
+  "full_cohort_valid_target_eligibility": "NOT_COMPUTED",
+  "job_id": "57053580",
+  "job_status": "FAILED",
+  "new_canonical_processing": false,
+  "original_execution_sha256": "6a99378e5fea6f3f4b207cda8bb8bc37a0b61f85dcc2996a3fe7a5dd354f0983",
+  "partial_cohort": {
+    "test": {
+      "assigned": 2250,
+      "eligible_64_valid_owned_targets": "NOT_COMPUTED: window finalization not reached",
+      "feature_complete_events": 21121,
+      "with_64_partial_candidates_NOT_MODEL_TARGETS": 1438,
+      "with_published_canonical": 2250
+    },
+    "train": {
+      "assigned": 10500,
+      "eligible_64_valid_owned_targets": "NOT_COMPUTED: window finalization not reached",
+      "feature_complete_events": 99108,
+      "with_64_partial_candidates_NOT_MODEL_TARGETS": 6542,
+      "with_published_canonical": 10500
+    },
+    "val": {
+      "assigned": 2250,
+      "eligible_64_valid_owned_targets": "NOT_COMPUTED: window finalization not reached",
+      "feature_complete_events": 21024,
+      "with_64_partial_candidates_NOT_MODEL_TARGETS": 1438,
+      "with_published_canonical": 2250
+    }
+  },
+  "patient_splits_sha256": "5df6b9e96b1921b94867cdacd04440de25a42e84d33c4a6fbd9ad5e26277d869",
+  "published_by_source": {
+    "cxr.cxr-record-list": {
+      "deferred": 4977,
+      "events": 27156
+    },
+    "ecg.record_list": {
+      "events": 65137
+    },
+    "echo.echo-record-list": {
+      "events": 48130
+    },
+    "ed.diagnosis": {
+      "deferred": 58823
+    },
+    "ed.edstays": {
+      "events": 54366
+    },
+    "ed.medrecon": {
+      "events": 241474
+    },
+    "ed.pyxis": {
+      "deferred": 118349
+    },
+    "ed.triage": {
+      "deferred": 54366
+    },
+    "ed.vitalsign": {
+      "deferred": 2439,
+      "events": 609390
+    },
+    "hosp.admissions": {
+      "events": 73925
+    },
+    "hosp.diagnoses_icd": {
+      "deferred": 410676
+    },
+    "hosp.emar": {
+      "deferred": 758148,
+      "events": 1535518
+    },
+    "hosp.microbiologyevents": {
+      "deferred": 20263,
+      "events": 240515
+    },
+    "hosp.pharmacy": {
+      "deferred": 1178787
+    },
+    "hosp.prescriptions": {
+      "deferred": 1338360
+    },
+    "hosp.procedures_icd": {
+      "deferred": 57381
+    },
+    "hosp.services": {
+      "events": 39742
+    },
+    "hosp.transfers": {
+      "deferred": 36569,
+      "events": 220760
+    },
+    "icu.icustays": {
+      "events": 12962
+    },
+    "icu.inputevents": {
+      "events": 1641422
+    },
+    "icu.outputevents": {
+      "events": 100000
+    }
+  },
+  "published_candidate_events": 4910497,
+  "queue_scope": "Partial SQLite inventory; final queue export/complete dataset not produced; note sources not processed",
+  "readiness": "HOLD",
+  "source_commit": "c381ca4296432c8a204968114cb346582cdb832e",
+  "source_files_mutated": false,
+  "source_reference_and_numeric_cases": 8,
+  "status": "PASS_PRESERVED_PARTIAL_ARTIFACTS_NOT_COMPLETE_C2",
+  "verified_shards": 459,
+  "window_plans": "NOT_CREATED"
+}

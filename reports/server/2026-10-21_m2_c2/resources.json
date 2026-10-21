@@ -1,0 +1,25 @@
+{
+  "job_id": "57053580",
+  "state": "FAILED",
+  "exit_code": "1:0",
+  "start_local": "2026-10-21T00:22:02",
+  "end_local": "2026-10-21T00:56:47",
+  "timezone": "America/New_York",
+  "slurm_elapsed_seconds": 2085,
+  "controller_elapsed_seconds": 2068.153750940226,
+  "allocated_cpus": 4,
+  "allocated_memory_GiB": 32,
+  "gpus": 0,
+  "total_cpu_seconds": 970.591,
+  "process_maxrss_KiB": 1090608,
+  "slurm_batch_maxrss_KiB": 33553872,
+  "logical_output_bytes": 723185583,
+  "controller_pre_receipt_output_bytes": 723182054,
+  "hard_caps": {
+    "cpus": 4,
+    "memory_GiB": 32,
+    "wall_minutes": 120,
+    "new_output_GiB": 48
+  },
+  "note": "Process and Slurm accounting scopes differ. Scheduler memory is near allocation; process RSS is not evidence of 32GiB headroom. No OOM reported."
+}

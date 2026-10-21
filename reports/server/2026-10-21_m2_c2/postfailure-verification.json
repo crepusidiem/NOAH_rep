@@ -1,0 +1,23 @@
+{
+  "base_commit": "c381ca4296432c8a204968114cb346582cdb832e",
+  "dirty": true,
+  "scope": "Post-failure engineering fixes and proposal fixtures, not re-executed bulk C2",
+  "source_files": {
+    "configs/m2_c2.json": "ee600bc7ea2cd1bc7dfe6c85613309504c4cf07d5da90be4c1986d4267d5c240",
+    "packages/noah_baseline/m2/c2.py": "494bb7ade5b8f962c0ac473b1c00c26f777cc423634c5f82f5e8364980c4c6aa",
+    "packages/noah_baseline/m2/c2_io.py": "e73d87b232ae9d95cb44c776616802de1dbb8edf8532af2c702f2b1501784dd7",
+    "packages/noah_baseline/m2/gpu_plan.py": "c3351ccbd20bdde38a6f9af0128e940d27bc46134aadbdad56c296842fe1fb38",
+    "tests/test_m2_c2.py": "2b6532c66f83a4a2f3ec05f9ffcd4e74acd621dfe3fe537b61218dff4d60c286",
+    "tests/test_m2_gpu_plan.py": "af081054c8e37480398cf77f59623862172a7e3e1f635ba0ffc3dda787418fb9",
+    "tools/m2_c2_verify.py": "41c5f0acc5827540c6a7147dd0bba2708cd2c24016b1da54c3ba5773a0e11dff",
+    "tools/m2_gpu_plan.py": "ede6089c7f153b973502067ebe61b06b8222e80c6f3fdfa1b686a8d6859c9d6f"
+  },
+  "regression_sha256": "d0522389e1879f7a34f5c8c7976c64e7187ca8c283ec456f3f6ee06e5f3cd5f5",
+  "tests_passed": 136,
+  "test_elapsed_seconds": 30.94,
+  "existing_allocation": "57035083",
+  "partial_verifier_source_sha256": "d7e6a01444b70f10e3f529838512c39d43edd687f978e3679cd9bff3afe323c8",
+  "partial_summary_sha256": "a62e59fd52299e1f3d647a30f4d8a4a792056f8700016909cea2430d55add977",
+  "scientific_recipe_changed": false,
+  "new_bulk_execution": false
+}
