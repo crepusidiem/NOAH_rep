@@ -58,9 +58,12 @@ class Shards:
         if pq.ParquetFile(p).metadata.num_rows!=len(batch):raise ValueError('Shard readback count mismatch')
         receipt=dict(rows=len(batch),sha256=digest_file(p),schema_sha256=hash_json(str(self.schema)))
         atomic_json(temp/'receipt.json',receipt);fsync_dir(temp)
+        # Account only the two published artifacts, never transient NFS unlink tombstones.
+        published_bytes=p.stat().st_size+(temp/'receipt.json').stat().st_size
         final=self.path/f'{len(self.files):06d}';temp.rename(final);fsync_dir(self.path)
         self.files.append(dict(path=str(final/'rows.parquet'),**receipt));self.count+=len(batch)
-        self.published(sum(x.stat().st_size for x in final.iterdir()));self.batch=[];self.check()
+        self.batch=[]
+        self.published(published_bytes);self.check()
     def close(self):self.flush();return dict(rows=self.count,shards=self.files)
 
 
@@ -78,15 +81,17 @@ class Queues:
         else:self.seen.move_to_end(key)
         return key
     def commit(self):self.db.commit()
-    def export(self,out):
+    def export(self,out,*,check=lambda:None,published=lambda n:None):
         self.commit();schema=pa.schema([(k,pa.string()) for k in ['id','kind','content_sha256','recipe_sha256','locator','recipe']])
         result={}
         for kind,n in self.db.execute('SELECT kind,count(*) FROM tasks GROUP BY kind').fetchall():
-            path=Path(out)/('queue-'+kind+'.parquet');writer=pq.ParquetWriter(path,schema,compression='zstd')
+            check();path=Path(out)/('queue-'+kind+'.parquet');temp=path.with_suffix('.pending');writer=pq.ParquetWriter(temp,schema,compression='zstd')
             cursor=self.db.execute('SELECT * FROM tasks WHERE kind=? ORDER BY id',(kind,))
             try:
-                while rows:=cursor.fetchmany(4096):writer.write_table(pa.Table.from_pylist([dict(zip(schema.names,row)) for row in rows],schema=schema))
+                while rows:=cursor.fetchmany(4096):
+                    check();writer.write_table(pa.Table.from_pylist([dict(zip(schema.names,row)) for row in rows],schema=schema))
             finally:writer.close()
+            temp.rename(path);published(path.stat().st_size);check()
             result[kind]=dict(tasks=n,path=str(path),sha256=digest_file(path))
         return result
 

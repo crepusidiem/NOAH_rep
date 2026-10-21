@@ -103,7 +103,7 @@ def run(root,out):
     capture={}
     for name in code:
         dest=out/'executed-source'/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes((root/name).read_bytes());capture[name]=digest_file(dest)
-    used=sum(p.stat().st_size for p in out.rglob('*') if p.is_file())
+    used=sum(p.stat().st_size for p in out.rglob('*') if not p.name.startswith('.nfs') and p.is_file())
     atomic_json(out/'manifest.json',dict(source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip(),
         dirty=bool(subprocess.check_output(['git','status','--porcelain'],cwd=root)),source_files=capture,
         job_id=os.environ.get('SLURM_JOB_ID'),started_at_utc=datetime.now(timezone.utc).isoformat(),config_sha256=pre['config_sha256'],patient_splits_sha256=config['patient_splits_sha256'],
@@ -158,8 +158,7 @@ def run(root,out):
                     count(DISTINCT source_ordinal) source_records,count(DISTINCT subject_id) patients
                     FROM deferred_records GROUP BY dataset,"table",split,reason''',out/'deferred-reasons.parquet',check,published)
             outputs=finalize(c,event_manifest,out,splits,config,check=check,published=published)
-            stage='QUEUE_EXPORT';queues=queue.export(out);check()
-            for q in queues.values():published(Path(q['path']).stat().st_size)
+            stage='QUEUE_EXPORT';queues=queue.export(out,check=check,published=published);check()
             atomic_json(out/'dataset-manifest.json',dict(status='CANDIDATE_CANONICAL_PREPARATION_COMPLETE_EMBEDDINGS_PENDING',
                 events=event_manifest,deferred=deferred_manifest,vital_inputs=inputs,vital_aggregation=aggregates,
                 encoding_queues=queues,source_counts=source_counts,**outputs,
@@ -175,7 +174,7 @@ def run(root,out):
         resource.setrlimit(resource.RLIMIT_FSIZE,original_limit)
         result=dict(status='COMPLETE_PREPARATION_NOT_MODEL_READY' if stage=='COMPLETE' else 'INCOMPLETE',stage=stage,failure=failure,
             elapsed_seconds=time.monotonic()-start,peak_rss_KiB=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
-            output_bytes=sum(p.stat().st_size for p in out.rglob('*') if p.is_file()),completed_sources=completed,
+            output_bytes=sum(p.stat().st_size for p in out.rglob('*') if not p.name.startswith('.nfs') and p.is_file()),completed_sources=completed,
             source_counts=source_counts,published_events=events.count,published_vital_inputs=vitals.count,published_deferred=deferred.count,
             uncommitted_batches=dict(events=len(events.batch),vitals=len(vitals.batch),deferred=len(deferred.batch)),
             retry=False,encoding=False,training=False,alpha=False,readiness='HOLD')

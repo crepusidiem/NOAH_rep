@@ -156,7 +156,7 @@ def test_c2_controller_completes_fixture_without_encoding_or_extra_execution(tmp
     import signal
     import pyarrow as pa
     from noah_baseline.m2 import c2 as controller
-    root=tmp_path;cfg=config();(root/'configs').mkdir()
+    root=tmp_path;cfg=config();cfg.update(execution_authorized=True,approval_attachment_sha256='f'*64);(root/'configs').mkdir()
     (root/'configs/m2_c2.json').write_text(json.dumps(cfg))
     for name in ['m2.json','encoder_assets.json','m2_integration.json']:
         (root/'configs'/name).write_bytes((ROOT/'configs'/name).read_bytes())
@@ -182,3 +182,35 @@ def test_c2_controller_completes_fixture_without_encoding_or_extra_execution(tmp
         assert not (base/'forbidden-second-execution').exists()
     finally:
         for s,value in previous.items():signal.signal(s,value)
+
+
+def test_atomic_publication_ignores_nfs_tombstones_and_clears_committed_buffer(tmp_path,monkeypatch):
+    original=Path.iterdir
+    def with_disappearing_nfs(directory):
+        yield from original(directory)
+        if directory.name.isdigit():yield directory/'.nfs-already-unlinked'
+    monkeypatch.setattr(Path,'iterdir',with_disappearing_nfs)
+    used=[];writer=Shards(tmp_path,'nfs',EVENT_SCHEMA,rows=1,published=used.append)
+    writer.add(dict(event_id='committed',subject_id=1,split='train'))
+    assert writer.count==1 and not writer.batch
+    directory=writer.path/'000000'
+    assert used==[(directory/'rows.parquet').stat().st_size+(directory/'receipt.json').stat().st_size]
+    def fail_after_publication(size):raise TimeoutError('injected bookkeeping interruption')
+    interrupted=Shards(tmp_path,'interrupted',EVENT_SCHEMA,rows=1,published=fail_after_publication)
+    with pytest.raises(TimeoutError):interrupted.add(dict(event_id='also-committed',subject_id=1,split='train'))
+    assert interrupted.count==1 and not interrupted.batch
+    assert pq.read_table(interrupted.files[0]['path']).to_pylist()[0]['event_id']=='also-committed'
+
+
+def test_queue_export_accounts_atomic_file_before_budget_interruption(tmp_path):
+    q=Queues(tmp_path,{k:{'fixture':k} for k in ['specifics','cxr']});published=[]
+    try:
+        q.put('specifics','1'*64,{'inline_text':'fictional item'})
+        q.put('cxr','2'*64,{'path':'fictional.jpg'})
+        def check():
+            if published:raise TimeoutError('aggregate output budget reached')
+        with pytest.raises(TimeoutError):q.export(tmp_path,check=check,published=published.append)
+        files=list(tmp_path.glob('queue-*.parquet'))
+        assert len(files)==1 and published==[files[0].stat().st_size]
+        assert pq.ParquetFile(files[0]).metadata.num_rows==1
+    finally:q.db.close()

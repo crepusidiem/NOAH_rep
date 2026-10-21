@@ -1,7 +1,7 @@
 {
   "schema_version": "m2-c2-candidate-v1",
   "classification": "ASSUMED conservative occurrence-time engineering recipe; incomplete author ontology, not prospective",
-  "execution_authorized": true,
+  "execution_authorized": false,
   "maximum_submissions": 1,
   "approval_attachment_sha256": "214c70ae25d207f1cc91c95428da81db3c4de2a33b4f27305f814e4e55c6c1b7",
   "source_manifest": "artifacts/reduced_pilot/m2/m2-c1-verified-source-manifest-20261020-01/manifest.json",
@@ -218,5 +218,7 @@
   "gpu_encoding_authorized": false,
   "training_authorized": false,
   "alpha_authorized": false,
-  "readiness": "HOLD"
+  "readiness": "HOLD",
+  "authorization_consumed_by_job_id": "57053580",
+  "authorization_status": "CONSUMED_INCOMPLETE_NO_RETRY"
 }
