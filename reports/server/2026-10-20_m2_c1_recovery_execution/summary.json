@@ -1,0 +1,65 @@
+{
+  "job_id": "57044273",
+  "source_commit": "d9679d949c2d0c2b58e76e0f64b78c57e4c7064f",
+  "source_dirty": false,
+  "config_sha256": "86df660ca8fb1ef32f976b8f12fc8fd9f3d8b15a7369748d1cd315a3c028752b",
+  "patient_splits_sha256": "5df6b9e96b1921b94867cdacd04440de25a42e84d33c4a6fbd9ad5e26277d869",
+  "original_job_status": "FAILED",
+  "original_execution_status": "INCOMPLETE",
+  "exit_code": "1:0",
+  "source_collection_status": "ALL_PLANNED_SOURCE_INDEXES_ACCEPTED_NOT_MODEL_READY",
+  "source_entries": 32,
+  "patient_associated_tables": 28,
+  "dictionaries": 4,
+  "total_selected_table_rows": 46625949,
+  "controller_elapsed_seconds": 1873.7838215520605,
+  "slurm_elapsed_seconds": 1878,
+  "allocated_cpus": 2,
+  "allocated_memory_GiB": 8,
+  "duckdb_validation_memory": "256MB",
+  "process_peak_rss_KiB": 364368,
+  "slurm_step_max_rss_KiB": 8388132,
+  "new_recovery_bytes": 1451270258,
+  "original_failures": [
+    {
+      "dataset": "cxr",
+      "error": "InvalidInputException",
+      "table": "mimic-cxr-2.0.0-metadata"
+    }
+  ],
+  "postvalidation": {
+    "duckdb_memory": "256MB",
+    "elapsed_seconds": 3.4113620165735483,
+    "new_output_bytes": 10336,
+    "peak_rss_KiB": 290176,
+    "selected_rows": 32133
+  },
+  "split_assigned_patients": {
+    "train": 10500,
+    "val": 2250,
+    "test": 2250
+  },
+  "dataset_table_rows": {
+    "cxr": 64266,
+    "ecg": 65137,
+    "echo": 48130,
+    "ed": 587682,
+    "hosp": 15559829,
+    "icu": 30091132,
+    "note": 209773
+  },
+  "canonical_events": "NOT_COMPUTED",
+  "qualified_target_patients": "NOT_COMPUTED",
+  "full_cohort_embeddings": "NOT_RUN",
+  "trainable_windows": "NOT_COMPUTED",
+  "readiness": "HOLD",
+  "regression": {
+    "passed": 124,
+    "failed": 0,
+    "elapsed_seconds": 36.92
+  },
+  "private_manifest_sha256": "474b8f31758f22c12af99ed6bd92fcb36e40d45782cb6b7a62abf753c51d89dd",
+  "private_original_execution_sha256": "7d63aac82395300885776ee468bcc68606dd6dcb314cd9feabc0b0d2b66c8b33",
+  "private_cxr_attestation_sha256": "e0f067cc5d10457385fdf23a66f21e0714b6771fc4950ce822e1329e819e1a4b",
+  "policy": "No reindex/retry/requeue/resource escalation/GPU/encoding/training/clinical evaluation/alpha"
+}

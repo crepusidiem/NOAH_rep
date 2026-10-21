@@ -16,6 +16,8 @@ For A-09, distinguish details absent from NOAH from details discoverable in upst
 
 Literal paper-description and strict causal experiments are separate configurations. A single “faithful” switch is inadequate: timestamp alignment, prefix snapshot, aggregation availability, loss normalization, and clock bootstrapping can vary independently.
 
+For the active15,000-patient M2 engineering dataset, [OPEN_SCIENTIFIC_ISSUES.md](OPEN_SCIENTIFIC_ISSUES.md) consolidates only unresolved material exceptions and PI questions. This register remains authoritative. Documented candidate choices can support occurrence-time data preparation while strict prospective or paper-exact claims remain unavailable; unrelated open questions do not create a blanket stop. A change that invalidates event identity, chronology or generated features stops only the affected output. Bulk compute still requires a separately approved bounded proposal.
+
 ## Locked EXPLICIT decisions
 
 | Decision | Status | Evidence | Consequence |

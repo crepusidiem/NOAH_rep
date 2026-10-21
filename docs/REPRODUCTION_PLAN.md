@@ -16,11 +16,11 @@ M2-A fixes15,000 assigned patients (10,500/2,250/2,250); B has actual encoder ev
 
 Next dependency order:
 
-1. Approve the concrete C1 source-index budget before large preprocessing:2 CPUs,16GiB,60min,8GiB new output. Prepared code/config/script remain disabled. This indexes source identities/fields/unknowns without media encoding or scientific chronology/aggregation decisions.
-2. Use indexed source evidence to freeze applicable A-01/02/04/09 choices and complete canonical mappings/counts. Preserve the cohort even if qualification is lower than the assigned count; report rather than density-resample.
-3. Validate broader preprocessing/encoder cases and propose a separate bulk cache budget. Small two-record timings are conditional estimates, not a production throughput guarantee.
-4. Materialize the versioned complete event/cache/window dataset; pass actual target ownership, split/content/provenance and full-M2 gates. Produce final category/rare/modality/clinical-support statistics and the next bounded training resource proposal.
-5. Keep paper-fidelity work, strict prospective availability, new training and the alpha sweep separately gated. No M2 source-index approval implies any of them.
+1. C1 source indexing is accepted through job57044273 plus a separate CXR post-validation attestation, under the authorized2 CPUs/8GiB/60min/8GiB output and256MB validation budget. The original job remains FAILED/INCOMPLETE; no further C1 submission is needed. Preserve job57006471 and its accepted indexes; no automatic retry, resource increase or extra job. Actual terminal evidence belongs in project status and its execution report.
+2. Reuse the exercised six-modality implementations for a provisional occurrence-time engineering dataset. Keep source-backed longitudinal events even when encounter attribution is unknown. Record unresolved material exceptions in [OPEN_SCIENTIFIC_ISSUES.md](OPEN_SCIENTIFIC_ISSUES.md); do not repeat broad encoder feasibility studies or require all future clinical decisions before engineering work.
+3. Prepare canonical mappings, numeric representations, content task queues and bounded manifest accounting. Full-cohort preprocessing and bulk encoding each require a concrete bounded resource proposal before execution. Reuse compatible verified caches only with source/content/checkpoint/recipe evidence.
+4. Materialize the fixed15,000-patient event/cache/window dataset, preserving all assigned members and reporting actual canonical, encoded and owned-target populations. No density resampling;10,500 assigned training members are not10,500 qualified sequences. Independent ownership, split, provenance and artifact checks govern promotion.
+5. Propose one meaningful multimodal learning experiment after usable dataset evidence. Training, strict prospective evaluation, paper-fidelity claims and the alpha sweep remain separately gated; C1 success leaves full-M2 readiness HOLD.
 
 ## 1. Reproduction levels and dependency graph
 
